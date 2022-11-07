@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UniRx;
+using UniRx.Triggers;
 using Unity.Netcode;
 using Unity.Services.Authentication;
 using Unity.Services.Lobbies;
@@ -14,7 +15,7 @@ namespace NetworkSystem
         public LobbyManager lobby;
         public RelayManager relay;
 
-        private CancellationTokenSource token = null;
+        private IDisposable disposable = null;
 
         private void Start()
         {
@@ -25,49 +26,30 @@ namespace NetworkSystem
                     NetworkSystemManager.NetworkExit(lobby, relay).Forget();
             };
 
-            relay.OnRelaySetting.Where(x => x == RelayManager.SettingEvent.Join).Subscribe(_ =>
-            {
-                CancelToken();
+            relay.OnRelaySetting.Where(x => x == RelayManager.SettingEvent.Join).
+                Delay(TimeSpan.FromSeconds(5)).
+                Subscribe(_ =>
+                {
+                    disposable = this.UpdateAsObservable().Subscribe(_ =>
+                    {
+                        if (NetworkManager.Singleton.IsConnectedClient)
+                            return;
 
-                token = new CancellationTokenSource();
-                CheckRelayConnectionStatus(token.Token).Forget();
-            }).AddTo(this);
-            
+                        NetworkSystemManager.NetworkExit(lobby, relay).Forget();
+                    });
+                }).AddTo(this);
+
             relay.OnRelaySetting.Where(x => x == RelayManager.SettingEvent.Exit).Subscribe(_ =>
             {
-                CancelToken();
+                if(lobby.Status == LobbyManager.LobbyStatus.Client)
+                    disposable.Dispose();
             }).AddTo(this);
         }
 
         private void OnDestroy()
         {
-            CancelToken();
-        }
-
-        private async UniTask CheckRelayConnectionStatus(CancellationToken token)
-        {
-            await UniTask.Delay(TimeSpan.FromSeconds(5), cancellationToken: token);
-            while (true)
-            {
-                token.ThrowIfCancellationRequested();
-                if (!NetworkManager.Singleton.IsConnectedClient)
-                {
-                    NetworkSystemManager.NetworkExit(lobby,relay).Forget();
-                    return;
-                }
-                
-                await UniTask.Yield(cancellationToken: token);
-            }
-        }
-
-        private void CancelToken()
-        {
-            if (token == null)
-                return;
-                
-            token.Cancel();
-            token.Dispose();
-            token = null;
+            if(lobby.Status == LobbyManager.LobbyStatus.Client)
+                disposable.Dispose();
         }
 
         private void OnApplicationQuit()
