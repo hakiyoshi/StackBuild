@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: 51f794212d257b04ea47ab0e19ba9dad
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - LobbyManagerPrefub: {fileID: 7310806686993344256, guid: c6ad0d1f7b7c2604b89918b4225494e1,
+      type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

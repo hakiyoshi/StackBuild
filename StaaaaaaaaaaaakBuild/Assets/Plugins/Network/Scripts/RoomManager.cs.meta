@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 2a93a3935abeadc4698d091e986be83b
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - lobby: {fileID: 11400000, guid: e24ed35b67c6f614e882e1972bd8b5b6, type: 2}
+  - relay: {fileID: 11400000, guid: c83824a8840dc0644a32557b15677068, type: 2}
+  - lobbyOption: {fileID: 11400000, guid: a91bbe458b1cd6044bf751446174749a, type: 2}
+  - playerOption: {fileID: 11400000, guid: 220aa3e31dcfee34995e8a73d545c95b, type: 2}
+  - LoadScene: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
