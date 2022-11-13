@@ -7,9 +7,7 @@ namespace StackBuild
     public class PartsCatch : MonoBehaviour
     {
         [SerializeField] private InputSender inputSender;
-
-        [SerializeField] private float catchupPower = 400.0f;
-        [SerializeField] private Vector3 catchupOffsetPosition = new Vector3(0.0f, -5.0f, 0.0f);
+        [SerializeField] private PlayerProperty playerProperty;
 
         private void OnTriggerStay(Collider other)
         {
@@ -24,10 +22,10 @@ namespace StackBuild
         {
             var parentPosition = transform.parent.position;
 
-            var center = parentPosition + catchupOffsetPosition;
+            var center = parentPosition + playerProperty.CatchupOffsetPosition;
             var sub = center - rb.transform.position;
 
-            rb.AddForceAtPosition(sub * (catchupPower * Time.deltaTime), center, ForceMode.VelocityChange);
+            rb.AddForceAtPosition(sub * (playerProperty.CatchupPower * Time.deltaTime), center, ForceMode.VelocityChange);
 
             var magnitude = sub.magnitude;
             if (magnitude < transform.parent.position.y)

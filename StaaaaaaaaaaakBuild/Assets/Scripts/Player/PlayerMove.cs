@@ -8,11 +8,9 @@ namespace StackBuild
     public class PlayerMove : MonoBehaviour
     {
         [SerializeField] private InputSender inputSender;
-        private Vector3 velocity = Vector3.zero;
+        [SerializeField] private PlayerProperty playerProperty;
 
-        [SerializeField] private float acceleration = 1000.0f;
-        [SerializeField] private float deceleration = 0.99f;
-        [SerializeField] private float maxSpeed = 20.0f;
+        private Vector3 velocity = Vector3.zero;
 
         private void Update()
         {
@@ -25,18 +23,18 @@ namespace StackBuild
 
             //移動
             if (Mathf.Abs(dir.x) <= 0.0f)
-                velocity.x *= deceleration;
+                velocity.x *= playerProperty.Deceleration;
 
             if (Mathf.Abs(dir.z) <= 0.0f)
-                velocity.z *= deceleration;
+                velocity.z *= playerProperty.Deceleration;
 
             if (dir.sqrMagnitude > 0.0f)
             {
-                velocity += dir * (acceleration * Time.deltaTime);
+                velocity += dir * (playerProperty.Acceleration * Time.deltaTime);
             }
 
-            if (velocity.sqrMagnitude >= maxSpeed * maxSpeed)
-                velocity = velocity.normalized * maxSpeed;
+            if (velocity.sqrMagnitude >= playerProperty.MaxSpeed * playerProperty.MaxSpeed)
+                velocity = velocity.normalized * playerProperty.MaxSpeed;
 
             transform.position += velocity * Time.deltaTime;
         }
