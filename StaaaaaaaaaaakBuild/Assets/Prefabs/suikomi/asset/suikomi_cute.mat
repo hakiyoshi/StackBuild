@@ -55,7 +55,7 @@ Material:
     - _QueueOffset: 0
     - _add: 0.95
     - _alpha: 1
-    - _fraction: 1.65
+    - _fraction: 0.5
     - _power: 20.4
     - _schroll: 2
     - _sine: 20
