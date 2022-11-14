@@ -30,11 +30,11 @@ namespace NetworkSystem
         public byte[] key { get; private set; }
         public string JoinCode { get; private set; }
         public string region { get; private set; }
-        
-        
+
+
         //クライアント限定
         public byte[] hostConnectionData { get; private set; }
-        
+
         //--------------------------------------------------------------------------------
 
         // 利用可能なすべてのリレーサーバーの地域をリストアップする
@@ -61,7 +61,7 @@ namespace NetworkSystem
                 throw new Exception("Relay create allocation request failed " + e.Message);
             }
         }
-        
+
         // 利用可能なリレーサーバーから最適なサーバーを自動的に選択する
         private static async UniTask<Allocation> CreateAllocationAsyncQoS(int maxConnections)
         {
@@ -90,7 +90,7 @@ namespace NetworkSystem
         private async UniTask SetupVariable(Allocation allocation)
         {
             JoinCode = await GetJoinCodeAsync(allocation.AllocationId);
-            
+
             var dtlsEndpoint = allocation.ServerEndpoints.First(e => e.ConnectionType == "dtls");
             IPV4Address = dtlsEndpoint.Host;
             port = (ushort) dtlsEndpoint.Port;
@@ -103,58 +103,39 @@ namespace NetworkSystem
         //--------------------------------------------------------------------------------
         //Allocation生成
 
-        public async UniTask CreateAllocationAsync(int maxConnections)
+        public async UniTask CreateAllocationAsync(int maxConnections, bool isServer, Region targetRegion = null)
         {
             try
             {
                 CheckMaxConnections(maxConnections);
-                
-                var allocation = await CreateAllocationAsyncQoS(maxConnections);
+
+                Allocation allocation = null;
+                if (targetRegion == null)
+                    allocation = await CreateAllocationAsyncQoS(maxConnections);
+                else
+                    allocation = await CreateAllocationAsync(maxConnections, targetRegion.Id);
 
                 await SetupVariable(allocation);
 
                 //ログ
-                Debug.Log($"ConnectionData: {allocation.ConnectionData[0]} {allocation.ConnectionData[1]}" + 
+                Debug.Log($"ConnectionData: {allocation.ConnectionData[0]} {allocation.ConnectionData[1]}" +
                           $"AllocationId {allocation.AllocationId}");
 
                 //ネットワークマネージャーに入れる
                 Unity.Netcode.NetworkManager.Singleton.GetComponent<UnityTransport>().
                     SetHostRelayData(IPV4Address, port, allocationIdBytes, key, connectionData, true);
-                
-                if(!Unity.Netcode.NetworkManager.Singleton.StartHost())
-                    throw new Exception("StartHost failed.");
-                
-                onRelaySetting.OnNext(SettingEvent.Create);
-                Debug.Log("Relayアロケーションを作成");
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-                throw;
-            }
-        }
 
-        public async UniTask CreateAllocationAsync(int maxConnections, Region targetRegion)
-        {
-            try
-            {
-                CheckMaxConnections(maxConnections);
-                
-                var allocation = await CreateAllocationAsync(maxConnections, targetRegion.Id);
+                if (isServer)
+                {
+                    if(!Unity.Netcode.NetworkManager.Singleton.StartHost())
+                        throw new Exception("StartHost failed.");
+                }
+                else
+                {
+                    if(!Unity.Netcode.NetworkManager.Singleton.StartServer())
+                        throw new Exception("StartServer failed.");
+                }
 
-                await SetupVariable(allocation);
-
-                //ログ
-                Debug.Log($"ConnectionData: {allocation.ConnectionData[0]} {allocation.ConnectionData[1]}" + 
-                          $"AllocationId {allocation.AllocationId}");
-
-                //ネットワークマネージャーに入れる
-                Unity.Netcode.NetworkManager.Singleton.GetComponent<UnityTransport>().
-                    SetHostRelayData(IPV4Address, port, allocationIdBytes, key, connectionData, true);
-                
-                if(!Unity.Netcode.NetworkManager.Singleton.StartHost())
-                    throw new Exception("StartHost failed.");
-                
                 onRelaySetting.OnNext(SettingEvent.Create);
                 Debug.Log("Relayアロケーションを作成");
             }
@@ -180,7 +161,7 @@ namespace NetworkSystem
 
         //--------------------------------------------------------------------------------
         //Allocation参加
-        
+
         public async UniTask JoinAllocationAsync(string joinCode)
         {
             try
@@ -198,13 +179,13 @@ namespace NetworkSystem
                 key = allocation.Key;
                 hostConnectionData = allocation.HostConnectionData;
                 JoinCode = joinCode;
-                
+
                 //ネットワークマネージャーに入れる
                 Unity.Netcode.NetworkManager.Singleton.GetComponent<UnityTransport>().
                     SetClientRelayData(IPV4Address, port, allocationIdBytes, key, connectionData, hostConnectionData, true);
                 if (!Unity.Netcode.NetworkManager.Singleton.StartClient())
                     throw new Exception("StartClient failed.");
-                
+
                 onRelaySetting.OnNext(SettingEvent.Join);
                 Debug.Log("Relayアロケーションに参加");
             }
@@ -214,7 +195,7 @@ namespace NetworkSystem
                 throw;
             }
         }
-        
+
         //--------------------------------------------------------------------------------
         // 退出
 
