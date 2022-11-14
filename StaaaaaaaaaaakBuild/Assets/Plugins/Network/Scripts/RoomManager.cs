@@ -17,7 +17,7 @@ namespace NetworkSystem
         [SerializeField] private RelayManager relay;
         [SerializeField] private LobbyOption lobbyOption;
         [SerializeField] private PlayerOption playerOption;
-        
+
         private string LobbyCode = "";
 
 #if UNITY_EDITOR
@@ -31,10 +31,13 @@ namespace NetworkSystem
         }
 #endif
         [SerializeField] private string loadSceneName;
-        
+
+        [SerializeField] private bool StartNetworkIsServer = false;
         [SerializeField] private bool ConnectToNetworkAtStart = false;
 
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
         [SerializeField] private bool DrawGui = true;
+#endif
 
         private void Awake()
         {
@@ -45,14 +48,14 @@ namespace NetworkSystem
         {
             if (!DrawGui)
                 return;
-            
+
             NetworkGUIWindow(0);
         }
 
         void NetworkGUIWindow(int windowId)
         {
             const int fontSize = 25;
-            
+
             var button = GUI.skin.button;
             button.fontSize = fontSize;
 
@@ -61,14 +64,19 @@ namespace NetworkSystem
 
             var label = GUI.skin.label;
             label.fontSize = fontSize;
-            
+
             GUILayout.BeginVertical(GUI.skin.window);
-            
-            if (GUILayout.Button("CreateLobby", button))
+
+            if (GUILayout.Button("Server", button))
             {
-                NetworkSystemManager.HostAsync(lobby, relay, lobbyOption, playerOption, this.GetCancellationTokenOnDestroy()).Forget();
+                NetworkSystemManager.CreateRoomAsync(true, lobby, relay, lobbyOption, playerOption, this.GetCancellationTokenOnDestroy()).Forget();
             }
-            
+
+            if (GUILayout.Button("Host", button))
+            {
+                NetworkSystemManager.CreateRoomAsync(false, lobby, relay, lobbyOption, playerOption, this.GetCancellationTokenOnDestroy()).Forget();
+            }
+
             if (GUILayout.Button("QuickJoin", button))
             {
                 NetworkSystemManager.ClientQuickAsync(lobby, relay, this.GetCancellationTokenOnDestroy()).Forget();
@@ -101,7 +109,7 @@ namespace NetworkSystem
                 GUILayout.Label("ロビープレイヤー数: " + lobby.lobbyInfo.Players.Count, label);
                 if (NetworkManager.Singleton.IsServer)
                     GUILayout.Label("リレープレイヤー数: " + NetworkManager.Singleton.ConnectedClients.Count, label);
-                
+
                 string playerId = lobby.lobbyInfo.Players.Aggregate("", (current, player) => current + (player.Id + "\n"));
                 GUILayout.Label("プレイヤーID\n" + playerId, label);
 
@@ -110,13 +118,13 @@ namespace NetworkSystem
                     foreach (var option in lobby.lobbyInfo.Data)
                     {
                         GUILayout.Label(
-                            $"key: {option.Key}\nvalue: {option.Value.Value}\n" + 
-                            $"visibility: {option.Value.Visibility}" + 
+                            $"key: {option.Key}\nvalue: {option.Value.Value}\n" +
+                            $"visibility: {option.Value.Visibility}" +
                             $"index: {option.Value.Index}", label);
                     }
                 }
             }
-            
+
             GUILayout.EndVertical();
         }
 
@@ -124,11 +132,11 @@ namespace NetworkSystem
         {
             await NetworkSystemManager.NetworkInitAsync();
             token.ThrowIfCancellationRequested();
-            
+
             if (!ConnectToNetworkAtStart || NetworkManager.Singleton.IsServer || NetworkManager.Singleton.IsClient)
                 return;
 
-            await NetworkSystemManager.HostAsync(lobby, relay, lobbyOption, playerOption,
+            await NetworkSystemManager.CreateRoomAsync(StartNetworkIsServer, lobby, relay, lobbyOption, playerOption,
                 this.GetCancellationTokenOnDestroy());
             token.ThrowIfCancellationRequested();
         }
