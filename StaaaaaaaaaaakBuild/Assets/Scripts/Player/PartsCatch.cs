@@ -25,12 +25,12 @@ namespace StackBuild
             var center = parentPosition + playerProperty.CatchupOffsetPosition;
             var sub = center - rb.transform.position;
 
-            rb.AddForceAtPosition(sub * (playerProperty.CatchupPower * Time.deltaTime), center, ForceMode.VelocityChange);
+            rb.AddForceAtPosition(sub * (playerProperty.CatchupPower * Time.deltaTime), center, ForceMode.Impulse);
 
             var magnitude = sub.magnitude;
-            if (magnitude < transform.parent.position.y)
+            if (magnitude < parentPosition.y)
             {
-                rb.velocity *= (magnitude / transform.parent.position.y);
+                rb.velocity *= (magnitude / parentPosition.y);
             }
         }
     }

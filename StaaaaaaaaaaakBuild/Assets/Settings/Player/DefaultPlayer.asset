@@ -16,4 +16,4 @@ MonoBehaviour:
   <Deceleration>k__BackingField: 0.99
   <MaxSpeed>k__BackingField: 20
   <CatchupPower>k__BackingField: 400
-  <CatchupOffsetPosition>k__BackingField: {x: 0, y: -5, z: 0}
+  <CatchupOffsetPosition>k__BackingField: {x: 0, y: -8, z: 0}
