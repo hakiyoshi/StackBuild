@@ -1592,6 +1592,14 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 1998758311}
     m_Modifications:
+    - target: {fileID: 1556833558864803095, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
+      propertyPath: <PlayerId>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1556833558864803095, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
+      propertyPath: <playerManager>k__BackingField
+      value: 
+      objectReference: {fileID: 1998758312}
     - target: {fileID: 3388593845912059579, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 4176931843
@@ -1672,19 +1680,16 @@ PrefabInstance:
       propertyPath: inputSender
       value: 
       objectReference: {fileID: 11400000, guid: 41edcc5c67c950f41960218fc1ddfe47, type: 2}
-    - target: {fileID: 7414242521006635447, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
-      propertyPath: changeMonoBehaviours.Array.data[2].ActiveOnline
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7414242521006635447, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
-      propertyPath: changeMonoBehaviours.Array.data[2].monoBehaviour
+    - target: {fileID: 6962769122389385209, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
+      propertyPath: playerManager
       value: 
-      objectReference: {fileID: 223468907}
+      objectReference: {fileID: 1998758312}
     - target: {fileID: 9205028574958100479, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
       propertyPath: m_LocalScale.y
       value: 1.6
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1556833558864803095, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
 --- !u!4 &215617587 stripped
@@ -1692,17 +1697,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4059882241921932019, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
   m_PrefabInstance: {fileID: 215617586}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &223468907 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5225296065809161514, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
-  m_PrefabInstance: {fileID: 215617586}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &246571044
 GameObject:
   m_ObjectHideFlags: 0
@@ -1817,6 +1811,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 246571044}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &258858209 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4059882241921932020, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
+  m_PrefabInstance: {fileID: 843879886}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &265844152
 GameObject:
   m_ObjectHideFlags: 0
@@ -6444,9 +6443,17 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1556833558864803095, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
+      propertyPath: <playerManager>k__BackingField
+      value: 
+      objectReference: {fileID: 1998758312}
     - target: {fileID: 1854799521079941375, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
       propertyPath: m_RootOrder
       value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1939678117923349876, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
+      propertyPath: data
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3388593845912059579, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
       propertyPath: GlobalObjectIdHash
@@ -6512,16 +6519,17 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 274854316}
-    - target: {fileID: 7414242521006635447, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
-      propertyPath: changeMonoBehaviours.Array.size
-      value: 1
-      objectReference: {fileID: 0}
+    - target: {fileID: 6962769122389385209, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
+      propertyPath: playerManager
+      value: 
+      objectReference: {fileID: 1998758312}
     - target: {fileID: 9205028574958100479, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
       propertyPath: m_LocalScale.y
       value: 1.6
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3940489815730909590, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
+    - {fileID: 1556833558864803095, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
 --- !u!4 &843879887 stripped
@@ -7099,6 +7107,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 898642237}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &910510995 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4059882241921932020, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
+  m_PrefabInstance: {fileID: 215617586}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &931995536
 GameObject:
   m_ObjectHideFlags: 0
@@ -13521,6 +13534,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1998758311}
+  - component: {fileID: 1998758312}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -13545,6 +13559,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1998758312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1998758310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a6d5f7a9a9360c4fad46236ae5a5721, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerObjects:
+  - {fileID: 258858209}
+  - {fileID: 910510995}
 --- !u!1 &2001796061
 GameObject:
   m_ObjectHideFlags: 0

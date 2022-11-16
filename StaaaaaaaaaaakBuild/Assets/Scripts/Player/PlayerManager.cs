@@ -1,9 +1,16 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class PlayerManager : MonoBehaviour
+namespace StackBuild
 {
-    [SerializeField] private GameObject[] playerObjects = Array.Empty<GameObject>();
+    public class PlayerManager : MonoBehaviour
+    {
+        [SerializeField] private GameObject[] playerObjects = Array.Empty<GameObject>();
+
+        public int GetPlayerIndex(GameObject playerObject)
+        {
+            return Array.IndexOf(playerObjects, playerObject);
+        }
+    }
 }
