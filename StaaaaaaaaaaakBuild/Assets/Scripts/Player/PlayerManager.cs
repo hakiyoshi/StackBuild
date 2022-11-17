@@ -6,11 +6,13 @@ namespace StackBuild
 {
     public class PlayerManager : MonoBehaviour
     {
-        [SerializeField] private GameObject[] playerObjects = Array.Empty<GameObject>();
+        [field: SerializeField] public GameObject[] PlayerObjects { get; private set; } = Array.Empty<GameObject>();
 
         public int GetPlayerIndex(GameObject playerObject)
         {
-            return Array.IndexOf(playerObjects, playerObject);
+            var index = Array.IndexOf(PlayerObjects, playerObject);
+            Debug.Assert(index != -1);
+            return index;
         }
     }
 }
