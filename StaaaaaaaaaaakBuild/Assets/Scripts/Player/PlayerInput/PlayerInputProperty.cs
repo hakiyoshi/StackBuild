@@ -14,22 +14,15 @@ namespace StackBuild
         [field: SerializeField, ReadOnly] public int[] DeviceIds { get; private set; } =
             Enumerable.Repeat<int>(MAX_DEVICEID, INVALID_ID).ToArray();
 
-        public void SettingPlayerDevice(int playerId, KeyControl keyControl)
-        {
-            SettingPlayerDevice(playerId, keyControl.device);
-        }
-
-        public void SettingPlayerDevice(int playerId, ButtonControl buttonControl)
-        {
-            SettingPlayerDevice(playerId, buttonControl.device);
-        }
-
-        public void SettingPlayerDevice(int playerId, InputDevice device)
+        public void SettingPlayerDevice(int playerId, AxisControl inputButton)
         {
             if (playerId >= MAX_DEVICEID)
                 return;
 
-            DeviceIds[playerId] = device.deviceId;
+            if (inputButton == null)
+                DeviceIds[playerId] = INVALID_ID;
+            else
+                DeviceIds[playerId] = inputButton.device.deviceId;
         }
     }
 }
