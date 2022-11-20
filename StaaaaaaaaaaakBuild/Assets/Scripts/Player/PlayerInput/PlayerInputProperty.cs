@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
@@ -9,20 +10,26 @@ namespace StackBuild
     public class PlayerInputProperty : ScriptableObject
     {
         public const int MAX_DEVICEID = 2;
-        public const int INVALID_ID = -1;
+        public const int UNSETID = -1;
 
-        [field: SerializeField, ReadOnly] public int[] DeviceIds { get; private set; } =
-            Enumerable.Repeat<int>(MAX_DEVICEID, INVALID_ID).ToArray();
+        private int[] deviceIds = new int[]{ -1, -1 };
+        public int[] DeviceIds => deviceIds;
 
-        public void SettingPlayerDevice(int playerId, AxisControl inputButton)
+        public void SettingPlayerDevice(int playerId, InputDevice device, bool isOnline)
         {
-            if (playerId >= MAX_DEVICEID)
+            var id = 0;
+            if (!isOnline)
+                id = playerId;
+
+            if (id >= MAX_DEVICEID)
                 return;
 
-            if (inputButton == null)
-                DeviceIds[playerId] = INVALID_ID;
+            if (device == null)
+                deviceIds[id] = UNSETID;
             else
-                DeviceIds[playerId] = inputButton.device.deviceId;
+                deviceIds[id] = device.deviceId;
         }
+
+
     }
 }
