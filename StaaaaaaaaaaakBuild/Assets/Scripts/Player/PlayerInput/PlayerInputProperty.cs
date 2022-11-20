@@ -15,6 +15,9 @@ namespace StackBuild
         private int[] deviceIds = new int[]{ -1, -1 };
         public int[] DeviceIds => deviceIds;
 
+        private PlayerInput[] playerInputs = new PlayerInput[MAX_DEVICEID];
+        public PlayerInput[] PlayerInputs => playerInputs;
+
         public void SettingPlayerDevice(int playerId, InputDevice device, bool isOnline)
         {
             var id = 0;

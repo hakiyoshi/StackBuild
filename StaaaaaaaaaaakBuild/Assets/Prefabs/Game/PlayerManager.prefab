@@ -63,6 +63,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputPrefab: {fileID: 5777875112543760121, guid: 57f55df1b20a97845b85d793c916ab9f, type: 3}
+  playerInputProperty: {fileID: 11400000, guid: 0dd4cc4c4954c3942815643f00138d40, type: 2}
   inputSenders:
   - {fileID: 11400000, guid: 257012153c897ec40bf522400ed78a05, type: 2}
   - {fileID: 11400000, guid: 41edcc5c67c950f41960218fc1ddfe47, type: 2}
@@ -94,6 +95,10 @@ PrefabInstance:
       propertyPath: data
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2725486479601856543, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
+      propertyPath: playerManager
+      value: 
+      objectReference: {fileID: 1739088126343202937}
     - target: {fileID: 3388593845912059579, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 951099334
@@ -146,6 +151,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Red
       objectReference: {fileID: 0}
+    - target: {fileID: 4059882241921932020, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
+      propertyPath: m_TagString
+      value: P1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4344826158646084368, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 951099334
+      objectReference: {fileID: 0}
     - target: {fileID: 4745509542077475808, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
       propertyPath: m_VersionIndex
       value: 7334
@@ -181,6 +194,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1556833558864803095, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
       propertyPath: <playerManager>k__BackingField
+      value: 
+      objectReference: {fileID: 1739088126343202937}
+    - target: {fileID: 1939678117923349876, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
+      propertyPath: inputSender
+      value: 
+      objectReference: {fileID: 11400000, guid: 41edcc5c67c950f41960218fc1ddfe47, type: 2}
+    - target: {fileID: 2725486479601856543, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
+      propertyPath: playerManager
       value: 
       objectReference: {fileID: 1739088126343202937}
     - target: {fileID: 3388593845912059579, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
@@ -246,6 +267,14 @@ PrefabInstance:
     - target: {fileID: 4059882241921932020, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
       propertyPath: m_Name
       value: Blue
+      objectReference: {fileID: 0}
+    - target: {fileID: 4059882241921932020, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
+      propertyPath: m_TagString
+      value: P2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4344826158646084368, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 951099334
       objectReference: {fileID: 0}
     - target: {fileID: 4745509542077475808, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
       propertyPath: m_VersionIndex

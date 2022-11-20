@@ -14504,6 +14504,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerManager
       objectReference: {fileID: 0}
+    - target: {fileID: 2623794492520251151, guid: a618db0a3e46ffb4ba61cb5164676fbe, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3850517907
+      objectReference: {fileID: 0}
+    - target: {fileID: 2623794493502864115, guid: a618db0a3e46ffb4ba61cb5164676fbe, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3346867205
+      objectReference: {fileID: 0}
     - target: {fileID: 3973528686129858392, guid: a618db0a3e46ffb4ba61cb5164676fbe, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 816422457
@@ -14511,6 +14519,10 @@ PrefabInstance:
     - target: {fileID: 3973528686624162468, guid: a618db0a3e46ffb4ba61cb5164676fbe, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 2415360373
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: GlobalObjectIdHash
+      value: 4156906698
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []

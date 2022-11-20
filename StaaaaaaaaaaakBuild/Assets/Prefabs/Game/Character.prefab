@@ -13,8 +13,9 @@ GameObject:
   - component: {fileID: 4059882241921932016}
   - component: {fileID: 4059882241921932017}
   - component: {fileID: 4059882241921932018}
-  - component: {fileID: 3388593845912059579}
   - component: {fileID: 5225296065809161514}
+  - component: {fileID: 4344826158646084368}
+  - component: {fileID: 2725486479601856543}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -115,22 +116,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputSender: {fileID: 11400000, guid: 257012153c897ec40bf522400ed78a05, type: 2}
   playerProperty: {fileID: 11400000, guid: 4d10b64e3b229194d8ed5319c43b8c3e, type: 2}
---- !u!114 &3388593845912059579
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4059882241921932020}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 951099334
-  AlwaysReplicateAsRoot: 0
-  DontDestroyWithOwner: 1
-  AutoObjectParentSync: 1
 --- !u!114 &5225296065809161514
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -157,6 +142,36 @@ MonoBehaviour:
   ScaleThreshold: 0.01
   InLocalSpace: 0
   Interpolate: 1
+--- !u!114 &4344826158646084368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4059882241921932020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 951099334
+  AlwaysReplicateAsRoot: 0
+  DontDestroyWithOwner: 1
+  AutoObjectParentSync: 1
+--- !u!114 &2725486479601856543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4059882241921932020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2603881227bc4ffdbd4a7cb05f1d3403, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerInputProperty: {fileID: 11400000, guid: 0dd4cc4c4954c3942815643f00138d40, type: 2}
+  playerManager: {fileID: 0}
 --- !u!1001 &6351594685773627294
 PrefabInstance:
   m_ObjectHideFlags: 0

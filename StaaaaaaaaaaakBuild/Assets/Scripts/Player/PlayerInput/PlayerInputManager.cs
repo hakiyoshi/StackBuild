@@ -1,8 +1,7 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Utilities;
 
 namespace StackBuild
 {
@@ -13,32 +12,39 @@ namespace StackBuild
         [SerializeField] private PlayerInputProperty playerInputProperty;
         [SerializeField] private InputSender[] inputSenders = Array.Empty<InputSender>();
 
-
-        private PlayerManager playerManager;
+        //管理用
+        private PlayerInput[] playerInputs = new PlayerInput[PlayerInputProperty.MAX_DEVICEID];
 
         private void Awake()
         {
-            playerManager = GetComponent<PlayerManager>();
+            SettingPlayerInput();
+        }
+
+        void SettingPlayerInput()
+        {
+            if (!TryGetComponent(out PlayerManager playerManager))
+                return;
 
             var playerObjects = playerManager.PlayerObjects;
+            var devices = InputSystem.devices;
             for (var i = 0; i < playerObjects.Length; i++)
             {
                 var parent = playerObjects[i].transform;
 
-                if(SelectSetDevice(i, parent))
+                if(SelectSetDevice(i, parent, devices))
                     continue;
 
-                AutoSetDevice(i, parent);
+                AutoSetDevice(i, parent, devices);
             }
         }
 
-        bool SelectSetDevice(int playerIndex, Transform parent)
+        bool SelectSetDevice(int playerIndex, Transform parent, in ReadOnlyArray<InputDevice> devices)
         {
             var deviceid = playerInputProperty.DeviceIds[playerIndex];
-            if (deviceid == PlayerInputProperty.INVALID_ID)
+            if (deviceid == PlayerInputProperty.UNSETID)
                 return false;
 
-            foreach (var device in InputSystem.devices)
+            foreach (var device in devices)
             {
                 if (device.deviceId != deviceid)
                     continue;
@@ -50,13 +56,12 @@ namespace StackBuild
             return false;
         }
 
-        bool AutoSetDevice(int playerIndex, Transform parent)
+        void AutoSetDevice(int playerIndex, Transform parent, in ReadOnlyArray<InputDevice> devices)
         {
             int deviceFlag = playerIndex;
-            var devices = InputSystem.devices;
             foreach (var device in devices)
             {
-                if(Mouse.current.deviceId == device.deviceId)
+                if(Mouse.current == null || Mouse.current.deviceId == device.deviceId)
                     continue;
 
                 //デバイスフラグが1以上の場合はスルー
@@ -68,27 +73,37 @@ namespace StackBuild
 
                 //キーボードかそれ以外で分岐
                 SettingPlayerInput(playerIndex, parent, device);
-                return true;
+                return;
             }
 
-            return false;
+            //デバイス未設定のPlayerInput生成
+            SettingPlayerInput(playerIndex, parent, null);
         }
 
         void SettingPlayerInput(int playerIndex, Transform parent, InputDevice device)
         {
             PlayerInput playerInput = null;
-            if (Keyboard.current.deviceId == device.deviceId || Mouse.current.deviceId == device.deviceId)
+            if (device == null)
             {
+                //デバイス未設定
+                playerInput = PlayerInput.Instantiate(inputPrefab, playerIndex);
+            }
+            else if ((Keyboard.current != null && Keyboard.current.deviceId == device.deviceId) ||
+                     (Mouse.current != null && Mouse.current.deviceId == device.deviceId))
+            {
+                //キーボード、マウス
                 playerInput = PlayerInput.Instantiate(inputPrefab, playerIndex: playerIndex,
                     controlScheme: "keyboard&Mouse",
                     pairWithDevices: new InputDevice[] {Keyboard.current, Mouse.current});
             }
             else
             {
+                //ゲームパッド
                 playerInput = PlayerInput.Instantiate(inputPrefab, playerIndex: playerIndex,
                     controlScheme: "Gamepad", pairWithDevice: device);
             }
 
+            playerInputs[playerIndex] = playerInput;
             StartInputObjectSetting(playerInput, parent, playerIndex);
         }
 
@@ -96,6 +111,7 @@ namespace StackBuild
         {
             playerInput.transform.parent = parent;
             playerInput.gameObject.GetComponent<Input>().inputSender = inputSenders[playerIndex];
+            playerInputProperty.PlayerInputs[playerIndex] = playerInput;
         }
     }
 }
