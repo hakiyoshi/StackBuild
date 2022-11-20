@@ -127,17 +127,21 @@ namespace NetworkSystem
 
                 if (isServer)
                 {
-                    if(!Unity.Netcode.NetworkManager.Singleton.StartHost())
+                    if(!Unity.Netcode.NetworkManager.Singleton.StartServer())
                         throw new Exception("StartHost failed.");
+
+                    Debug.Log("Relayアロケーションを作成(サーバー)");
                 }
                 else
                 {
-                    if(!Unity.Netcode.NetworkManager.Singleton.StartServer())
+                    if(!Unity.Netcode.NetworkManager.Singleton.StartHost())
                         throw new Exception("StartServer failed.");
+
+                    Debug.Log("Relayアロケーションを作成(ホスト)");
                 }
 
                 onRelaySetting.OnNext(SettingEvent.Create);
-                Debug.Log("Relayアロケーションを作成");
+
             }
             catch (Exception e)
             {
