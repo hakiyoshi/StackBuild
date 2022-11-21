@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 public class Input : MonoBehaviour
 {
     public InputSender inputSender;
-    
+
     private PlayerInput input;
 
     private void Start()
@@ -17,7 +17,7 @@ public class Input : MonoBehaviour
         var player = input.actions.FindActionMap("Player");
         ActionMapFromEventStarted(player, "Catch").Subscribe(x => inputSender.SendCatch(true)).AddTo(this);
         ActionMapFromEventCanceled(player, "Catch").Subscribe(x => inputSender.SendCatch(false)).AddTo(this);
-        
+
         ActionMapFromEventPerformed(player, "Move").Subscribe(x => inputSender.SendMove(x.ReadValue<Vector2>())).AddTo(this);
         ActionMapFromEventCanceled(player, "Move").Subscribe(x => inputSender.SendMove(Vector2.zero)).AddTo(this);
     }

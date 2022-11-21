@@ -1,9 +1,19 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
+using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class PlayerManager : MonoBehaviour
+namespace StackBuild
 {
-    [SerializeField] private GameObject[] playerObjects = Array.Empty<GameObject>();
+    public class PlayerManager : MonoBehaviour
+    {
+        [field: SerializeField] public GameObject[] PlayerObjects { get; private set; } = Array.Empty<GameObject>();
+
+        public int GetPlayerIndex(GameObject playerObject)
+        {
+            var index = Array.IndexOf(PlayerObjects, playerObject);
+            Debug.Assert(index != -1);
+            return index;
+        }
+    }
 }
