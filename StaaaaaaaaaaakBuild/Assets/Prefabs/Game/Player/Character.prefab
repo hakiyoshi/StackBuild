@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 4059882241921932016}
   - component: {fileID: 4059882241921932017}
   - component: {fileID: 4059882241921932018}
-  - component: {fileID: 5225296065809161514}
   - component: {fileID: 4344826158646084368}
   - component: {fileID: 2725486479601856543}
   m_Layer: 0
@@ -116,32 +115,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputSender: {fileID: 11400000, guid: 257012153c897ec40bf522400ed78a05, type: 2}
   playerProperty: {fileID: 11400000, guid: 4d10b64e3b229194d8ed5319c43b8c3e, type: 2}
---- !u!114 &5225296065809161514
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4059882241921932020}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SyncPositionX: 1
-  SyncPositionY: 1
-  SyncPositionZ: 1
-  SyncRotAngleX: 1
-  SyncRotAngleY: 1
-  SyncRotAngleZ: 1
-  SyncScaleX: 0
-  SyncScaleY: 0
-  SyncScaleZ: 0
-  PositionThreshold: 0.001
-  RotAngleThreshold: 0.01
-  ScaleThreshold: 0.01
-  InLocalSpace: 0
-  Interpolate: 1
 --- !u!114 &4344826158646084368
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -265,20 +238,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8132400455210340810, guid: aa84dcd97e3867e449ba0e9648cdf288, type: 3}
   m_PrefabInstance: {fileID: 6351594685773627294}
   m_PrefabAsset: {fileID: 0}
---- !u!64 &5427469997415915193
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2952517021885148756}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -5076798556035486163, guid: 01a8bbb6e8675a846a045a91f03dc60b, type: 3}
 --- !u!114 &1939678117923349876
 MonoBehaviour:
   m_ObjectHideFlags: 0

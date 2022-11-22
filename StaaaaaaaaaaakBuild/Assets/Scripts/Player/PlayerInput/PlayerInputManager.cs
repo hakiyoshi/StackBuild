@@ -5,12 +5,12 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace StackBuild
 {
-    [RequireComponent(typeof(PlayerManager))]
     public class PlayerInputManager : MonoBehaviour
     {
         [SerializeField] private GameObject inputPrefab;
         [SerializeField] private PlayerInputProperty playerInputProperty;
         [SerializeField] private InputSender[] inputSenders = Array.Empty<InputSender>();
+        [SerializeField] private PlayerManager playerManager;
 
         //管理用
         private PlayerInput[] playerInputs = new PlayerInput[PlayerInputProperty.MAX_DEVICEID];
@@ -22,15 +22,11 @@ namespace StackBuild
 
         void SettingPlayerInput()
         {
-            if (!TryGetComponent(out PlayerManager playerManager))
-                return;
-
             var playerObjects = playerManager.PlayerObjects;
             var devices = InputSystem.devices;
             for (var i = 0; i < playerObjects.Length; i++)
             {
                 var parent = playerObjects[i].transform;
-
                 if(SelectSetDevice(i, parent, devices))
                     continue;
 

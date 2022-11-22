@@ -55,13 +55,13 @@ Material:
     - _QueueOffset: 0
     - _add: 0.95
     - _alpha: 1
-    - _fraction: 0.5
+    - _fraction: 0.44
     - _power: 20.4
     - _schroll: 2
-    - _sine: 20
+    - _sine: 30
     - _wave: 0.1
     m_Colors:
-    - _Color: {r: 80.26326, g: 7.950606, b: 7.950606, a: 0}
+    - _Color: {r: 23.968628, g: 2.3843138, b: 2.3843138, a: 0}
     - _add_color: {r: 0, g: 1367.1202, b: 880.39685, a: 0}
     - _dir: {r: 0, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []

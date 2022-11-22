@@ -10,9 +10,14 @@ namespace StackBuild
         public PlayerInputProperty playerInputProperty;
         public PlayerManager playerManager;
 
+        PlayerInput GetPlayerInput()
+        {
+            return playerInputProperty.PlayerInputs[playerManager.GetPlayerIndex(this.gameObject)];
+        }
+
         public override void OnNetworkSpawn()
         {
-            var playerInput = playerInputProperty.PlayerInputs[playerManager.GetPlayerIndex(this.gameObject)];
+            var playerInput = GetPlayerInput();
             if (!IsOwner)
             {
                 LostInput(playerInput);
@@ -26,18 +31,14 @@ namespace StackBuild
 
         public override void OnGainedOwnership()
         {
-            if (!TryGetComponent(out PlayerInput playerInput))
-                return;
-
+            var playerInput = GetPlayerInput();
             playerInput.enabled = true;
             SwitchDevice(playerInput);
         }
 
         public override void OnLostOwnership()
         {
-            if (!TryGetComponent(out PlayerInput playerInput))
-                return;
-
+            var playerInput = GetPlayerInput();
             LostInput(playerInput);
         }
 

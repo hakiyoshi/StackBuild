@@ -1644,7 +1644,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4344826158646084368, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3346867205
+      value: 3983798966
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
@@ -5649,6 +5649,25 @@ Transform:
   m_Father: {fileID: 1262796433}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 164.6542, y: 270.1549, z: 226.93118}
+--- !u!1 &775961177 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8699387487881091158, guid: 684fadf1f9d623f4398ab92188450902, type: 3}
+  m_PrefabInstance: {fileID: 940895639}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &775961181
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 775961177}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -2400841460937244437, guid: 006e2068c7cf3fe4680735d2dce47efa, type: 3}
 --- !u!1 &781246751
 GameObject:
   m_ObjectHideFlags: 0
@@ -6293,7 +6312,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4344826158646084368, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3850517907
+      value: 1012478671
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
@@ -11269,7 +11288,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1562793031}
   - component: {fileID: 1562793030}
-  - component: {fileID: 1562793029}
+  - component: {fileID: 1562793032}
+  - component: {fileID: 1562793033}
   m_Layer: 0
   m_Name: PlayerManager
   m_TagString: Untagged
@@ -11277,23 +11297,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1562793029
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1562793028}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c0b47e2f7c3c5d44b8c38de1f9af335, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputPrefab: {fileID: 5777875112543760121, guid: 57f55df1b20a97845b85d793c916ab9f, type: 3}
-  playerInputProperty: {fileID: 11400000, guid: 0dd4cc4c4954c3942815643f00138d40, type: 2}
-  inputSenders:
-  - {fileID: 11400000, guid: 257012153c897ec40bf522400ed78a05, type: 2}
-  - {fileID: 11400000, guid: 41edcc5c67c950f41960218fc1ddfe47, type: 2}
 --- !u!114 &1562793030
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11324,6 +11327,40 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1562793032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1562793028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 2717077306
+  AlwaysReplicateAsRoot: 0
+  DontDestroyWithOwner: 1
+  AutoObjectParentSync: 1
+--- !u!114 &1562793033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1562793028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c0b47e2f7c3c5d44b8c38de1f9af335, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputPrefab: {fileID: 5777875112543760121, guid: 57f55df1b20a97845b85d793c916ab9f, type: 3}
+  playerInputProperty: {fileID: 11400000, guid: 0dd4cc4c4954c3942815643f00138d40, type: 2}
+  inputSenders:
+  - {fileID: 11400000, guid: 257012153c897ec40bf522400ed78a05, type: 2}
+  - {fileID: 11400000, guid: 41edcc5c67c950f41960218fc1ddfe47, type: 2}
+  playerManager: {fileID: 1562793030}
 --- !u!1 &1566556013
 GameObject:
   m_ObjectHideFlags: 0
