@@ -1,5 +1,6 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using UniRx;
 using Unity.Netcode;
 using UnityEngine;
@@ -16,7 +17,7 @@ namespace StackBuild
         [ServerRpc]
         void CatchServerRpc(bool isCatchFlag)
         {
-            isCatch = isCatchFlag;
+            inputSender.SendCatch(isCatchFlag);
             CatchClientRpc(isCatchFlag);
         }
 
@@ -26,7 +27,7 @@ namespace StackBuild
             if (IsOwner)
                 return;
 
-            isCatch = isCatchFlag;
+            inputSender.SendCatch(isCatchFlag);
         }
 
         private void Start()
@@ -50,10 +51,10 @@ namespace StackBuild
         {
             var parentPosition = transform.parent.position;
 
-            var center = parentPosition + playerProperty.CatchupOffsetPosition;
+            var center = parentPosition + playerProperty.characterProperty.CatchupOffsetPosition;
             var sub = center - rb.transform.position;
 
-            rb.AddForceAtPosition(sub * (playerProperty.CatchupPower * Time.deltaTime), center, ForceMode.Impulse);
+            rb.AddForceAtPosition(sub * (playerProperty.characterProperty.CatchupPower * Time.deltaTime), center, ForceMode.Impulse);
 
             var magnitude = sub.magnitude;
             if (magnitude < parentPosition.y)

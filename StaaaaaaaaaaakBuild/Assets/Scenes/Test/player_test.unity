@@ -11096,17 +11096,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1541239627}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &1562793030 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3417636335566369258, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
-  m_PrefabInstance: {fileID: 7714621389944949881}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a6d5f7a9a9360c4fad46236ae5a5721, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1566556013
 GameObject:
   m_ObjectHideFlags: 0
@@ -14579,14 +14568,22 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 936891389
       objectReference: {fileID: 0}
-    - target: {fileID: 5682707945274141780, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
-      propertyPath: playerManager
-      value: 
-      objectReference: {fileID: 1562793030}
-    - target: {fileID: 5682707945516460456, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
-      propertyPath: playerManager
-      value: 
-      objectReference: {fileID: 1562793030}
+    - target: {fileID: 4897283963260023327, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
+      propertyPath: m_Name
+      value: CatchEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 4897283963260023327, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4897283963703408611, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
+      propertyPath: m_Name
+      value: CatchEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 4897283963703408611, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6288215957680316251, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 629561582
@@ -14641,7 +14638,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7714621389661941215, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
       propertyPath: m_Name
-      value: Player
+      value: PlayerRelated
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []

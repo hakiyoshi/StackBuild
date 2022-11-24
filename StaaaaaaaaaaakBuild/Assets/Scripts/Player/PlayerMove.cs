@@ -23,18 +23,19 @@ namespace StackBuild
 
             //移動
             if (Mathf.Abs(dir.x) <= 0.0f)
-                velocity.x *= playerProperty.Deceleration;
+                velocity.x *= playerProperty.characterProperty.Deceleration;
 
             if (Mathf.Abs(dir.z) <= 0.0f)
-                velocity.z *= playerProperty.Deceleration;
+                velocity.z *= playerProperty.characterProperty.Deceleration;
 
             if (dir.sqrMagnitude > 0.0f)
             {
-                velocity += dir * (playerProperty.Acceleration * Time.deltaTime);
+                velocity += dir * (playerProperty.characterProperty.Acceleration * Time.deltaTime);
             }
 
-            if (velocity.sqrMagnitude >= playerProperty.MaxSpeed * playerProperty.MaxSpeed)
-                velocity = velocity.normalized * playerProperty.MaxSpeed;
+            if (velocity.sqrMagnitude >=
+                playerProperty.characterProperty.MaxSpeed * playerProperty.characterProperty.MaxSpeed)
+                velocity = velocity.normalized * playerProperty.characterProperty.MaxSpeed;
 
             transform.position += velocity * Time.deltaTime;
         }
