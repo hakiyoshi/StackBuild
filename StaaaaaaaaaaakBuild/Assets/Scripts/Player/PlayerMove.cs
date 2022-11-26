@@ -63,7 +63,7 @@ namespace StackBuild
 
         void LookForward()
         {
-            if (Mathf.Abs(CreateMoveDirection().sqrMagnitude) > 0.0f)
+            if (CreateMoveDirection().sqrMagnitude > 0.0f)
                 targetLook = Quaternion.LookRotation(-velocity);
 
             transform.rotation = Quaternion.Lerp(transform.rotation,

@@ -250,12 +250,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputSender: {fileID: 0}
-  DashAcceleration: 10
-  DashMaxSpeed: 10
-  DashTimeToMaxSpeed: 0.5
-  DashDeceleratingSpeed: 0.5
+  DashMaxSpeed: 0.1
+  DashTimeToMaxSpeed: 0.2
+  DashDeceleratingSpeed: 0.6
   DashEaseOfAcceleration: 21
-  DashEaseOfDeceleration: 21
+  DashEaseOfDeceleration: 6
+  CoolTime: 1
 --- !u!1 &7282072317809821654
 GameObject:
   m_ObjectHideFlags: 0
