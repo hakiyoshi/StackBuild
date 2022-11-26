@@ -79,6 +79,7 @@ GameObject:
   - component: {fileID: 4344826158646084368}
   - component: {fileID: 2725486479601856543}
   - component: {fileID: 8970168621242545789}
+  - component: {fileID: 7926704390687140848}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -180,9 +181,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputSender: {fileID: 11400000, guid: 257012153c897ec40bf522400ed78a05, type: 2}
   playerProperty: {fileID: 0}
-  slopeAngle: 10
-  slopeTime: 5
-  lookForwardTime: 5
 --- !u!114 &4344826158646084368
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -239,6 +237,25 @@ MonoBehaviour:
   ScaleThreshold: 0.01
   InLocalSpace: 0
   Interpolate: 1
+--- !u!114 &7926704390687140848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4059882241921932020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6271d72517ed4efabc80ceb5668fb159, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputSender: {fileID: 0}
+  DashAcceleration: 10
+  DashMaxSpeed: 10
+  DashTimeToMaxSpeed: 0.5
+  DashDeceleratingSpeed: 0.5
+  DashEaseOfAcceleration: 21
+  DashEaseOfDeceleration: 21
 --- !u!1 &7282072317809821654
 GameObject:
   m_ObjectHideFlags: 0
