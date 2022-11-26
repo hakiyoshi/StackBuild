@@ -40,7 +40,7 @@ namespace StackBuild
 
         void Move()
         {
-            var dir = new Vector3(inputSender.Move.Value.x, 0.0f, inputSender.Move.Value.y);
+            var dir = CreateMoveDirection();
 
             //移動
             if (Mathf.Abs(dir.x) <= 0.0f)
@@ -63,7 +63,7 @@ namespace StackBuild
 
         void LookForward()
         {
-            if (Mathf.Abs(new Vector3(inputSender.Move.Value.x, 0.0f, inputSender.Move.Value.y).sqrMagnitude) > 0.0f)
+            if (Mathf.Abs(CreateMoveDirection().sqrMagnitude) > 0.0f)
                 targetLook = Quaternion.LookRotation(-velocity);
 
             transform.rotation = Quaternion.Lerp(transform.rotation,
@@ -82,6 +82,11 @@ namespace StackBuild
             rotation = Quaternion.Lerp(rotation, target, property.SlopeTime * Time.deltaTime);
             transform.rotation = rotation;
 
+        }
+
+        Vector3 CreateMoveDirection()
+        {
+            return new Vector3(inputSender.Move.Value.x, 0.0f, inputSender.Move.Value.y);
         }
     }
 }
