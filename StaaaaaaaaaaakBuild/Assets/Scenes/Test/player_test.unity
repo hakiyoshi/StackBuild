@@ -14568,13 +14568,37 @@ PrefabInstance:
       propertyPath: inputSender
       value: 
       objectReference: {fileID: 11400000, guid: 41edcc5c67c950f41960218fc1ddfe47, type: 2}
+    - target: {fileID: 364396718960752571, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
+      propertyPath: playerProperty
+      value: 
+      objectReference: {fileID: 11400000, guid: 8487fa649341de547a8fae4f65449f75, type: 2}
     - target: {fileID: 364396718985294407, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
       propertyPath: inputSender
       value: 
       objectReference: {fileID: 11400000, guid: 257012153c897ec40bf522400ed78a05, type: 2}
+    - target: {fileID: 364396718985294407, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
+      propertyPath: playerProperty
+      value: 
+      objectReference: {fileID: 11400000, guid: 94434b52069cc2f4ba70d07e78b196cd, type: 2}
     - target: {fileID: 3417636335566369252, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 936891389
+      objectReference: {fileID: 0}
+    - target: {fileID: 4017207460638419577, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
+      propertyPath: m_Name
+      value: DashEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 4017207460733012267, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
+      propertyPath: m_Name
+      value: DashLine
+      objectReference: {fileID: 0}
+    - target: {fileID: 4017207461684240966, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
+      propertyPath: m_Name
+      value: DashOutline
+      objectReference: {fileID: 0}
+    - target: {fileID: 4017207461687619461, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
+      propertyPath: m_Name
+      value: DashEffect
       objectReference: {fileID: 0}
     - target: {fileID: 4897283963260023327, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
       propertyPath: m_Name
@@ -14676,7 +14700,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerRelated
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6905555539238671092, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
 --- !u!1001 &8557961565617755767

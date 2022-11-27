@@ -1,27 +1,57 @@
 ﻿using System;
+using System.Numerics;
 using DG.Tweening;
 using UniRx;
 using UnityEngine;
+using Vector3 = UnityEngine.Vector3;
 
 namespace StackBuild
 {
     public class PlayerDash : MonoBehaviour
     {
         [SerializeField] private InputSender inputSender;
+        [SerializeField] private PlayerProperty playerProperty;
+        private ParticleSystem dashParticle;
 
-
-        [SerializeField] private float DashMaxSpeed = 0.1f;
-        [SerializeField] private float DashTimeToMaxSpeed = 0.2f;
-        [SerializeField] private float DashDeceleratingSpeed = 0.6f;
-
-        [SerializeField] private Ease DashEaseOfAcceleration = Ease.OutCirc;
-        [SerializeField] private Ease DashEaseOfDeceleration = Ease.OutQuad;
-
-        [SerializeField] private float DashCoolTime = 1.0f;
+        private CharacterProperty property
+        {
+            get
+            {
+               return playerProperty.characterProperty;
+            }
+        }
 
         private void Start()
         {
-            inputSender.Dash.Where(x => x).ThrottleFirst(TimeSpan.FromSeconds(DashCoolTime)).Subscribe(_ =>
+            //エフェクトオブジェクトを自動生成
+            dashParticle = Instantiate(property.DashEffectPrefab, transform).GetComponent<ParticleSystem>();
+
+            //座標
+            dashParticle.transform.localScale = property.DashEffectMaxScale;
+
+            //ParticleSystemを動的に書き換え
+            var main = dashParticle.main;
+            main.startLifetime = property.DashAccelerationTime + property.DashDeceleratingTime;
+
+            var colorOverLifetime = dashParticle.colorOverLifetime;
+            colorOverLifetime.enabled = true;
+            var grad = new Gradient();
+            grad.SetKeys(new GradientColorKey[]
+            {
+                new(Color.white, 0.0f),
+                new(Color.white, 1.0f)
+            }, new GradientAlphaKey[]
+            {
+                new(1.0f, 0.0f),
+                new(1.0f, property.DashAccelerationTime / (property.DashAccelerationTime + property.DashDeceleratingTime)),
+                new(0.0f, 1.0f)
+            });
+            colorOverLifetime.color = grad;
+            dashParticle.Stop(true);
+
+
+
+            inputSender.Dash.Where(x => x).ThrottleFirst(TimeSpan.FromSeconds(property.DashCoolTime)).Subscribe(_ =>
             {
                 Dash();
             }).AddTo(this);
@@ -29,25 +59,34 @@ namespace StackBuild
 
         void Dash()
         {
-            var moveDir = CreateMoveDirection().normalized * DashMaxSpeed;
+            var moveDir = CreateMoveDirection().normalized * property.DashMaxSpeed;
 
-            var sequence = DOTween.Sequence();
+            var sequence = DOTween.Sequence().SetLink(gameObject);
 
             //加速する
-            sequence.Append(DOVirtual.Vector3(Vector3.zero, moveDir, DashTimeToMaxSpeed,
-                value => transform.position += value).SetEase(DashEaseOfAcceleration)).SetLink(gameObject);
+            sequence.Append(DOVirtual.Vector3(Vector3.zero, moveDir, property.DashAccelerationTime,
+                value => transform.position += value).SetEase(property.DashEaseOfAcceleration));
+
+            //エフェクト出現
+            sequence.Join(EffectAnimation(property.DashEffectAppearanceTime, property.DashEffectMaxScale, 0.0f, 1.0f,
+                property.DashEaseOfAcceleration));
 
             //加速度を0に戻す
             sequence.Append(DOVirtual
-                .Vector3(moveDir, Vector3.zero, DashDeceleratingSpeed, value => transform.position += value)
-                .SetEase(DashEaseOfDeceleration)).SetLink(gameObject);
+                .Vector3(moveDir, Vector3.zero, property.DashDeceleratingTime, value => transform.position += value)
+                .SetEase(property.DashEaseOfDeceleration));
 
-            sequence.Play();
+            //エフェクト消滅
+            sequence.Join(EffectAnimation(property.DashEffectExitTime, property.DashEffectMinScale, 1.0f, 0.0f,
+                property.DashEaseOfDeceleration));
+
+            //イベント追加
+            sequence.OnStart(() => dashParticle.Play());
+            sequence.OnComplete(() => dashParticle.Stop());
         }
 
         Vector3 CreateMoveDirection()
         {
-            //いちおう相談
             var dir = new Vector3(inputSender.Move.Value.x, 0.0f, inputSender.Move.Value.y);
             if (dir.sqrMagnitude <= 0.0f)
             {
@@ -56,6 +95,21 @@ namespace StackBuild
             }
 
             return dir;
+        }
+
+        Sequence EffectAnimation(float time, Vector3 scale, float startAlfa, float endAlfa, Ease ease)
+        {
+            var sequence = DOTween.Sequence();
+            sequence.Join(dashParticle.transform.DOScale(scale, time)
+                .SetEase(ease));
+            // sequence.Join(DOVirtual.Float(startAlfa, endAlfa, time, value =>
+            // {
+            //     var particle = dashParticle.main;
+            //     var color = particle.startColor.color;
+            //     particle.startColor = new Color(color.r, color.g, color.b, value);
+            // }).SetEase(ease));
+
+            return sequence;
         }
     }
 }

@@ -18,6 +18,20 @@ MonoBehaviour:
   <Acceleration>k__BackingField: 1000
   <Deceleration>k__BackingField: 0.99
   <MaxSpeed>k__BackingField: 20
+  <SlopeAngle>k__BackingField: 10
+  <SlopeTime>k__BackingField: 5
+  <LookForwardTime>k__BackingField: 5
+  <DashMaxSpeed>k__BackingField: 0.1
+  <DashAccelerationTime>k__BackingField: 0.2
+  <DashDeceleratingTime>k__BackingField: 0.6
+  <DashEaseOfAcceleration>k__BackingField: 21
+  <DashEaseOfDeceleration>k__BackingField: 6
+  <DashCoolTime>k__BackingField: 1
+  DashEffectPrefab: {fileID: 5833387832891040938, guid: 1ab3980fdd7b9ac48aa14d41ed444791, type: 3}
+  <DashEffectMaxScale>k__BackingField: {x: 5.5, y: 5.5, z: 5.5}
+  <DashEffectMinScale>k__BackingField: {x: 0, y: 3, z: 0}
+  <DashEffectAppearanceTime>k__BackingField: 0.05
+  <DashEffectExitTime>k__BackingField: 0.6
   <CatchupPower>k__BackingField: 500
   <CatchupOffsetPosition>k__BackingField: {x: 0, y: -8, z: 0}
   <CatchEffectAppearanceTime>k__BackingField: 0.2
