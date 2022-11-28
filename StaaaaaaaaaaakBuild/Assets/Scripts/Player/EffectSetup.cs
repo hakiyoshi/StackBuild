@@ -9,6 +9,14 @@ namespace StackBuild
         [SerializeField] private PlayerProperty playerProperty;
         [SerializeField] private MeshRenderer effectMeshRenderer;
 
+        private CharacterProperty property
+        {
+            get
+            {
+                return playerProperty.characterProperty;
+            }
+        }
+
         private void Awake()
         {
             Setup();
@@ -20,11 +28,11 @@ namespace StackBuild
                 return;
 
             //エフェクト１
-            effectMeshRenderer.material = playerProperty.characterProperty.EffectMaterial1;
+            effectMeshRenderer.material = property.Catch.EffectMaterial1;
 
             //エフェクト２
             effectMeshRenderer.transform.GetChild(0).GetComponent<MeshRenderer>().material =
-                playerProperty.characterProperty.EffectMaterial2;
+                property.Catch.EffectMaterial2;
         }
     }
 }

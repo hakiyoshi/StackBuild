@@ -24,17 +24,17 @@ namespace StackBuild
         private void Start()
         {
             //エフェクトオブジェクトを自動生成
-            dashParticle = Instantiate(property.DashEffectPrefab, transform).GetComponent<ParticleSystem>();
+            dashParticle = Instantiate(property.Dash.DashEffectPrefab, transform).GetComponent<ParticleSystem>();
 
             //座標
-            dashParticle.transform.localScale = property.DashEffectMaxScale;
+            dashParticle.transform.localScale = property.Dash.DashEffectMaxScale;
 
             //ParticleSystemを動的に書き換え
             ParticleSystemSetting();
 
             dashParticle.Stop(true);
 
-            inputSender.Dash.Where(x => x).ThrottleFirst(TimeSpan.FromSeconds(property.DashCoolTime)).Subscribe(_ =>
+            inputSender.Dash.Where(x => x).ThrottleFirst(TimeSpan.FromSeconds(property.Dash.DashCoolTime)).Subscribe(_ =>
             {
                 Dash();
             }).AddTo(this);
@@ -42,26 +42,26 @@ namespace StackBuild
 
         void Dash()
         {
-            var moveDir = CreateMoveDirection().normalized * property.DashMaxSpeed;
+            var moveDir = CreateMoveDirection().normalized * property.Dash.DashMaxSpeed;
 
             var sequence = DOTween.Sequence().SetLink(gameObject);
 
             //加速する
-            sequence.Append(DOVirtual.Vector3(Vector3.zero, moveDir, property.DashAccelerationTime,
-                value => transform.position += value).SetEase(property.DashEaseOfAcceleration));
+            sequence.Append(DOVirtual.Vector3(Vector3.zero, moveDir, property.Dash.DashAccelerationTime,
+                value => transform.position += value).SetEase(property.Dash.DashEaseOfAcceleration));
 
             //エフェクト出現
-            sequence.Join(EffectSizeAnimation(property.DashEffectAppearanceTime, property.DashEffectMaxScale, 0.0f, 1.0f,
-                property.DashEaseOfAcceleration));
+            sequence.Join(EffectSizeAnimation(property.Dash.DashEffectAppearanceTime, property.Dash.DashEffectMaxScale, 0.0f, 1.0f,
+                property.Dash.DashEaseOfAcceleration));
 
             //加速度を0に戻す
             sequence.Append(DOVirtual
-                .Vector3(moveDir, Vector3.zero, property.DashDeceleratingTime, value => transform.position += value)
-                .SetEase(property.DashEaseOfDeceleration));
+                .Vector3(moveDir, Vector3.zero, property.Dash.DashDeceleratingTime, value => transform.position += value)
+                .SetEase(property.Dash.DashEaseOfDeceleration));
 
             //エフェクト消滅
-            sequence.Join(EffectSizeAnimation(property.DashEffectExitTime, property.DashEffectMinScale, 1.0f, 0.0f,
-                property.DashEaseOfDeceleration));
+            sequence.Join(EffectSizeAnimation(property.Dash.DashEffectExitTime, property.Dash.DashEffectMinScale, 1.0f, 0.0f,
+                property.Dash.DashEaseOfDeceleration));
 
             //イベント追加
             sequence.OnStart(() => dashParticle.Play());
@@ -85,7 +85,7 @@ namespace StackBuild
         void ParticleSystemSetting()
         {
             var main = dashParticle.main;
-            var fullTime = property.DashAccelerationTime + property.DashDeceleratingTime;
+            var fullTime = property.Dash.DashAccelerationTime + property.Dash.DashDeceleratingTime;
 
             //ライフタイムセット
             main.startLifetime = fullTime;
@@ -101,7 +101,7 @@ namespace StackBuild
             }, new GradientAlphaKey[]
             {
                 new(1.0f, 0.0f),
-                new(1.0f, property.DashEffectAppearanceTime / fullTime),
+                new(1.0f, property.Dash.DashEffectAppearanceTime / fullTime),
                 new(0.0f, 1.0f)
             });
             colorOverLifetime.color = grad;
@@ -111,8 +111,8 @@ namespace StackBuild
             /*
              var curve = new AnimationCurve();
             curve.AddKey(0.0f, 0.0f);
-            curve.AddKey(property.DashEffectAppearanceTime / fullTime, 1.0f);
-            curve.AddKey(property.DashAccelerationTime / fullTime, 1.0f);
+            curve.AddKey(property.Dash.DashEffectAppearanceTime / fullTime, 1.0f);
+            curve.AddKey(property.Dash.DashAccelerationTime / fullTime, 1.0f);
             curve.AddKey(1.0f, 0.0f);
             var sizeOverLifetime = dashParticle.sizeOverLifetime;
             sizeOverLifetime.size = new ParticleSystem.MinMaxCurve(1.5f, curve);

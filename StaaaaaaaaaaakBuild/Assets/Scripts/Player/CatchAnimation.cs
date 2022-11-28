@@ -11,6 +11,14 @@ namespace StackBuild
         [SerializeField] private PlayerProperty playerProperty;
         [SerializeField] private Transform CatchEffectObject;
 
+        private CharacterProperty property
+        {
+            get
+            {
+                return playerProperty.characterProperty;
+            }
+        }
+
         private Vector3 startScale;
 
 
@@ -25,12 +33,12 @@ namespace StackBuild
                 {
                     CatchEffectObject.gameObject.SetActive(true);
                     CatchEffectObject
-                        .DOScale(CatchEffectObject.localScale + playerProperty.characterProperty.CatchEffectMaxSizeOffset,
-                            playerProperty.characterProperty.CatchEffectAppearanceTime);
+                        .DOScale(CatchEffectObject.localScale + property.Catch.CatchEffectMaxSizeOffset,
+                            property.Catch.CatchEffectAppearanceTime);
                 }
                 else
                 {
-                    CatchEffectObject.DOScale(startScale, playerProperty.characterProperty.CatchEffectDisappearingTime)
+                    CatchEffectObject.DOScale(startScale, property.Catch.CatchEffectDisappearingTime)
                         .OnComplete(() =>
                         {
                             CatchEffectObject.gameObject.SetActive(false);

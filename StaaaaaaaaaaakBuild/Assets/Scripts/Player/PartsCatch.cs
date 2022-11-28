@@ -12,8 +12,17 @@ namespace StackBuild
         [SerializeField] private InputSender inputSender;
         [SerializeField] private PlayerProperty playerProperty;
 
+        private CharacterProperty property
+        {
+            get
+            {
+                return playerProperty.characterProperty;
+            }
+        }
+
         private bool isCatch = false;
 
+        //サーバーにキャッチした事を伝える
         [ServerRpc]
         void CatchServerRpc(bool isCatchFlag)
         {
@@ -21,6 +30,7 @@ namespace StackBuild
             CatchClientRpc(isCatchFlag);
         }
 
+        //クライアントにキャッチしたことを伝える
         [ClientRpc]
         void CatchClientRpc(bool isCatchFlag)
         {
@@ -51,10 +61,10 @@ namespace StackBuild
         {
             var parentPosition = transform.parent.position;
 
-            var center = parentPosition + playerProperty.characterProperty.CatchupOffsetPosition;
+            var center = parentPosition + property.Catch.CatchupOffsetPosition;
             var sub = center - rb.transform.position;
 
-            rb.AddForceAtPosition(sub * (playerProperty.characterProperty.CatchupPower * Time.deltaTime), center, ForceMode.Impulse);
+            rb.AddForceAtPosition(sub * (property.Catch.CatchupPower * Time.deltaTime), center, ForceMode.Impulse);
 
             var magnitude = sub.magnitude;
             if (magnitude < parentPosition.y)

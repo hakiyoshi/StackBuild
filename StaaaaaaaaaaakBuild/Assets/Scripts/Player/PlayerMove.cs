@@ -44,19 +44,19 @@ namespace StackBuild
 
             //移動
             if (Mathf.Abs(dir.x) <= 0.0f)
-                velocity.x *= property.Deceleration;
+                velocity.x *= property.Move.Deceleration;
 
             if (Mathf.Abs(dir.z) <= 0.0f)
-                velocity.z *= property.Deceleration;
+                velocity.z *= property.Move.Deceleration;
 
             if (dir.sqrMagnitude > 0.0f)
             {
-                velocity += dir * (property.Acceleration * Time.deltaTime);
+                velocity += dir * (property.Move.Acceleration * Time.deltaTime);
             }
 
             if (velocity.sqrMagnitude >=
-                property.MaxSpeed * property.MaxSpeed)
-                velocity = velocity.normalized * property.MaxSpeed;
+                property.Move.MaxSpeed * property.Move.MaxSpeed)
+                velocity = velocity.normalized * property.Move.MaxSpeed;
 
             transform.position += velocity * Time.deltaTime;
         }
@@ -68,18 +68,18 @@ namespace StackBuild
 
             transform.rotation = Quaternion.Lerp(transform.rotation,
                 targetLook,
-                property.LookForwardTime * Time.deltaTime);
+                property.Move.LookForwardTime * Time.deltaTime);
         }
 
         void Slope()
         {
             var raito = velocity.sqrMagnitude /
-                        (property.MaxSpeed * property.MaxSpeed);
+                        (property.Move.MaxSpeed * property.Move.MaxSpeed);
 
             var rotation = transform.rotation;
-            var target = Quaternion.AngleAxis(property.SlopeAngle * raito, -transform.right) * rotation;
+            var target = Quaternion.AngleAxis(property.Move.SlopeAngle * raito, -transform.right) * rotation;
 
-            rotation = Quaternion.Lerp(rotation, target, property.SlopeTime * Time.deltaTime);
+            rotation = Quaternion.Lerp(rotation, target, property.Move.SlopeTime * Time.deltaTime);
             transform.rotation = rotation;
 
         }

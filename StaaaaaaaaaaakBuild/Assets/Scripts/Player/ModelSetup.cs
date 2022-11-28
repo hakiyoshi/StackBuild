@@ -7,6 +7,14 @@ namespace StackBuild
     {
         [SerializeField] private PlayerProperty playerProperty;
 
+        private CharacterProperty property
+        {
+            get
+            {
+                return playerProperty.characterProperty;
+            }
+        }
+
         private void Awake()
         {
             Setup();
@@ -17,7 +25,7 @@ namespace StackBuild
             if(playerProperty.characterProperty == null)
                 return;
 
-            GameObject.Instantiate(playerProperty.characterProperty.CharacterModelPrefab, transform);
+            GameObject.Instantiate(property.CharacterModelPrefab, transform);
         }
     }
 }
