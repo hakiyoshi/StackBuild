@@ -13,27 +13,6 @@ MonoBehaviour:
   m_Name: StandardCharacterProperty
   m_EditorClassIdentifier: 
   <CharacterModelPrefab>k__BackingField: {fileID: 2006860765951081562, guid: 714b008a94c57cd4991262894ad0828b, type: 3}
-  <EffectMaterial1>k__BackingField: {fileID: 2100000, guid: ce126ecf3cfbd7046b5e53212fee647f, type: 2}
-  <EffectMaterial2>k__BackingField: {fileID: 2100000, guid: 046d3cb54b63b8d4f9d440040fae177a, type: 2}
-  <Acceleration>k__BackingField: 1000
-  <Deceleration>k__BackingField: 0.99
-  <MaxSpeed>k__BackingField: 20
-  <SlopeAngle>k__BackingField: 10
-  <SlopeTime>k__BackingField: 5
-  <LookForwardTime>k__BackingField: 5
-  <DashMaxSpeed>k__BackingField: 0.1
-  <DashAccelerationTime>k__BackingField: 0.2
-  <DashDeceleratingTime>k__BackingField: 0.6
-  <DashEaseOfAcceleration>k__BackingField: 21
-  <DashEaseOfDeceleration>k__BackingField: 6
-  <DashCoolTime>k__BackingField: 1
-  DashEffectPrefab: {fileID: 5833387832891040938, guid: 1ab3980fdd7b9ac48aa14d41ed444791, type: 3}
-  <DashEffectMaxScale>k__BackingField: {x: 5.5, y: 5.5, z: 5.5}
-  <DashEffectMinScale>k__BackingField: {x: 0, y: 3, z: 0}
-  <DashEffectAppearanceTime>k__BackingField: 0.05
-  <DashEffectExitTime>k__BackingField: 0.6
-  <CatchupPower>k__BackingField: 500
-  <CatchupOffsetPosition>k__BackingField: {x: 0, y: -8, z: 0}
-  <CatchEffectAppearanceTime>k__BackingField: 0.2
-  <CatchEffectDisappearingTime>k__BackingField: 0.2
-  <CatchEffectMaxSizeOffset>k__BackingField: {x: 3.5, y: 2.8, z: 3.5}
+  <Move>k__BackingField: {fileID: 11400000, guid: 929c566f937b50743bec5275181da7d6, type: 2}
+  <Dash>k__BackingField: {fileID: 11400000, guid: 63fecd0bbc6e3964a8dc5b5c49eea461, type: 2}
+  <Catch>k__BackingField: {fileID: 11400000, guid: 38afc42e6fa858148868ba6aac69430d, type: 2}

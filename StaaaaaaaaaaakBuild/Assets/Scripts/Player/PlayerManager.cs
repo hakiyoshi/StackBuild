@@ -43,6 +43,7 @@ namespace StackBuild
                 if (!PlayerObjects[i].TryGetComponent(out NetworkObject networkObject))
                     continue;
 
+                //オーナーを変更する
                 if (networkObject.IsSpawned)
                     networkObject.ChangeOwnership(clientIds[i]);
                 else

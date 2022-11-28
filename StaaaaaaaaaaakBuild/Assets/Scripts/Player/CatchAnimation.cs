@@ -24,6 +24,7 @@ namespace StackBuild
 
         private void Start()
         {
+            //初期化
             startScale = CatchEffectObject.localScale;
             CatchEffectObject.gameObject.SetActive(false);
 
@@ -31,6 +32,7 @@ namespace StackBuild
             {
                 if (x)
                 {
+                    //掴んだ場合
                     CatchEffectObject.gameObject.SetActive(true);
                     CatchEffectObject
                         .DOScale(CatchEffectObject.localScale + property.Catch.CatchEffectMaxSizeOffset,
@@ -38,11 +40,12 @@ namespace StackBuild
                 }
                 else
                 {
+                    //離した場合
                     CatchEffectObject.DOScale(startScale, property.Catch.CatchEffectDisappearingTime)
                         .OnComplete(() =>
                         {
                             CatchEffectObject.gameObject.SetActive(false);
-                        }).Play();
+                        });
                 }
             }).AddTo(this);
         }
