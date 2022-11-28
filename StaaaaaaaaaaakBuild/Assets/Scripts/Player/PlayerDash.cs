@@ -30,26 +30,9 @@ namespace StackBuild
             dashParticle.transform.localScale = property.DashEffectMaxScale;
 
             //ParticleSystemを動的に書き換え
-            var main = dashParticle.main;
-            main.startLifetime = property.DashAccelerationTime + property.DashDeceleratingTime;
+            ParticleSystemSetting();
 
-            var colorOverLifetime = dashParticle.colorOverLifetime;
-            colorOverLifetime.enabled = true;
-            var grad = new Gradient();
-            grad.SetKeys(new GradientColorKey[]
-            {
-                new(Color.white, 0.0f),
-                new(Color.white, 1.0f)
-            }, new GradientAlphaKey[]
-            {
-                new(1.0f, 0.0f),
-                new(1.0f, property.DashAccelerationTime / (property.DashAccelerationTime + property.DashDeceleratingTime)),
-                new(0.0f, 1.0f)
-            });
-            colorOverLifetime.color = grad;
             dashParticle.Stop(true);
-
-
 
             inputSender.Dash.Where(x => x).ThrottleFirst(TimeSpan.FromSeconds(property.DashCoolTime)).Subscribe(_ =>
             {
@@ -68,7 +51,7 @@ namespace StackBuild
                 value => transform.position += value).SetEase(property.DashEaseOfAcceleration));
 
             //エフェクト出現
-            sequence.Join(EffectAnimation(property.DashEffectAppearanceTime, property.DashEffectMaxScale, 0.0f, 1.0f,
+            sequence.Join(EffectSizeAnimation(property.DashEffectAppearanceTime, property.DashEffectMaxScale, 0.0f, 1.0f,
                 property.DashEaseOfAcceleration));
 
             //加速度を0に戻す
@@ -77,7 +60,7 @@ namespace StackBuild
                 .SetEase(property.DashEaseOfDeceleration));
 
             //エフェクト消滅
-            sequence.Join(EffectAnimation(property.DashEffectExitTime, property.DashEffectMinScale, 1.0f, 0.0f,
+            sequence.Join(EffectSizeAnimation(property.DashEffectExitTime, property.DashEffectMinScale, 1.0f, 0.0f,
                 property.DashEaseOfDeceleration));
 
             //イベント追加
@@ -85,6 +68,7 @@ namespace StackBuild
             sequence.OnComplete(() => dashParticle.Stop());
         }
 
+        //移動方向
         Vector3 CreateMoveDirection()
         {
             var dir = new Vector3(inputSender.Move.Value.x, 0.0f, inputSender.Move.Value.y);
@@ -97,18 +81,51 @@ namespace StackBuild
             return dir;
         }
 
-        Sequence EffectAnimation(float time, Vector3 scale, float startAlfa, float endAlfa, Ease ease)
+        //パーティクルの初期化
+        void ParticleSystemSetting()
         {
-            var sequence = DOTween.Sequence();
+            var main = dashParticle.main;
+            var fullTime = property.DashAccelerationTime + property.DashDeceleratingTime;
+
+            //ライフタイムセット
+            main.startLifetime = fullTime;
+
+            //ライフタイムに合わせてカラーの変更
+            var colorOverLifetime = dashParticle.colorOverLifetime;
+            colorOverLifetime.enabled = true;
+            var grad = new Gradient();
+            grad.SetKeys(new GradientColorKey[]
+            {
+                new(Color.white, 0.0f),
+                new(Color.white, 1.0f)
+            }, new GradientAlphaKey[]
+            {
+                new(1.0f, 0.0f),
+                new(1.0f, property.DashEffectAppearanceTime / fullTime),
+                new(0.0f, 1.0f)
+            });
+            colorOverLifetime.color = grad;
+
+
+            //ライフタイムに合わせてサイズの変更
+            /*
+             var curve = new AnimationCurve();
+            curve.AddKey(0.0f, 0.0f);
+            curve.AddKey(property.DashEffectAppearanceTime / fullTime, 1.0f);
+            curve.AddKey(property.DashAccelerationTime / fullTime, 1.0f);
+            curve.AddKey(1.0f, 0.0f);
+            var sizeOverLifetime = dashParticle.sizeOverLifetime;
+            sizeOverLifetime.size = new ParticleSystem.MinMaxCurve(1.5f, curve);
+            sizeOverLifetime.enabled = true;
+            */
+        }
+
+        //エフェクトのサイズアニメーション
+        private Sequence EffectSizeAnimation(float time, Vector3 scale, float startAlfa, float endAlfa, Ease ease)
+        {
+            var sequence = DOTween.Sequence().Pause();
             sequence.Join(dashParticle.transform.DOScale(scale, time)
                 .SetEase(ease));
-            // sequence.Join(DOVirtual.Float(startAlfa, endAlfa, time, value =>
-            // {
-            //     var particle = dashParticle.main;
-            //     var color = particle.startColor.color;
-            //     particle.startColor = new Color(color.r, color.g, color.b, value);
-            // }).SetEase(ease));
-
             return sequence;
         }
     }
