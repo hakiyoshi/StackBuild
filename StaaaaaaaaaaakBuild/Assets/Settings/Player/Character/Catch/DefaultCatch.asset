@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53fe9d1fca3f4b2cae853514b5cbc7cf, type: 3}
+  m_Name: DefaultCatch
+  m_EditorClassIdentifier: 
+  <EffectMaterial1>k__BackingField: {fileID: 0}
+  <EffectMaterial2>k__BackingField: {fileID: 0}
+  <CatchupPower>k__BackingField: 400
+  <CatchupOffsetPosition>k__BackingField: {x: 0, y: -5, z: 0}
+  <CatchEffectAppearanceTime>k__BackingField: 0.2
+  <CatchEffectDisappearingTime>k__BackingField: 0.2
+  <CatchEffectMaxSizeOffset>k__BackingField: {x: 3.5, y: 2.8, z: 3.5}
