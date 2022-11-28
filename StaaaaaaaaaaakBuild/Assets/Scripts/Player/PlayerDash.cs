@@ -36,11 +36,12 @@ namespace StackBuild
 
             inputSender.Dash.Where(x => x).ThrottleFirst(TimeSpan.FromSeconds(property.Dash.DashCoolTime)).Subscribe(_ =>
             {
-                Dash();
+                DashMove();
+                DashEffect();
             }).AddTo(this);
         }
 
-        void Dash()
+        void DashMove()
         {
             var moveDir = CreateMoveDirection().normalized * property.Dash.DashMaxSpeed;
 
@@ -50,14 +51,27 @@ namespace StackBuild
             sequence.Append(DOVirtual.Vector3(Vector3.zero, moveDir, property.Dash.DashAccelerationTime,
                 value => transform.position += value).SetEase(property.Dash.DashEaseOfAcceleration));
 
+            //加速度を0に戻す
+            sequence.Append(DOVirtual
+                .Vector3(moveDir, Vector3.zero, property.Dash.DashDeceleratingTime, value => transform.position += value)
+                .SetEase(property.Dash.DashEaseOfDeceleration));
+
+            sequence.Play();
+        }
+
+        void DashEffect()
+        {
+            var sequence = DOTween.Sequence().SetLink(gameObject);
+
+            //加速する
+            sequence.Append(DOVirtual.DelayedCall(property.Dash.DashAccelerationTime, () => { }));
+
             //エフェクト出現
             sequence.Join(EffectSizeAnimation(property.Dash.DashEffectAppearanceTime, property.Dash.DashEffectMaxScale, 0.0f, 1.0f,
                 property.Dash.DashEaseOfAcceleration));
 
             //加速度を0に戻す
-            sequence.Append(DOVirtual
-                .Vector3(moveDir, Vector3.zero, property.Dash.DashDeceleratingTime, value => transform.position += value)
-                .SetEase(property.Dash.DashEaseOfDeceleration));
+            sequence.Append(DOVirtual.DelayedCall(property.Dash.DashDeceleratingTime, () => { }));
 
             //エフェクト消滅
             sequence.Join(EffectSizeAnimation(property.Dash.DashEffectExitTime, property.Dash.DashEffectMinScale, 1.0f, 0.0f,
