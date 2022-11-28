@@ -6,14 +6,14 @@ using UnityEngine.Rendering;
 
 namespace StackBuild
 {
-    [CustomEditor(typeof(Canon))]
+    [CustomEditor(typeof(CanonCore))]
     public class CanonEditor : Editor
     {
-        private Canon instance;
+        private CanonCore instance;
 
         private void OnEnable()
         {
-            instance = (Canon)target;
+            instance = (CanonCore)target;
 
         }
 
