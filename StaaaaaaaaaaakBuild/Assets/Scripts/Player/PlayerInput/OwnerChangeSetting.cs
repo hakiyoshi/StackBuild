@@ -44,7 +44,7 @@ namespace StackBuild
 
         void LostInput(PlayerInput playerInput)
         {
-            playerInput.user.UnpairDevices();
+            playerInput.SwitchCurrentControlScheme(Mouse.current);
             playerInput.enabled = false;
         }
 

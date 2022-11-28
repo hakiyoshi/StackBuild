@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using Unity.Mathematics;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace StackBuild
@@ -11,6 +12,7 @@ namespace StackBuild
     {
         [SerializeField] private InputSender inputSender;
         [SerializeField] private PlayerProperty playerProperty;
+        [SerializeField] private NetworkObject networkObject;
 
         private CharacterProperty property
         {
@@ -33,6 +35,9 @@ namespace StackBuild
 
         private void Update()
         {
+            if (!networkObject.IsOwner)
+                return;
+
             Move();
             LookForward();
             Slope();

@@ -45,6 +45,9 @@ namespace StackBuild
             inputSender.Catch.Subscribe(x =>
             {
                 isCatch = x;
+
+                if(IsSpawned && IsOwner)
+                    CatchServerRpc(x);
             }).AddTo(this);
         }
 

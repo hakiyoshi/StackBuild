@@ -129,6 +129,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputSender: {fileID: 11400000, guid: 257012153c897ec40bf522400ed78a05, type: 2}
   playerProperty: {fileID: 0}
+  networkObject: {fileID: 4344826158646084368}
 --- !u!114 &4344826158646084368
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -199,11 +200,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputSender: {fileID: 11400000, guid: 257012153c897ec40bf522400ed78a05, type: 2}
   playerProperty: {fileID: 11400000, guid: 94434b52069cc2f4ba70d07e78b196cd, type: 2}
-  DashEffectPrefab: {fileID: 5833387832891040938, guid: 1ab3980fdd7b9ac48aa14d41ed444791, type: 3}
-  <DashEffectMaxScale>k__BackingField: {x: 5.5, y: 5.5, z: 5.5}
-  <DashEffectMinScale>k__BackingField: {x: 0, y: 3, z: 0}
-  <DashEffectAppearanceTime>k__BackingField: 0.05
-  <DashEffectExitTime>k__BackingField: 0.6
 --- !u!1 &7282072317809821654
 GameObject:
   m_ObjectHideFlags: 0

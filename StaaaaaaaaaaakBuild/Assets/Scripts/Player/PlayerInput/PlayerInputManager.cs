@@ -24,9 +24,10 @@ namespace StackBuild
         {
             var playerObjects = playerManager.PlayerObjects;
             var devices = InputSystem.devices;
+            var parent = transform.parent;
             for (var i = 0; i < playerObjects.Length; i++)
             {
-                var parent = playerObjects[i].transform;
+                //var parent = playerObjects[i].transform;
                 if(SelectSetDevice(i, parent, devices))
                     continue;
 
@@ -81,8 +82,8 @@ namespace StackBuild
             PlayerInput playerInput = null;
             if (device == null)
             {
-                //デバイス未設定
-                playerInput = PlayerInput.Instantiate(inputPrefab, playerIndex);
+                //デバイス未設定(適当なデバイスセットしてSchemeを利用していない文字列にする)
+                playerInput = PlayerInput.Instantiate(inputPrefab, playerIndex: playerIndex, pairWithDevice: Mouse.current);
             }
             else if ((Keyboard.current != null && Keyboard.current.deviceId == device.deviceId) ||
                      (Mouse.current != null && Mouse.current.deviceId == device.deviceId))

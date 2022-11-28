@@ -14604,17 +14604,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: CatchEffect
       objectReference: {fileID: 0}
-    - target: {fileID: 4897283963260023327, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4897283963703408611, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
       propertyPath: m_Name
       value: CatchEffect
-      objectReference: {fileID: 0}
-    - target: {fileID: 4897283963703408611, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6005636020752271032, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -14700,8 +14692,7 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerRelated
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 6905555539238671092, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
+    m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
 --- !u!1001 &8557961565617755767
