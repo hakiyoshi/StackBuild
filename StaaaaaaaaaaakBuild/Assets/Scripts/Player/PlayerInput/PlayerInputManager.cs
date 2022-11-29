@@ -82,10 +82,13 @@ namespace StackBuild
             PlayerInput playerInput = null;
             if (device == null)
             {
-                //デバイス未設定(適当なデバイスセットしてSchemeを利用していない文字列にする)
-                playerInput = PlayerInput.Instantiate(inputPrefab, playerIndex: playerIndex, pairWithDevice: Mouse.current);
+                //デバイス未設定(適当にキーボードマウス指定してActiveをfalseにする)
+                playerInput = PlayerInput.Instantiate(inputPrefab, playerIndex: playerIndex,
+                    controlScheme: "keyboard&Mouse",
+                    pairWithDevices: new InputDevice[] {Keyboard.current, Mouse.current});
+                playerInput.gameObject.SetActive(false);
             }
-            else if ((Keyboard.current != null && Keyboard.current.deviceId == device.deviceId) ||
+            else if (device == null || (Keyboard.current != null && Keyboard.current.deviceId == device.deviceId) ||
                      (Mouse.current != null && Mouse.current.deviceId == device.deviceId))
             {
                 //キーボード、マウス
