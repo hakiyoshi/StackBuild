@@ -2,16 +2,19 @@
 using System.Numerics;
 using DG.Tweening;
 using UniRx;
+using Unity.Netcode;
 using UnityEngine;
 using Vector3 = UnityEngine.Vector3;
 
 namespace StackBuild
 {
-    public class PlayerDash : MonoBehaviour
+    public class PlayerDash : NetworkBehaviour
     {
         [SerializeField] private InputSender inputSender;
         [SerializeField] private PlayerProperty playerProperty;
         private ParticleSystem dashParticle;
+
+        private Vector3 velocity = Vector3.zero;
 
         private CharacterProperty property
         {
@@ -19,6 +22,24 @@ namespace StackBuild
             {
                return playerProperty.characterProperty;
             }
+        }
+
+        [ServerRpc]
+        void DashServerRpc()
+        {
+            if (!IsServer)
+                return;
+
+            DashClientRpc();
+        }
+
+        [ClientRpc]
+        void DashClientRpc()
+        {
+            if (IsOwner)
+                return;
+
+            DashEffect();
         }
 
         private void Start()
@@ -36,9 +57,19 @@ namespace StackBuild
 
             inputSender.Dash.Where(x => x).ThrottleFirst(TimeSpan.FromSeconds(property.Dash.DashCoolTime)).Subscribe(_ =>
             {
+                if (IsSpawned && !IsOwner)
+                    return;
+
                 DashMove();
                 DashEffect();
+
+                DashServerRpc();
             }).AddTo(this);
+        }
+
+        private void Update()
+        {
+            transform.position += velocity * Time.deltaTime;
         }
 
         void DashMove()
@@ -49,11 +80,11 @@ namespace StackBuild
 
             //加速する
             sequence.Append(DOVirtual.Vector3(Vector3.zero, moveDir, property.Dash.DashAccelerationTime,
-                value => transform.position += value).SetEase(property.Dash.DashEaseOfAcceleration));
+                value => velocity = value).SetEase(property.Dash.DashEaseOfAcceleration));
 
             //加速度を0に戻す
             sequence.Append(DOVirtual
-                .Vector3(moveDir, Vector3.zero, property.Dash.DashDeceleratingTime, value => transform.position += value)
+                .Vector3(moveDir, Vector3.zero, property.Dash.DashDeceleratingTime, value => velocity = value)
                 .SetEase(property.Dash.DashEaseOfDeceleration));
 
             sequence.Play();
