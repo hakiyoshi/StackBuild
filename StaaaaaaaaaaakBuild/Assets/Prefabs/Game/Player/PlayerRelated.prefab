@@ -265,6 +265,10 @@ PrefabInstance:
       value: Blue
       objectReference: {fileID: 0}
     - target: {fileID: 4059882241921932020, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4059882241921932020, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
       propertyPath: m_TagString
       value: P2
       objectReference: {fileID: 0}
@@ -357,6 +361,10 @@ PrefabInstance:
     - target: {fileID: 4059882241921932019, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4059882241921932019, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 4059882241921932019, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
       propertyPath: m_LocalRotation.z

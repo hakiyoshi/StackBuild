@@ -28,8 +28,19 @@ namespace StackBuild
 
         private Quaternion startRotation = Quaternion.identity;
 
+        private bool hit = false;
+
+        private Rigidbody rb;
+
+        private float enemyWeight = 0.0f;
+
+        private const float MaxPowerAndWeight = 1000.0f;
+        [field: SerializeField] public float Power { get; private set; } = MaxPowerAndWeight;
+        [field: SerializeField] public float Weight { get; private set; } = MaxPowerAndWeight;
+
         private void Start()
         {
+            TryGetComponent(out rb);
             startRotation = transform.rotation;
         }
 
@@ -38,37 +49,65 @@ namespace StackBuild
             if (!networkObject.IsOwner)
                 return;
 
-            Move();
+            MoveVelocity();
             LookForward();
             Slope();
+
+            rb.velocity = velocity;
         }
 
-        void Move()
+        private void OnCollisionEnter(Collision collision)
         {
+            if (!collision.collider.CompareTag("P1") && !collision.collider.CompareTag("P2"))
+                return;
+
+            if (!collision.collider.TryGetComponent(out PlayerMove move))
+                return;
+
+            enemyWeight = move.Weight;
+            hit = true;
+        }
+
+        private void OnCollisionExit(Collision collision)
+        {
+            hit = false;
+        }
+
+        void MoveVelocity()
+        {
+            // hit時重さと力で加速度を変える
+            if (hit)
+            {
+                var diff = enemyWeight - Power;
+                if (diff >= 0.0f)
+                    velocity *= 1.0f - (diff / MaxPowerAndWeight);
+            }
+
+            //移動方向取得
             var dir = CreateMoveDirection();
 
-            //移動
+            //移動減衰
             if (Mathf.Abs(dir.x) <= 0.0f)
                 velocity.x *= property.Move.Deceleration;
 
             if (Mathf.Abs(dir.z) <= 0.0f)
                 velocity.z *= property.Move.Deceleration;
 
+            //移動
             if (dir.sqrMagnitude > 0.0f)
             {
                 velocity += dir * (property.Move.Acceleration * Time.deltaTime);
             }
 
+            //最高速超えないようにする
             if (velocity.sqrMagnitude >=
                 property.Move.MaxSpeed * property.Move.MaxSpeed)
                 velocity = velocity.normalized * property.Move.MaxSpeed;
-
-            transform.position += velocity * Time.deltaTime;
         }
 
         void LookForward()
         {
-            if (CreateMoveDirection().sqrMagnitude > 0.0f)
+            if (CreateMoveDirection().sqrMagnitude > 0.0f && velocity.sqrMagnitude > 0.0f)
                 targetLook = Quaternion.LookRotation(-velocity);
 
             transform.rotation = Quaternion.Lerp(transform.rotation,
@@ -84,9 +123,7 @@ namespace StackBuild
             var rotation = transform.rotation;
             var target = Quaternion.AngleAxis(property.Move.SlopeAngle * raito, -transform.right) * rotation;
 
-            rotation = Quaternion.Lerp(rotation, target, property.Move.SlopeTime * Time.deltaTime);
-            transform.rotation = rotation;
-
+            transform.rotation = Quaternion.Lerp(rotation, target, property.Move.SlopeTime * Time.deltaTime);
         }
 
         Vector3 CreateMoveDirection()

@@ -72,13 +72,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4059882241921932019}
-  - component: {fileID: 4059882241921932017}
   - component: {fileID: 4059882241921932018}
   - component: {fileID: 4344826158646084368}
   - component: {fileID: 2725486479601856543}
   - component: {fileID: 8970168621242545789}
   - component: {fileID: 8210988206114180680}
-  m_Layer: 0
+  - component: {fileID: 8294962297957985307}
+  - component: {fileID: 6608690257205202044}
+  m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102,19 +103,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &4059882241921932017
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4059882241921932020}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &4059882241921932018
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -130,6 +118,8 @@ MonoBehaviour:
   inputSender: {fileID: 11400000, guid: 257012153c897ec40bf522400ed78a05, type: 2}
   playerProperty: {fileID: 0}
   networkObject: {fileID: 4344826158646084368}
+  <Power>k__BackingField: 1000
+  <Weight>k__BackingField: 1000
 --- !u!114 &4344826158646084368
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -200,6 +190,35 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputSender: {fileID: 11400000, guid: 41edcc5c67c950f41960218fc1ddfe47, type: 2}
   playerProperty: {fileID: 11400000, guid: 8487fa649341de547a8fae4f65449f75, type: 2}
+--- !u!135 &8294962297957985307
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4059882241921932020}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 3.43
+  m_Center: {x: 0, y: 1, z: 0}
+--- !u!54 &6608690257205202044
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4059882241921932020}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 116
+  m_CollisionDetection: 0
 --- !u!1 &7282072317809821654
 GameObject:
   m_ObjectHideFlags: 0
