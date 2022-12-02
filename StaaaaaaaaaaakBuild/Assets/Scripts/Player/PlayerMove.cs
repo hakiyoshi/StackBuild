@@ -26,22 +26,15 @@ namespace StackBuild
 
         private Vector3 velocity = Vector3.zero;
 
-        private Quaternion startRotation = Quaternion.identity;
-
         private bool hit = false;
-
-        private Rigidbody rb;
-
-        private float enemyWeight = 0.0f;
-
-        private const float MaxPowerAndWeight = 1000.0f;
-        [field: SerializeField] public float Power { get; private set; } = MaxPowerAndWeight;
-        [field: SerializeField] public float Weight { get; private set; } = MaxPowerAndWeight;
+        private float radius = 3.5f;
 
         private void Start()
         {
-            TryGetComponent(out rb);
-            startRotation = transform.rotation;
+            if (TryGetComponent(out SphereCollider sphereCollider))
+                radius = sphereCollider.radius;
+
+            targetLook = transform.rotation;
         }
 
         private void Update()
@@ -50,39 +43,23 @@ namespace StackBuild
                 return;
 
             MoveVelocity();
+            Hit();
             LookForward();
             Slope();
 
-            rb.velocity = velocity;
+            if(!hit)
+                transform.position += velocity * Time.deltaTime;
         }
 
-        private void OnCollisionEnter(Collision collision)
+        private void OnDrawGizmos()
         {
-            if (!collision.collider.CompareTag("P1") && !collision.collider.CompareTag("P2"))
-                return;
-
-            if (!collision.collider.TryGetComponent(out PlayerMove move))
-                return;
-
-            enemyWeight = move.Weight;
-            hit = true;
-        }
-
-        private void OnCollisionExit(Collision collision)
-        {
-            hit = false;
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(transform.position, 3.5f);
+            Gizmos.color = Color.white;
         }
 
         void MoveVelocity()
         {
-            // hit時重さと力で加速度を変える
-            if (hit)
-            {
-                var diff = enemyWeight - Power;
-                if (diff >= 0.0f)
-                    velocity *= 1.0f - (diff / MaxPowerAndWeight);
-            }
-
             //移動方向取得
             var dir = CreateMoveDirection();
 
@@ -107,9 +84,11 @@ namespace StackBuild
 
         void LookForward()
         {
+            // 移動の入力をしているか、移動ベクトルが0じゃないか
             if (CreateMoveDirection().sqrMagnitude > 0.0f && velocity.sqrMagnitude > 0.0f)
                 targetLook = Quaternion.LookRotation(-velocity);
 
+            //ターゲットの方向を向く
             transform.rotation = Quaternion.Lerp(transform.rotation,
                 targetLook,
                 property.Move.LookForwardTime * Time.deltaTime);
@@ -117,13 +96,35 @@ namespace StackBuild
 
         void Slope()
         {
+            //傾き率を計算
             var raito = velocity.sqrMagnitude /
                         (property.Move.MaxSpeed * property.Move.MaxSpeed);
 
+            //傾く方向を計算
             var rotation = transform.rotation;
             var target = Quaternion.AngleAxis(property.Move.SlopeAngle * raito, -transform.right) * rotation;
 
+            //傾けぇ
             transform.rotation = Quaternion.Lerp(rotation, target, property.Move.SlopeTime * Time.deltaTime);
+        }
+
+        void Hit()
+        {
+            //自分のレイヤーを除外して当たり判定処理
+            var layerMask = LayerMask.GetMask("P1", "P2") & ~(1 << gameObject.layer);
+            if (Physics.SphereCast(transform.position, 3.5f, velocity.normalized, out RaycastHit raycast,
+                    (velocity * Time.deltaTime).magnitude,
+                    layerMask))
+            {
+                //当たったら座標を強制補完する
+                hit = true;
+                transform.position = raycast.point +
+                                     (new Vector3(raycast.normal.x, 0f, raycast.normal.z) * (raycast.distance + 3.5f));
+            }
+            else
+            {
+                hit = false;
+            }
         }
 
         Vector3 CreateMoveDirection()
