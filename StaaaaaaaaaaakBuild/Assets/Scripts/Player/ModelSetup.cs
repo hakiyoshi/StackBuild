@@ -26,7 +26,7 @@ namespace StackBuild
             if(playerProperty.characterProperty == null)
                 return;
 
-            GameObject.Instantiate(property.CharacterModelPrefab, transform);
+            GameObject.Instantiate(property.Model.CharacterModelPrefab, transform);
         }
     }
 }

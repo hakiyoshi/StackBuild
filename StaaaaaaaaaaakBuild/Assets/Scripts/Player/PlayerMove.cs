@@ -1,8 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using DG.Tweening;
-using Unity.Mathematics;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -27,12 +22,11 @@ namespace StackBuild
         private Vector3 velocity = Vector3.zero;
 
         private bool hit = false;
-        private float radius = 3.5f;
 
         private void Start()
         {
-            if (TryGetComponent(out SphereCollider sphereCollider))
-                radius = sphereCollider.radius;
+            if (TryGetComponent(out SphereCollider collider))
+                collider.radius = property.Model.SphereColliderRadius;
 
             targetLook = transform.rotation;
         }
@@ -112,14 +106,15 @@ namespace StackBuild
         {
             //自分のレイヤーを除外して当たり判定処理
             var layerMask = LayerMask.GetMask("P1", "P2") & ~(1 << gameObject.layer);
-            if (Physics.SphereCast(transform.position, radius, velocity.normalized, out RaycastHit raycast,
-                    (velocity * Time.deltaTime).magnitude,
+            if (Physics.SphereCast(transform.position, property.Model.SphereColliderRadius, velocity.normalized, out RaycastHit raycast,
+                    (velocity * Time.deltaTime).magnitude + 0.1f,
                     layerMask))
             {
                 //当たったら座標を強制補完する
                 hit = true;
                 transform.position = raycast.point +
-                                     (new Vector3(raycast.normal.x, 0f, raycast.normal.z) * (raycast.distance + radius));
+                                     (new Vector3(raycast.normal.x, 0f, raycast.normal.z) *
+                                      (raycast.distance + property.Model.SphereColliderRadius));
             }
             else
             {

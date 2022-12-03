@@ -14,7 +14,12 @@ namespace StackBuild
         [SerializeField] private PlayerProperty playerProperty;
         private ParticleSystem dashParticle;
 
+        private Sequence dashSequence = null;
+
         private Vector3 velocity = Vector3.zero;
+
+        private bool hit = false;
+        private RaycastHit raycastHit;
 
         private CharacterProperty property
         {
@@ -60,7 +65,9 @@ namespace StackBuild
                 if (IsSpawned && !IsOwner)
                     return;
 
-                DashMove();
+                if (!hit)
+                    DashMove();
+
                 DashEffect();
 
                 DashServerRpc();
@@ -69,25 +76,31 @@ namespace StackBuild
 
         private void Update()
         {
-            transform.position += velocity * Time.deltaTime;
+            Hit();
+
+            if (!hit)
+                transform.position += velocity * Time.deltaTime;
         }
 
         void DashMove()
         {
             var moveDir = CreateMoveDirection().normalized * property.Dash.DashMaxSpeed;
 
-            var sequence = DOTween.Sequence().SetLink(gameObject);
+            if(dashSequence != null && dashSequence.active)
+                dashSequence.Kill(true);
+
+            dashSequence = DOTween.Sequence().SetLink(gameObject);
 
             //加速する
-            sequence.Append(DOVirtual.Vector3(Vector3.zero, moveDir, property.Dash.DashAccelerationTime,
+            dashSequence.Append(DOVirtual.Vector3(Vector3.zero, moveDir, property.Dash.DashAccelerationTime,
                 value => velocity = value).SetEase(property.Dash.DashEaseOfAcceleration));
 
             //加速度を0に戻す
-            sequence.Append(DOVirtual
+            dashSequence.Append(DOVirtual
                 .Vector3(moveDir, Vector3.zero, property.Dash.DashDeceleratingTime, value => velocity = value)
                 .SetEase(property.Dash.DashEaseOfDeceleration));
 
-            sequence.Play();
+            dashSequence.Play();
         }
 
         void DashEffect()
@@ -150,19 +163,30 @@ namespace StackBuild
                 new(0.0f, 1.0f)
             });
             colorOverLifetime.color = grad;
+        }
 
+        private void Hit()
+        {
+            //自分のレイヤーを除外して当たり判定処理
+            var layerMask = LayerMask.GetMask("P1", "P2") & ~(1 << gameObject.layer);
+            if (Physics.SphereCast(transform.position, property.Model.SphereColliderRadius, velocity.normalized, out raycastHit,
+                    (velocity * Time.deltaTime).magnitude + 0.1f,
+                    layerMask))
+            {
+                //当たったら座標を強制補完する
+                hit = true;
+                transform.position = raycastHit.point +
+                                     (new Vector3(raycastHit.normal.x, 0f, raycastHit.normal.z) *
+                                      (raycastHit.distance + property.Model.SphereColliderRadius));
 
-            //ライフタイムに合わせてサイズの変更
-            /*
-             var curve = new AnimationCurve();
-            curve.AddKey(0.0f, 0.0f);
-            curve.AddKey(property.Dash.DashEffectAppearanceTime / fullTime, 1.0f);
-            curve.AddKey(property.Dash.DashAccelerationTime / fullTime, 1.0f);
-            curve.AddKey(1.0f, 0.0f);
-            var sizeOverLifetime = dashParticle.sizeOverLifetime;
-            sizeOverLifetime.size = new ParticleSystem.MinMaxCurve(1.5f, curve);
-            sizeOverLifetime.enabled = true;
-            */
+                //ダッシュシーケンスを止める
+                dashSequence.Kill(true);
+                velocity = Vector3.zero;
+            }
+            else
+            {
+                hit = false;
+            }
         }
 
         //エフェクトのサイズアニメーション
