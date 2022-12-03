@@ -112,14 +112,14 @@ namespace StackBuild
         {
             //自分のレイヤーを除外して当たり判定処理
             var layerMask = LayerMask.GetMask("P1", "P2") & ~(1 << gameObject.layer);
-            if (Physics.SphereCast(transform.position, 3.5f, velocity.normalized, out RaycastHit raycast,
+            if (Physics.SphereCast(transform.position, radius, velocity.normalized, out RaycastHit raycast,
                     (velocity * Time.deltaTime).magnitude,
                     layerMask))
             {
                 //当たったら座標を強制補完する
                 hit = true;
                 transform.position = raycast.point +
-                                     (new Vector3(raycast.normal.x, 0f, raycast.normal.z) * (raycast.distance + 3.5f));
+                                     (new Vector3(raycast.normal.x, 0f, raycast.normal.z) * (raycast.distance + radius));
             }
             else
             {
