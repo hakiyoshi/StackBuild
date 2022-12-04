@@ -211,7 +211,7 @@ GameObject:
   - component: {fileID: 102478555}
   - component: {fileID: 102478554}
   - component: {fileID: 102478553}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Parts_Test (7)
   m_TagString: Parts
   m_Icon: {fileID: 0}
@@ -325,7 +325,7 @@ GameObject:
   - component: {fileID: 131613506}
   - component: {fileID: 131613505}
   - component: {fileID: 131613504}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Parts_Test (15)
   m_TagString: Parts
   m_Icon: {fileID: 0}
@@ -439,7 +439,7 @@ GameObject:
   - component: {fileID: 164352548}
   - component: {fileID: 164352547}
   - component: {fileID: 164352546}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Parts_Test (11)
   m_TagString: Parts
   m_Icon: {fileID: 0}
@@ -553,7 +553,7 @@ GameObject:
   - component: {fileID: 440157800}
   - component: {fileID: 440157799}
   - component: {fileID: 440157798}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Parts_Test (29)
   m_TagString: Parts
   m_Icon: {fileID: 0}
@@ -667,7 +667,7 @@ GameObject:
   - component: {fileID: 476481826}
   - component: {fileID: 476481825}
   - component: {fileID: 476481824}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Parts_Test (10)
   m_TagString: Parts
   m_Icon: {fileID: 0}
@@ -781,7 +781,7 @@ GameObject:
   - component: {fileID: 480832185}
   - component: {fileID: 480832184}
   - component: {fileID: 480832183}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Parts_Test (24)
   m_TagString: Parts
   m_Icon: {fileID: 0}
@@ -895,7 +895,7 @@ GameObject:
   - component: {fileID: 485996093}
   - component: {fileID: 485996092}
   - component: {fileID: 485996091}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Parts_Test (28)
   m_TagString: Parts
   m_Icon: {fileID: 0}
@@ -1009,7 +1009,7 @@ GameObject:
   - component: {fileID: 567824626}
   - component: {fileID: 567824625}
   - component: {fileID: 567824624}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Parts_Test (20)
   m_TagString: Parts
   m_Icon: {fileID: 0}
@@ -1123,7 +1123,7 @@ GameObject:
   - component: {fileID: 637600123}
   - component: {fileID: 637600122}
   - component: {fileID: 637600121}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Parts_Test (19)
   m_TagString: Parts
   m_Icon: {fileID: 0}
@@ -1237,7 +1237,7 @@ GameObject:
   - component: {fileID: 666684328}
   - component: {fileID: 666684327}
   - component: {fileID: 666684326}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Parts_Test (4)
   m_TagString: Parts
   m_Icon: {fileID: 0}
@@ -1351,7 +1351,7 @@ GameObject:
   - component: {fileID: 707451444}
   - component: {fileID: 707451443}
   - component: {fileID: 707451442}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Parts_Test (13)
   m_TagString: Parts
   m_Icon: {fileID: 0}
@@ -1465,7 +1465,7 @@ GameObject:
   - component: {fileID: 737063705}
   - component: {fileID: 737063704}
   - component: {fileID: 737063703}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Parts_Test (1)
   m_TagString: Parts
   m_Icon: {fileID: 0}
@@ -1598,7 +1598,7 @@ GameObject:
   - component: {fileID: 781246755}
   - component: {fileID: 781246754}
   - component: {fileID: 781246753}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Parts_Test (30)
   m_TagString: Parts
   m_Icon: {fileID: 0}
@@ -1712,7 +1712,7 @@ GameObject:
   - component: {fileID: 782105976}
   - component: {fileID: 782105975}
   - component: {fileID: 782105974}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Parts_Test (6)
   m_TagString: Parts
   m_Icon: {fileID: 0}
@@ -1826,7 +1826,7 @@ GameObject:
   - component: {fileID: 898642241}
   - component: {fileID: 898642240}
   - component: {fileID: 898642239}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Parts_Test (16)
   m_TagString: Parts
   m_Icon: {fileID: 0}
@@ -1940,7 +1940,7 @@ GameObject:
   - component: {fileID: 931995538}
   - component: {fileID: 931995537}
   - component: {fileID: 931995541}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Parts_Test
   m_TagString: Parts
   m_Icon: {fileID: 0}
@@ -2133,7 +2133,7 @@ GameObject:
   - component: {fileID: 969392941}
   - component: {fileID: 969392940}
   - component: {fileID: 969392939}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Parts_Test (23)
   m_TagString: Parts
   m_Icon: {fileID: 0}
@@ -2247,7 +2247,7 @@ GameObject:
   - component: {fileID: 970493743}
   - component: {fileID: 970493742}
   - component: {fileID: 970493741}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Parts_Test (22)
   m_TagString: Parts
   m_Icon: {fileID: 0}
@@ -2361,7 +2361,7 @@ GameObject:
   - component: {fileID: 1028638047}
   - component: {fileID: 1028638046}
   - component: {fileID: 1028638045}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Parts_Test (25)
   m_TagString: Parts
   m_Icon: {fileID: 0}
@@ -2475,7 +2475,7 @@ GameObject:
   - component: {fileID: 1037900888}
   - component: {fileID: 1037900887}
   - component: {fileID: 1037900886}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Parts_Test (2)
   m_TagString: Parts
   m_Icon: {fileID: 0}
@@ -2589,7 +2589,7 @@ GameObject:
   - component: {fileID: 1169728754}
   - component: {fileID: 1169728753}
   - component: {fileID: 1169728752}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Parts_Test (26)
   m_TagString: Parts
   m_Icon: {fileID: 0}
@@ -2703,7 +2703,7 @@ GameObject:
   - component: {fileID: 1191851496}
   - component: {fileID: 1191851495}
   - component: {fileID: 1191851494}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Parts_Test (5)
   m_TagString: Parts
   m_Icon: {fileID: 0}
@@ -2813,7 +2813,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1262796433}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: partsTest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2879,7 +2879,7 @@ GameObject:
   - component: {fileID: 1280291119}
   - component: {fileID: 1280291118}
   - component: {fileID: 1280291117}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Parts_Test (12)
   m_TagString: Parts
   m_Icon: {fileID: 0}
@@ -2993,7 +2993,7 @@ GameObject:
   - component: {fileID: 1368799252}
   - component: {fileID: 1368799251}
   - component: {fileID: 1368799250}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Parts_Test (8)
   m_TagString: Parts
   m_Icon: {fileID: 0}
@@ -3107,7 +3107,7 @@ GameObject:
   - component: {fileID: 1445745722}
   - component: {fileID: 1445745721}
   - component: {fileID: 1445745720}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Parts_Test (17)
   m_TagString: Parts
   m_Icon: {fileID: 0}
@@ -3266,7 +3266,7 @@ GameObject:
   - component: {fileID: 1541239631}
   - component: {fileID: 1541239630}
   - component: {fileID: 1541239629}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Parts_Test (18)
   m_TagString: Parts
   m_Icon: {fileID: 0}
@@ -3380,7 +3380,7 @@ GameObject:
   - component: {fileID: 1625371635}
   - component: {fileID: 1625371634}
   - component: {fileID: 1625371633}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Parts_Test (9)
   m_TagString: Parts
   m_Icon: {fileID: 0}
@@ -3494,7 +3494,7 @@ GameObject:
   - component: {fileID: 1812539501}
   - component: {fileID: 1812539500}
   - component: {fileID: 1812539499}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Parts_Test (27)
   m_TagString: Parts
   m_Icon: {fileID: 0}
@@ -3608,7 +3608,7 @@ GameObject:
   - component: {fileID: 1869568760}
   - component: {fileID: 1869568759}
   - component: {fileID: 1869568758}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Parts_Test (14)
   m_TagString: Parts
   m_Icon: {fileID: 0}
@@ -3781,7 +3781,7 @@ GameObject:
   - component: {fileID: 2055135322}
   - component: {fileID: 2055135321}
   - component: {fileID: 2055135320}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Parts_Test (21)
   m_TagString: Parts
   m_Icon: {fileID: 0}
@@ -3895,7 +3895,7 @@ GameObject:
   - component: {fileID: 2087334139}
   - component: {fileID: 2087334138}
   - component: {fileID: 2087334137}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Parts_Test (3)
   m_TagString: Parts
   m_Icon: {fileID: 0}
@@ -4122,6 +4122,10 @@ PrefabInstance:
     - target: {fileID: 3417636335566369252, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 936891389
+      objectReference: {fileID: 0}
+    - target: {fileID: 3536371677614500506, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
+      propertyPath: m_Height
+      value: 21.99
       objectReference: {fileID: 0}
     - target: {fileID: 4017207460638419577, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
       propertyPath: m_Name
