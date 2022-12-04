@@ -56,14 +56,14 @@ namespace StackBuild
 
                 if (x)
                 {
-                    //掴んだ場合
+                    //ボタン押したとき
                     CatchEffectObject
-                        .DOScale(CatchEffectObject.localScale + property.Catch.CatchEffectMaxSizeOffset,
+                        .DOScale(startScale + property.Catch.CatchEffectMaxSizeOffset,
                             property.Catch.CatchEffectAppearanceTime);
                 }
                 else
                 {
-                    //離した場合
+                    //ボタン離した場合
                     CatchEffectObject.DOScale(startScale, property.Catch.CatchEffectDisappearingTime);
                 }
 
