@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace StackBuild
 {
-    public class PartsCatch : NetworkBehaviour
+    public class PartsCatch : MonoBehaviour
     {
         [SerializeField] private InputSender inputSender;
         [SerializeField] private PlayerProperty playerProperty;
@@ -20,43 +20,12 @@ namespace StackBuild
             }
         }
 
-        private bool isCatch = false;
-
-        //サーバーにキャッチした事を伝える
-        [ServerRpc]
-        void CatchServerRpc(bool isCatchFlag)
-        {
-            inputSender.SendCatch(isCatchFlag);
-            CatchClientRpc(isCatchFlag);
-        }
-
-        //クライアントにキャッチしたことを伝える
-        [ClientRpc]
-        void CatchClientRpc(bool isCatchFlag)
-        {
-            if (IsOwner)
-                return;
-
-            inputSender.SendCatch(isCatchFlag);
-        }
-
-        private void Start()
-        {
-            inputSender.Catch.Subscribe(x =>
-            {
-                isCatch = x;
-
-                if(IsSpawned && IsOwner)
-                    CatchServerRpc(x);
-            }).AddTo(this);
-        }
-
         private void OnTriggerStay(Collider other)
         {
             if (!other.CompareTag("Parts"))
                 return;
 
-            if(isCatch && other.TryGetComponent(out Rigidbody rb))
+            if(inputSender.Catch.Value && other.TryGetComponent(out Rigidbody rb))
                 Catch(rb);
         }
 

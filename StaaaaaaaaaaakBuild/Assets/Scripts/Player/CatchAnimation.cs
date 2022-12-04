@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace StackBuild
 {
-    public class CatchAnimation : MonoBehaviour
+    public class CatchAnimation : NetworkBehaviour
     {
         [SerializeField] private InputSender inputSender;
         [SerializeField] private PlayerProperty playerProperty;
@@ -21,6 +21,27 @@ namespace StackBuild
         }
 
         private Vector3 startScale;
+        private bool isCatchInvalid = false;
+
+        //サーバーにキャッチした事を伝える
+        [ServerRpc]
+        void CatchServerRpc(bool isCatchFlag)
+        {
+            inputSender.SendCatch(isCatchFlag);
+            CatchClientRpc(isCatchFlag);
+        }
+
+        //クライアントにキャッチしたことを伝える
+        [ClientRpc]
+        void CatchClientRpc(bool isCatchFlag)
+        {
+            if (IsOwner)
+                return;
+
+            inputSender.SendCatch(isCatchFlag);
+        }
+
+
 
 
         private void Start()
@@ -30,6 +51,9 @@ namespace StackBuild
 
             inputSender.Catch.Subscribe(x =>
             {
+                if (isCatchInvalid)
+                    return;
+
                 if (x)
                 {
                     //掴んだ場合
@@ -42,6 +66,22 @@ namespace StackBuild
                     //離した場合
                     CatchEffectObject.DOScale(startScale, property.Catch.CatchEffectDisappearingTime);
                 }
+
+                if(IsSpawned && IsOwner)
+                    CatchServerRpc(x);
+            }).AddTo(this);
+
+            playerProperty.DashHitAction.Subscribe(x =>
+            {
+                //入力をリセット＆掴む処理無効化
+                inputSender.SendCatch(false);
+                isCatchInvalid = true;
+
+                //指定時間後に掴み無効かを解除する
+                Observable.Timer(TimeSpan.FromSeconds(x.CatchInvalidTime)).Subscribe(_ =>
+                {
+                    isCatchInvalid = false;
+                }).AddTo(this);
             }).AddTo(this);
         }
     }
