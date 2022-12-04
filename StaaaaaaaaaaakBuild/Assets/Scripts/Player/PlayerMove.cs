@@ -21,7 +21,9 @@ namespace StackBuild
 
         private Quaternion targetLook;
 
+        private CharacterController characterController;
         private Vector3 velocity = Vector3.zero;
+        private float startY = 20.0f;
 
         private bool moveHit = false;
 
@@ -29,8 +31,16 @@ namespace StackBuild
 
         private void Start()
         {
+            if (TryGetComponent(out characterController))
+            {
+                characterController.detectCollisions = false;
+                characterController.radius = property.Model.SphereColliderRadius;
+            }
+
             if (TryGetComponent(out SphereCollider collider))
                 collider.radius = property.Model.SphereColliderRadius;
+
+            startY = transform.position.y;
 
             targetLook = transform.rotation;
 
@@ -56,14 +66,11 @@ namespace StackBuild
             Slope();
 
             if(!moveHit)
-                transform.position += velocity * Time.deltaTime;
-        }
+                characterController.Move(velocity * Time.deltaTime);
 
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(transform.position, 3.5f);
-            Gizmos.color = Color.white;
+            var position = transform.position;
+            position = new Vector3(position.x, startY, position.z);
+            transform.position = position;
         }
 
         void MoveVelocity()
@@ -79,7 +86,7 @@ namespace StackBuild
                 velocity.z *= property.Move.Deceleration;
 
             //移動
-            if (dir.sqrMagnitude > 0.0f)
+            if (!moveHit && dir.sqrMagnitude > 0.0f)
             {
                 velocity += dir * (property.Move.Acceleration * Time.deltaTime);
             }
@@ -118,22 +125,25 @@ namespace StackBuild
 
         void Hit()
         {
-            //自分のレイヤーを除外して当たり判定処理
-            var layerMask = LayerMask.GetMask("P1", "P2") & ~(1 << gameObject.layer);
-            if (Physics.SphereCast(transform.position, property.Model.SphereColliderRadius, velocity.normalized, out RaycastHit raycast,
-                    (velocity * Time.deltaTime).magnitude + 0.1f,
-                    layerMask))
-            {
-                //当たったら座標を強制補完する
-                moveHit = true;
-                transform.position = raycast.point +
-                                     (new Vector3(raycast.normal.x, 0f, raycast.normal.z) *
-                                      (raycast.distance + property.Model.SphereColliderRadius));
-            }
-            else
-            {
-                moveHit = false;
-            }
+            // //自分のレイヤーを除外して当たり判定処理
+            // var layerMask = LayerMask.GetMask("P1", "P2") & ~(1 << gameObject.layer);
+            // if (Physics.SphereCast(transform.position, property.Model.SphereColliderRadius, velocity, out RaycastHit raycast,
+            //         (velocity * Time.deltaTime).magnitude + 0.2f,
+            //         layerMask))
+            // {
+            //     //当たったら座標を強制補完する
+            //     moveHit = true;
+            //     transform.position = raycast.point +
+            //                          (new Vector3(raycast.normal.x, 0f, raycast.normal.z) *
+            //                           (raycast.distance + property.Model.SphereColliderRadius));
+            //     velocity = Vector3.zero;
+            //
+            //     Debug.Log($"{raycast.distance}の時　{raycast.normal}");
+            // }
+            // else
+            // {
+            //     moveHit = false;
+            // }
         }
 
         Vector3 CreateMoveDirection()
