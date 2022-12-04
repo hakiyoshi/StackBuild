@@ -1,3 +1,5 @@
+using System;
+using UniRx;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -21,7 +23,9 @@ namespace StackBuild
 
         private Vector3 velocity = Vector3.zero;
 
-        private bool hit = false;
+        private bool moveHit = false;
+
+        private bool isStun = false;//スタン中か
 
         private void Start()
         {
@@ -29,6 +33,16 @@ namespace StackBuild
                 collider.radius = property.Model.SphereColliderRadius;
 
             targetLook = transform.rotation;
+
+            playerProperty.DashHitAction.Subscribe(x =>
+            {
+                isStun = true;
+                //指定時間後スタンフラグを元に戻す
+                Observable.Timer(TimeSpan.FromSeconds(x.StunTime)).Subscribe(_ =>
+                {
+                    isStun = false;
+                }).AddTo(this);
+            }).AddTo(this);
         }
 
         private void Update()
@@ -41,7 +55,7 @@ namespace StackBuild
             LookForward();
             Slope();
 
-            if(!hit)
+            if(!moveHit)
                 transform.position += velocity * Time.deltaTime;
         }
 
@@ -111,19 +125,22 @@ namespace StackBuild
                     layerMask))
             {
                 //当たったら座標を強制補完する
-                hit = true;
+                moveHit = true;
                 transform.position = raycast.point +
                                      (new Vector3(raycast.normal.x, 0f, raycast.normal.z) *
                                       (raycast.distance + property.Model.SphereColliderRadius));
             }
             else
             {
-                hit = false;
+                moveHit = false;
             }
         }
 
         Vector3 CreateMoveDirection()
         {
+            if(isStun)
+                return Vector3.zero;
+
             return new Vector3(inputSender.Move.Value.x, 0.0f, inputSender.Move.Value.y);
         }
     }
