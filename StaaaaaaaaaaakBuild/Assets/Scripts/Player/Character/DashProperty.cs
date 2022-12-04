@@ -6,6 +6,8 @@ namespace StackBuild
     [CreateAssetMenu(menuName = "Game/CharacterProperty/Dash")]
     public class DashProperty : ScriptableObject
     {
+        [field: SerializeField] public AttackProperty Attack { get; private set; }
+
         [field: Header("Dash")]
         [field: SerializeField, Tooltip("最高速")] public float DashMaxSpeed { get; private set; } = 40.0f;
         [field: SerializeField, Tooltip("最高速までの時間(秒)")] public float DashAccelerationTime { get; private set; } = 0.2f;

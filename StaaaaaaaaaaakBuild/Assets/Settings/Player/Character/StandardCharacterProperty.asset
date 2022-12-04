@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7096bc16d85b492f915fd4ee0e23ed88, type: 3}
   m_Name: StandardCharacterProperty
   m_EditorClassIdentifier: 
-  <CharacterModelPrefab>k__BackingField: {fileID: 2006860765951081562, guid: 714b008a94c57cd4991262894ad0828b, type: 3}
+  <Model>k__BackingField: {fileID: 11400000, guid: 6dac7527316a25b4fa5d73cb0fefdf53, type: 2}
   <Move>k__BackingField: {fileID: 11400000, guid: 929c566f937b50743bec5275181da7d6, type: 2}
   <Dash>k__BackingField: {fileID: 11400000, guid: 63fecd0bbc6e3964a8dc5b5c49eea461, type: 2}
   <Catch>k__BackingField: {fileID: 11400000, guid: 38afc42e6fa858148868ba6aac69430d, type: 2}

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c80a44cc76a4290bbdd7ddd1486d15b, type: 3}
   m_Name: DefaultDash
   m_EditorClassIdentifier: 
+  <Attack>k__BackingField: {fileID: 11400000, guid: a66759abe85431a4d8a145fbc60ea5ea, type: 2}
   <DashMaxSpeed>k__BackingField: 40
   <DashAccelerationTime>k__BackingField: 0.2
   <DashDeceleratingTime>k__BackingField: 0.6

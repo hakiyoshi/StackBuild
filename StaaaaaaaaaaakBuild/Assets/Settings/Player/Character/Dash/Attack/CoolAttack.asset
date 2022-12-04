@@ -9,8 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28ac473de36842d5a34b591ea3f244a7, type: 3}
-  m_Name: DefaultModel
+  m_Script: {fileID: 11500000, guid: 5af26d60896a489ca6f850f0ec338ce9, type: 3}
+  m_Name: CoolAttack
   m_EditorClassIdentifier: 
-  <CharacterModelPrefab>k__BackingField: {fileID: 2006860765951081562, guid: 714b008a94c57cd4991262894ad0828b, type: 3}
-  <SphereColliderRadius>k__BackingField: 3.5
+  <CatchInvalid>k__BackingField: 1
+  <StunTime>k__BackingField: 0
+  <KnockbackPower>k__BackingField: 20
