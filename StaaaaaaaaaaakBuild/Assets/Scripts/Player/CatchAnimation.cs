@@ -21,7 +21,6 @@ namespace StackBuild
         }
 
         private Vector3 startScale;
-        private bool isCatchInvalid = false;
 
         //サーバーにキャッチした事を伝える
         [ServerRpc]
@@ -51,9 +50,6 @@ namespace StackBuild
 
             inputSender.Catch.sender.Subscribe(x =>
             {
-                if (isCatchInvalid)
-                    return;
-
                 if (x)
                 {
                     //ボタン押したとき
@@ -75,12 +71,12 @@ namespace StackBuild
             {
                 //入力をリセット＆掴む処理無効化
                 inputSender.Catch.Send(false);
-                isCatchInvalid = true;
+                inputSender.Catch.isPause = true;
 
                 //指定時間後に掴み無効かを解除する
                 Observable.Timer(TimeSpan.FromSeconds(x.CatchInvalidTime)).Subscribe(_ =>
                 {
-                    isCatchInvalid = false;
+                    inputSender.Catch.isPause = false;
                 }).AddTo(this);
             }).AddTo(this);
         }
