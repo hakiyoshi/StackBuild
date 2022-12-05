@@ -20,7 +20,6 @@ namespace StackBuild
         private Vector3 velocity = Vector3.zero;
 
         private bool moveHit = false;
-        private bool isStun = false;
 
         private CharacterProperty property
         {
@@ -65,9 +64,6 @@ namespace StackBuild
 
             inputSender.Dash.sender.Where(x => x).ThrottleFirst(TimeSpan.FromSeconds(property.Dash.DashCoolTime)).Subscribe(_ =>
             {
-                if (isStun)
-                    return;
-
                 if (IsSpawned && !IsOwner)
                     return;
 
@@ -81,12 +77,12 @@ namespace StackBuild
 
             playerProperty.DashHitAction.Subscribe(x =>
             {
-                isStun = true;
+                inputSender.Dash.isPause = true;
 
                 //指定時間経過後フラグを元に戻す
                 Observable.Timer(TimeSpan.FromSeconds(x.StunTime)).Subscribe(_ =>
                 {
-                    isStun = false;
+                    inputSender.Dash.isPause = false;
                 }).AddTo(this);
             }).AddTo(this);
         }
