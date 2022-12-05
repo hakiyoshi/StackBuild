@@ -26,6 +26,9 @@ namespace StackBuild
         [ServerRpc]
         void CatchServerRpc(bool isCatchFlag)
         {
+            if (!IsServer)
+                return;
+
             inputSender.Catch.Send(isCatchFlag);
             CatchClientRpc(isCatchFlag);
         }
@@ -39,9 +42,6 @@ namespace StackBuild
 
             inputSender.Catch.Send(isCatchFlag);
         }
-
-
-
 
         private void Start()
         {

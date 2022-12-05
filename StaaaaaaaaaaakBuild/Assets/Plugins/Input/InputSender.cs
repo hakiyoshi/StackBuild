@@ -28,4 +28,10 @@ public class InputSender : ScriptableObject
     public SenderProperty<Vector2> Move = new SenderProperty<Vector2>();
     public SenderProperty<bool> Catch = new SenderProperty<bool>();
     public SenderProperty<bool> Dash = new SenderProperty<bool>();
+
+    public void AllSetIsPause(bool pause) {
+        Move.isPause = pause;
+        Catch.isPause = pause;
+        Dash.isPause = pause;
+    }
 }

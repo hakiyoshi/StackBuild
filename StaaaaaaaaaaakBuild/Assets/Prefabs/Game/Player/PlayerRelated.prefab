@@ -249,6 +249,14 @@ PrefabInstance:
       propertyPath: playerProperty
       value: 
       objectReference: {fileID: 11400000, guid: 8487fa649341de547a8fae4f65449f75, type: 2}
+    - target: {fileID: 5502800535980724027, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
+      propertyPath: SyncRotAngleX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5502800535980724027, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
+      propertyPath: SyncRotAngleZ
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8228495384509642522, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
       propertyPath: playerProperty
       value: 
@@ -371,6 +379,14 @@ PrefabInstance:
       propertyPath: playerProperty
       value: 
       objectReference: {fileID: 11400000, guid: 94434b52069cc2f4ba70d07e78b196cd, type: 2}
+    - target: {fileID: 5502800535980724027, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
+      propertyPath: SyncRotAngleX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5502800535980724027, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
+      propertyPath: SyncRotAngleZ
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8210988206114180680, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
       propertyPath: inputSender
       value: 

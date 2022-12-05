@@ -1,4 +1,5 @@
-﻿using Unity.Netcode;
+﻿using System;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
@@ -10,17 +11,20 @@ namespace StackBuild
         public PlayerInputProperty playerInputProperty;
         public PlayerManager playerManager;
 
-        PlayerInput GetPlayerInput()
+        (int, PlayerInput, InputSender) GetInputSet()
         {
-            return playerInputProperty.PlayerInputs[playerManager.GetPlayerIndex(this.gameObject)];
+            var playerIndex = playerManager.GetPlayerIndex(this.gameObject);
+            var playerInput = playerInputProperty.PlayerInputs[playerIndex];
+            var inputSender = playerInputProperty.inputSenders[playerIndex];
+            return (playerIndex, playerInput, inputSender);
         }
 
         public override void OnNetworkSpawn()
         {
-            var playerInput = GetPlayerInput();
+            var (_, playerInput, inputSender) = GetInputSet();
             if (!IsOwner)
             {
-                LostInput(playerInput);
+                LostInput(playerInput, inputSender);
             }
             else
             {
@@ -31,33 +35,34 @@ namespace StackBuild
 
         public override void OnNetworkDespawn()
         {
-            var playerIndex = playerManager.GetPlayerIndex(this.gameObject);
-            var playerInput = playerInputProperty.PlayerInputs[playerIndex];
+            var (index, playerInput, _) = GetInputSet();
 
             var devices = InputSystem.devices;
             playerInput.gameObject.SetActive(true);
-            SelectSwitchDevice(devices, playerInput, playerIndex);
+            SelectSwitchDevice(devices, playerInput, index);
         }
 
         public override void OnGainedOwnership()
         {
-            var playerInput = GetPlayerInput();
-            GainedInput(playerInput);
+            var (_, playerInput, inputSender) = GetInputSet();
+            GainedInput(playerInput, inputSender);
         }
 
         public override void OnLostOwnership()
         {
-            var playerInput = GetPlayerInput();
-            LostInput(playerInput);
+            var (_, playerInput, inputSender) = GetInputSet();
+            LostInput(playerInput, inputSender);
         }
 
-        void LostInput(PlayerInput playerInput)
+        void LostInput(PlayerInput playerInput, InputSender inputSender)
         {
             playerInput.gameObject.SetActive(false);
+            inputSender.AllSetIsPause(true);
         }
 
-        void GainedInput(PlayerInput playerInput)
+        void GainedInput(PlayerInput playerInput, InputSender inputSender)
         {
+            inputSender.AllSetIsPause(false);
             playerInput.gameObject.SetActive(true);
             SwitchDevice(playerInput);
         }

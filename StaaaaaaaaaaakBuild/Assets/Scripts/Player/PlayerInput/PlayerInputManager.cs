@@ -9,11 +9,7 @@ namespace StackBuild
     {
         [SerializeField] private GameObject inputPrefab;
         [SerializeField] private PlayerInputProperty playerInputProperty;
-        [SerializeField] private InputSender[] inputSenders = Array.Empty<InputSender>();
         [SerializeField] private PlayerManager playerManager;
-
-        //管理用
-        private PlayerInput[] playerInputs = new PlayerInput[PlayerInputProperty.MAX_DEVICEID];
 
         private void Awake()
         {
@@ -103,14 +99,13 @@ namespace StackBuild
                     controlScheme: "Gamepad", pairWithDevice: device);
             }
 
-            playerInputs[playerIndex] = playerInput;
             StartInputObjectSetting(playerInput, parent, playerIndex);
         }
 
         void StartInputObjectSetting(PlayerInput playerInput, Transform parent, int playerIndex)
         {
             playerInput.transform.parent = parent;
-            playerInput.gameObject.GetComponent<Input>().inputSender = inputSenders[playerIndex];
+            playerInput.gameObject.GetComponent<Input>().inputSender = playerInputProperty.inputSenders[playerIndex];
             playerInputProperty.PlayerInputs[playerIndex] = playerInput;
         }
     }
