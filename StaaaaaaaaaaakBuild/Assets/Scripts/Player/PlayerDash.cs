@@ -89,8 +89,6 @@ namespace StackBuild
 
         private void Update()
         {
-            //Hit();
-
             if (!moveHit)
                 characterController.Move(velocity * Time.deltaTime);
         }
@@ -136,14 +134,14 @@ namespace StackBuild
             sequence.Append(DOVirtual.DelayedCall(property.Dash.DashAccelerationTime, () => { }));
 
             //エフェクト出現
-            sequence.Join(EffectSizeAnimation(property.Dash.DashEffectAppearanceTime, property.Dash.DashEffectMaxScale, 0.0f, 1.0f,
+            sequence.Join(EffectSizeAnimation(property.Dash.DashEffectAppearanceTime, property.Dash.DashEffectMaxScale,
                 property.Dash.DashEaseOfAcceleration));
 
             //加速度を0に戻す
             sequence.Append(DOVirtual.DelayedCall(property.Dash.DashDeceleratingTime, () => { }));
 
             //エフェクト消滅
-            sequence.Join(EffectSizeAnimation(property.Dash.DashEffectExitTime, property.Dash.DashEffectMinScale, 1.0f, 0.0f,
+            sequence.Join(EffectSizeAnimation(property.Dash.DashEffectExitTime, property.Dash.DashEffectMinScale,
                 property.Dash.DashEaseOfDeceleration));
 
             //イベント追加
@@ -190,36 +188,8 @@ namespace StackBuild
             colorOverLifetime.color = grad;
         }
 
-        private void Hit()
-        {
-            // //自分のレイヤーを除外して当たり判定処理
-            // var layerMask = LayerMask.GetMask("P1", "P2") & ~(1 << gameObject.layer);
-            // if (Physics.SphereCast(transform.position, property.Model.SphereColliderRadius, velocity.normalized, out RaycastHit raycastHit,
-            //         (velocity * Time.deltaTime).magnitude + 0.1f,
-            //         layerMask))
-            // {
-            //     //当たったら座標を強制補完する
-            //     moveHit = true;
-            //     transform.position = raycastHit.point +
-            //                          (new Vector3(raycastHit.normal.x, 0f, raycastHit.normal.z) *
-            //                           (raycastHit.distance + property.Model.SphereColliderRadius));
-            //
-            //     //ダッシュシーケンスを止める
-            //     dashSequence.Kill(true);
-            //     velocity = Vector3.zero;
-            //
-            //     //ヒット時の相手にヒット情報を送る
-            //     if (raycastHit.collider.TryGetComponent(out PlayerDash playerDash))
-            //         playerDash.playerProperty.DashHitAction.OnNext(playerProperty.characterProperty.Dash.Attack);
-            // }
-            // else
-            // {
-            //     moveHit = false;
-            // }
-        }
-
         //エフェクトのサイズアニメーション
-        private Sequence EffectSizeAnimation(float time, Vector3 scale, float startAlfa, float endAlfa, Ease ease)
+        private Sequence EffectSizeAnimation(float time, Vector3 scale, Ease ease)
         {
             var sequence = DOTween.Sequence().Pause();
             sequence.Join(dashParticle.transform.DOScale(scale, time)

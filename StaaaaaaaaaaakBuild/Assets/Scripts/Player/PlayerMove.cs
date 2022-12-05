@@ -60,7 +60,6 @@ namespace StackBuild
                 return;
 
             MoveVelocity();
-            Hit();
             LookForward();
             Slope();
 
@@ -120,29 +119,6 @@ namespace StackBuild
 
             //傾けぇ
             transform.rotation = Quaternion.Lerp(rotation, target, property.Move.SlopeTime * Time.deltaTime);
-        }
-
-        void Hit()
-        {
-            // //自分のレイヤーを除外して当たり判定処理
-            // var layerMask = LayerMask.GetMask("P1", "P2") & ~(1 << gameObject.layer);
-            // if (Physics.SphereCast(transform.position, property.Model.SphereColliderRadius, velocity, out RaycastHit raycast,
-            //         (velocity * Time.deltaTime).magnitude + 0.2f,
-            //         layerMask))
-            // {
-            //     //当たったら座標を強制補完する
-            //     moveHit = true;
-            //     transform.position = raycast.point +
-            //                          (new Vector3(raycast.normal.x, 0f, raycast.normal.z) *
-            //                           (raycast.distance + property.Model.SphereColliderRadius));
-            //     velocity = Vector3.zero;
-            //
-            //     Debug.Log($"{raycast.distance}の時　{raycast.normal}");
-            // }
-            // else
-            // {
-            //     moveHit = false;
-            // }
         }
 
         Vector3 CreateMoveDirection()
