@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Numerics;
 using DG.Tweening;
 using UniRx;
 using Unity.Netcode;
@@ -45,6 +44,24 @@ namespace StackBuild
                 return;
 
             DashEffect();
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        void DashAttackServerRpc()
+        {
+            if (!IsServer)
+                return;
+
+            DashAttackClientRpc();
+        }
+
+        [ClientRpc]
+        void DashAttackClientRpc()
+        {
+            if (!IsOwner)
+                return;
+
+            playerProperty.DashHitAction.OnNext(playerProperty);
         }
 
         private void Start()
@@ -97,12 +114,21 @@ namespace StackBuild
 
         private void OnControllerColliderHit(ControllerColliderHit hit)
         {
-            if (velocity.sqrMagnitude <= 0.0f)
+            if (!IsSpawned || !IsOwner || velocity.sqrMagnitude <= 0.0f)
                 return;
 
             //ヒット時の相手にヒット情報を送る
             if (hit.collider.TryGetComponent(out PlayerDash playerDash))
-                playerDash.playerProperty.DashHitAction.OnNext(playerProperty);
+            {
+                if (playerDash.IsSpawned)
+                {
+                    playerDash.DashAttackServerRpc();
+                }
+                else
+                {
+                    playerDash.playerProperty.DashHitAction.OnNext(playerProperty);
+                }
+            }
 
             //当たったらその場でダッシュを止める
             velocity = Vector3.zero;

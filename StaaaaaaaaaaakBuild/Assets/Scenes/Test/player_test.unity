@@ -4099,6 +4099,18 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 142540576007942443, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
+      propertyPath: m_Height
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 142540576007942443, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
+      propertyPath: m_Radius
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 142540576007942443, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 364396718960752571, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
       propertyPath: inputSender
       value: 
@@ -4122,6 +4134,34 @@ PrefabInstance:
     - target: {fileID: 1819080086329192109, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
       propertyPath: testObject
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2833336638702474892, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
+      propertyPath: SyncScaleX
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2833336638702474892, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
+      propertyPath: SyncScaleY
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2833336638702474892, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
+      propertyPath: SyncScaleZ
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2833336638702474892, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
+      propertyPath: SyncRotAngleX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2833336638702474892, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
+      propertyPath: SyncRotAngleZ
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2833336639531733872, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
+      propertyPath: SyncRotAngleX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2833336639531733872, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
+      propertyPath: SyncRotAngleZ
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3417636335566369252, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
       propertyPath: GlobalObjectIdHash
