@@ -30,8 +30,6 @@ namespace StackBuild.Goal
 
         private void Start()
         {
-            var token = this.GetCancellationTokenOnDestroy();
-
             buildingBase = Instantiate(stackPrefab, transform);
             buildingBase.transform.position += Vector3.down * -0.5f;
 
@@ -41,11 +39,13 @@ namespace StackBuild.Goal
                 .Where(x => x.MeshId != -1)
                 .Subscribe(parts => stackQueue.Enqueue(parts));
 
-            StackLookAsync(token);
+            StackLoopAsync(this.GetCancellationTokenOnDestroy()).Forget();
         }
 
-        private async void StackLookAsync(CancellationToken token = default)
+        private async UniTask StackLoopAsync(CancellationToken token = default)
         {
+            token.ThrowIfCancellationRequested();
+
             while (!token.IsCancellationRequested)
             {
                 while (stackQueue.TryDequeue(out var parts))
@@ -54,6 +54,7 @@ namespace StackBuild.Goal
                     await BaseDownAsync(token);
                     await UniTask.Delay(TimeSpan.FromSeconds(0.05f), cancellationToken: token);
                 }
+                await UniTask.Yield(PlayerLoopTiming.Update, cancellationToken: token);
             }
         }
 
