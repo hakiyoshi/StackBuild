@@ -11,60 +11,43 @@ namespace StackBuild
     [RequireComponent(typeof(PartsCore))]
     [RequireComponent(typeof(ClientNetworkTransform))]
     [RequireComponent(typeof(Rigidbody))]
-    public class PartsPhysics : NetworkBehaviour
+    public class PartsPhysics : MonoBehaviour
     {
         [SerializeField] private PartsCore partsCore;
-        [SerializeField] private Rigidbody rigidbody;
+        public PartsCore PartsCore => partsCore;
 
-        public void Start()
+        private Rigidbody rb;
+
+        private void Awake()
+        {
+            TryGetComponent(out rb);
+        }
+
+        private void Start()
         {
             partsCore.IsActive
                 .Subscribe((isActive) =>
                 {
                     if (isActive)
                     {
-                        rigidbody.isKinematic = false;
-                        rigidbody.WakeUp();
+                        rb.WakeUp();
                     }
                     else
                     {
-                        rigidbody.isKinematic = true;
-                        rigidbody.Sleep();
+                        rb.Sleep();
                     }
                 }).AddTo(this);
-
-            this.OnCollisionStayAsObservable()
-                .Where(x => x.gameObject.CompareTag("Player"))
-                //.Select(x => x.gameObject.GetComponent(<Player>())
-                .Subscribe((player) =>
-                {
-                    // player.Vacuum(rigidbody);
-                }).AddTo(this);
         }
 
-        public override void OnDestroy()
+        public void Teleport(Vector3 position)
         {
-            base.OnDestroy();
+            rb.velocity = Vector3.zero;
+            rb.position = position;
         }
 
-        public override void OnNetworkSpawn()
+        public void AddForce(Vector3 force, ForceMode forceMode = ForceMode.Force)
         {
-            base.OnNetworkSpawn();
-        }
-
-        public override void OnNetworkDespawn()
-        {
-            base.OnNetworkDespawn();
-        }
-
-        public override void OnGainedOwnership()
-        {
-            base.OnGainedOwnership();
-        }
-
-        public override void OnLostOwnership()
-        {
-            base.OnLostOwnership();
+            rb.AddForce(force, forceMode);
         }
     }
 }

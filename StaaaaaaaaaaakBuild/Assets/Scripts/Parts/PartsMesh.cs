@@ -15,9 +15,11 @@ namespace StackBuild
     {
         [SerializeField] private InGameSettings inGameSettings;
         [SerializeField] private PartsCore partsCore;
-        [SerializeField] private MeshRenderer meshRenderer;
-        [SerializeField] private MeshCollider meshCollider;
-        [SerializeField] private MeshFilter meshFilter;
+        public PartsCore PartsCore => partsCore;
+
+        private MeshRenderer meshRenderer;
+        private MeshCollider meshCollider;
+        private MeshFilter meshFilter;
 
         public int MeshId { get; private set; } = -1;
         public string Name { get; private set; } = "";
@@ -36,6 +38,13 @@ namespace StackBuild
             }
         }
 
+        private void Awake()
+        {
+            TryGetComponent(out meshRenderer);
+            TryGetComponent(out meshCollider);
+            TryGetComponent(out meshFilter);
+        }
+
         private void Start()
         {
             partsCore.IsActive.Subscribe((isActive) =>
@@ -51,6 +60,7 @@ namespace StackBuild
             if (index == -1) return;
             SetPartsData(index);
         }
+
         public void SetPartsData(int index)
         {
             if (index < 0 || inGameSettings.partsMeshList.Count <= index) return;
