@@ -47,7 +47,7 @@ namespace StackBuild
                 inputSender.Move.isPause = true;
 
                 //指定時間後スタンフラグを元に戻す
-                Observable.Timer(TimeSpan.FromSeconds(x.StunTime)).Subscribe(_ =>
+                Observable.Timer(TimeSpan.FromSeconds(x.characterProperty.Dash.Attack.StunTime)).Subscribe(_ =>
                 {
                     inputSender.Move.isPause = false;
                 }).AddTo(this);

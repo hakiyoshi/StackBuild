@@ -77,10 +77,12 @@ namespace StackBuild
 
             playerProperty.DashHitAction.Subscribe(x =>
             {
+                //ダッシュを強制終了させる
+                dashSequence.Kill(true);
                 inputSender.Dash.isPause = true;
 
                 //指定時間経過後フラグを元に戻す
-                Observable.Timer(TimeSpan.FromSeconds(x.StunTime)).Subscribe(_ =>
+                Observable.Timer(TimeSpan.FromSeconds(x.characterProperty.Dash.Attack.StunTime)).Subscribe(_ =>
                 {
                     inputSender.Dash.isPause = false;
                 }).AddTo(this);
@@ -100,7 +102,7 @@ namespace StackBuild
 
             //ヒット時の相手にヒット情報を送る
             if (hit.collider.TryGetComponent(out PlayerDash playerDash))
-                playerDash.playerProperty.DashHitAction.OnNext(playerProperty.characterProperty.Dash.Attack);
+                playerDash.playerProperty.DashHitAction.OnNext(playerProperty);
         }
 
         void DashMove()
@@ -121,9 +123,11 @@ namespace StackBuild
                 .Vector3(moveDir, Vector3.zero, property.Dash.DashDeceleratingTime, value => velocity = value)
                 .SetEase(property.Dash.DashEaseOfDeceleration));
 
-            dashSequence.OnKill(() => dashSequence = null);
-
-            dashSequence.Play();
+            dashSequence.OnKill(() =>
+            {
+                dashSequence = null;
+                velocity = Vector3.zero;
+            });
         }
 
         void DashEffect()
@@ -146,7 +150,7 @@ namespace StackBuild
 
             //イベント追加
             sequence.OnStart(() => dashParticle.Play());
-            sequence.OnComplete(() => dashParticle.Stop());
+            sequence.OnKill(() => dashParticle.Stop());
         }
 
         //移動方向
