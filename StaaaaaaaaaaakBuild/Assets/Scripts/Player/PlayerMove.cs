@@ -25,7 +25,7 @@ namespace StackBuild
         private Vector3 velocity = Vector3.zero;
         private float startY = 20.0f;
 
-        private bool moveHit = false;
+        private bool dashHit = false;
 
         private void Start()
         {
@@ -45,11 +45,13 @@ namespace StackBuild
             playerProperty.DashHitAction.Subscribe(x =>
             {
                 inputSender.Move.isPause = true;
+                dashHit = true;
 
                 //指定時間後スタンフラグを元に戻す
                 Observable.Timer(TimeSpan.FromSeconds(x.characterProperty.Dash.Attack.StunTime)).Subscribe(_ =>
                 {
                     inputSender.Move.isPause = false;
+                    dashHit = false;
                 }).AddTo(this);
             }).AddTo(this);
         }
@@ -60,10 +62,11 @@ namespace StackBuild
                 return;
 
             MoveVelocity();
-            LookForward();
+            if(!dashHit)
+                LookForward();
             Slope();
 
-            if(!moveHit)
+            if(!dashHit)
                 characterController.Move(velocity * Time.deltaTime);
 
             var position = transform.position;
