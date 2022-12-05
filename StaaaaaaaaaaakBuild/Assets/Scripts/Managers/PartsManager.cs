@@ -14,6 +14,7 @@ namespace StackBuild
         [SerializeField] private InGameSettings settings;
         [SerializeField] private PartsCore prefab;
         [SerializeField] private CanonManager canonManager;
+
         public PartsPool pool { get; private set; }
 
         public int count => pool.Count;
@@ -44,7 +45,13 @@ namespace StackBuild
         {
             while (!token.IsCancellationRequested)
             {
-                var spawnRule = settings.spawnRuleList.Find(x => x.threshould < pool.Count);
+                var spawnRule = settings.spawnRuleList.Find(x => x.threshould <= pool.Count);
+
+                if (spawnRule == null)
+                {
+                    await UniTask.Yield(PlayerLoopTiming.Update, cancellationToken: token);
+                    continue;
+                }
 
                 for (int i = 0; i < spawnRule.count; i++)
                 {
