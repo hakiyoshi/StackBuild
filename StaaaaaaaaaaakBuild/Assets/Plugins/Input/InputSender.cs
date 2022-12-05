@@ -8,27 +8,24 @@ using UnityEngine.InputSystem;
 [CreateAssetMenu(menuName = "InputSender")]
 public class InputSender : ScriptableObject
 {
-    public IReadOnlyReactiveProperty<Vector2> Move => move;
-    private ReactiveProperty<Vector2> move = new ReactiveProperty<Vector2>();
-
-    public IReadOnlyReactiveProperty<bool> Catch => catchHold;
-    private ReactiveProperty<bool> catchHold = new ReactiveProperty<bool>();
-
-    public IReadOnlyReactiveProperty<bool> Dash => dash;
-    private ReactiveProperty<bool> dash = new ReactiveProperty<bool>();
-
-    public void SendMove(Vector2 value)
+    public class SenderProperty<T>
     {
-        move.Value = value;
+        public IReadOnlyReactiveProperty<T> sender => data;
+        private ReactiveProperty<T> data = new ReactiveProperty<T>();
+        public bool isPause = false;
+
+        public T Value => data.Value;
+
+        public void Send(T value)
+        {
+            if (isPause)
+                return;
+
+            data.Value = value;
+        }
     }
 
-    public void SendCatch(bool value)
-    {
-        catchHold.Value = value;
-    }
-
-    public void SendDash(bool value)
-    {
-        dash.Value = value;
-    }
+    public SenderProperty<Vector2> Move = new SenderProperty<Vector2>();
+    public SenderProperty<bool> Catch = new SenderProperty<bool>();
+    public SenderProperty<bool> Dash = new SenderProperty<bool>();
 }

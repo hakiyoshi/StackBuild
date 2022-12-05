@@ -63,7 +63,7 @@ namespace StackBuild
 
             dashParticle.Stop(true);
 
-            inputSender.Dash.Where(x => x).ThrottleFirst(TimeSpan.FromSeconds(property.Dash.DashCoolTime)).Subscribe(_ =>
+            inputSender.Dash.sender.Where(x => x).ThrottleFirst(TimeSpan.FromSeconds(property.Dash.DashCoolTime)).Subscribe(_ =>
             {
                 if (isStun)
                     return;

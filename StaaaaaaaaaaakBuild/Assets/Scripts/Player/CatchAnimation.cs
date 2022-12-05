@@ -27,7 +27,7 @@ namespace StackBuild
         [ServerRpc]
         void CatchServerRpc(bool isCatchFlag)
         {
-            inputSender.SendCatch(isCatchFlag);
+            inputSender.Catch.Send(isCatchFlag);
             CatchClientRpc(isCatchFlag);
         }
 
@@ -38,7 +38,7 @@ namespace StackBuild
             if (IsOwner)
                 return;
 
-            inputSender.SendCatch(isCatchFlag);
+            inputSender.Catch.Send(isCatchFlag);
         }
 
 
@@ -49,7 +49,7 @@ namespace StackBuild
             //初期化
             startScale = CatchEffectObject.localScale;
 
-            inputSender.Catch.Subscribe(x =>
+            inputSender.Catch.sender.Subscribe(x =>
             {
                 if (isCatchInvalid)
                     return;
@@ -74,7 +74,7 @@ namespace StackBuild
             playerProperty.DashHitAction.Subscribe(x =>
             {
                 //入力をリセット＆掴む処理無効化
-                inputSender.SendCatch(false);
+                inputSender.Catch.Send(false);
                 isCatchInvalid = true;
 
                 //指定時間後に掴み無効かを解除する
