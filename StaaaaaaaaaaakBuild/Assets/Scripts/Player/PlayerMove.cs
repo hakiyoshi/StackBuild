@@ -27,8 +27,6 @@ namespace StackBuild
 
         private bool moveHit = false;
 
-        private bool isStun = false;//スタン中か
-
         private void Start()
         {
             if (TryGetComponent(out characterController))
@@ -46,11 +44,12 @@ namespace StackBuild
 
             playerProperty.DashHitAction.Subscribe(x =>
             {
-                isStun = true;
+                inputSender.Move.isPause = true;
+
                 //指定時間後スタンフラグを元に戻す
                 Observable.Timer(TimeSpan.FromSeconds(x.StunTime)).Subscribe(_ =>
                 {
-                    isStun = false;
+                    inputSender.Move.isPause = false;
                 }).AddTo(this);
             }).AddTo(this);
         }
@@ -148,7 +147,7 @@ namespace StackBuild
 
         Vector3 CreateMoveDirection()
         {
-            if(isStun)
+            if(inputSender.Move.isPause)
                 return Vector3.zero;
 
             return new Vector3(inputSender.Move.Value.x, 0.0f, inputSender.Move.Value.y);
