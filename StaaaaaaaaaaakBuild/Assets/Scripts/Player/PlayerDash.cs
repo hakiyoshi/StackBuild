@@ -103,6 +103,10 @@ namespace StackBuild
             //ヒット時の相手にヒット情報を送る
             if (hit.collider.TryGetComponent(out PlayerDash playerDash))
                 playerDash.playerProperty.DashHitAction.OnNext(playerProperty);
+
+            //当たったらその場でダッシュを止める
+            velocity = Vector3.zero;
+            dashSequence.Kill(true);
         }
 
         void DashMove()

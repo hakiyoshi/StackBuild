@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using DG.Tweening;
+using UnityEngine;
 
 namespace StackBuild
 {
@@ -8,5 +9,7 @@ namespace StackBuild
         [field: SerializeField] public float CatchInvalidTime { get; private set; } = 0.0f;
         [field: SerializeField] public float StunTime { get; private set; } = 0.0f;
         [field: SerializeField] public float KnockbackPower { get; private set; } = 0.0f;
+        [field: SerializeField] public float KnockbackTime { get; private set; } = 0.5f;
+        [field: SerializeField] public Ease KnockbackEase { get; private set; } = Ease.OutCubic;
     }
 }

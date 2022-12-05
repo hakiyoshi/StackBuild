@@ -1,12 +1,12 @@
-﻿using System;
-using UnityEditor;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace StackBuild
 {
     public class ModelSetup : MonoBehaviour
     {
         [SerializeField] private PlayerProperty playerProperty;
+
+        public GameObject modelObject { get; private set; }
 
         private CharacterProperty property
         {
@@ -26,7 +26,7 @@ namespace StackBuild
             if(playerProperty.characterProperty == null)
                 return;
 
-            GameObject.Instantiate(property.Model.CharacterModelPrefab, transform);
+            modelObject = GameObject.Instantiate(property.Model.CharacterModelPrefab, transform);
         }
     }
 }

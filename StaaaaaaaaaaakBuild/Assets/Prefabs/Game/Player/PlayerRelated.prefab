@@ -133,6 +133,10 @@ PrefabInstance:
       propertyPath: m_LocalScale.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 868031780191804150, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
+      propertyPath: playerProperty
+      value: 
+      objectReference: {fileID: 11400000, guid: 8487fa649341de547a8fae4f65449f75, type: 2}
     - target: {fileID: 1111496776134160017, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
       propertyPath: inputSender
       value: 
@@ -145,11 +149,19 @@ PrefabInstance:
       propertyPath: inputSender
       value: 
       objectReference: {fileID: 11400000, guid: 41edcc5c67c950f41960218fc1ddfe47, type: 2}
+    - target: {fileID: 2385707693316114193, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
+      propertyPath: playerProperty
+      value: 
+      objectReference: {fileID: 11400000, guid: 8487fa649341de547a8fae4f65449f75, type: 2}
     - target: {fileID: 2725486479601856543, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
       propertyPath: playerManager
       value: 
       objectReference: {fileID: 3417636335566369258}
     - target: {fileID: 3301594456463546649, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
+      propertyPath: playerProperty
+      value: 
+      objectReference: {fileID: 11400000, guid: 8487fa649341de547a8fae4f65449f75, type: 2}
+    - target: {fileID: 3501627865719752388, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
       propertyPath: playerProperty
       value: 
       objectReference: {fileID: 11400000, guid: 8487fa649341de547a8fae4f65449f75, type: 2}

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28ac473de36842d5a34b591ea3f244a7, type: 3}
   m_Name: Standard
   m_EditorClassIdentifier: 
-  <CharacterModelPrefab>k__BackingField: {fileID: 2006860765951081562, guid: 714b008a94c57cd4991262894ad0828b, type: 3}
-  <SphereColliderRadius>k__BackingField: 3.5
+  <CharacterModelPrefab>k__BackingField: {fileID: 4035846141397185230, guid: 86e32f3fa751a0d4cb3b9f4cf9a7d0f0, type: 3}
+  <SphereColliderRadius>k__BackingField: 3
