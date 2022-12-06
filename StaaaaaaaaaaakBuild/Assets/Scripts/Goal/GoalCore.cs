@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using Palmmedia.ReportGenerator.Core;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
@@ -13,6 +14,7 @@ namespace StackBuild.Goal
 {
     public class GoalCore : MonoBehaviour
     {
+        [SerializeField] private InGameSettings settings;
         [SerializeField] private GameObject collisionObject;
         [SerializeField] private GameObject stackPrefab;
         [SerializeField] private Transform stackPos;
@@ -22,7 +24,8 @@ namespace StackBuild.Goal
         [SerializeField] private int row = 1;
         [SerializeField] private int maxHeight;
 
-        private Queue<PartsMesh> stackQueue = new Queue<PartsMesh>();
+        private Dictionary<MaterialId, int> partsCount = new();
+        private Queue<StackData> stackQueue = new();
         private GameObject buildingBase;
         private int height = 0;
         private int totalHeight = 0;
@@ -33,11 +36,32 @@ namespace StackBuild.Goal
             buildingBase = Instantiate(stackPrefab, transform);
             buildingBase.transform.position += Vector3.down * -0.5f;
 
+            foreach (var id in (MaterialId[])Enum.GetValues(typeof(MaterialId)))
+            {
+                partsCount[id] = 0;
+            }
+
             collisionObject.OnTriggerEnterAsObservable()
                 .Where(x => x.gameObject.CompareTag("Parts"))
-                .Select(x => x.gameObject.GetComponent<PartsMesh>())
-                .Where(x => x.MeshId != -1)
-                .Subscribe(parts => stackQueue.Enqueue(parts));
+                .Select(x => x.gameObject.GetComponent<PartsCore>())
+                .Where(x => x.PartsID.Value != PartsId.Default)
+                .Subscribe(parts =>
+                {
+                    foreach (var buildMaterial in parts.GetPartsData().containsMaterials)
+                    {
+                        partsCount[buildMaterial.Key] += buildMaterial.Value;
+                    }
+
+                    foreach (var data in settings.stackDataList)
+                    {
+                        foreach (var need in data.needMaterials)
+                        {
+                            if (partsCount[need.Key] < need.Value) continue;
+
+                            stackQueue.Enqueue(data);
+                        }
+                    }
+                });
 
             StackLoopAsync(this.GetCancellationTokenOnDestroy()).Forget();
         }
@@ -48,17 +72,20 @@ namespace StackBuild.Goal
 
             while (!token.IsCancellationRequested)
             {
-                while (stackQueue.TryDequeue(out var parts))
+                while (stackQueue.TryDequeue(out var data))
                 {
-                    await StackAsync(stackQueue.Dequeue(), token);
-                    await BaseDownAsync(token);
-                    await UniTask.Delay(TimeSpan.FromSeconds(0.05f), cancellationToken: token);
+                    for (int i = 0; i < data.count; i++)
+                    {
+                        await StackAsync(data, token);
+                        await UniTask.Delay(TimeSpan.FromSeconds(0.05f), cancellationToken: token);
+                        await BaseDownAsync(token);
+                    }
                 }
                 await UniTask.Yield(PlayerLoopTiming.Update, cancellationToken: token);
             }
         }
 
-        private async UniTask StackAsync(PartsMesh parts, CancellationToken token = default)
+        private async UniTask StackAsync(StackData data, CancellationToken token = default)
         {
             token.ThrowIfCancellationRequested();
 
@@ -71,7 +98,7 @@ namespace StackBuild.Goal
                 z: (floorPartsCount % column) * (widthSize / column) + (widthSize / column) - (widthSize / 2));
             obj.transform.localScale = new Vector3(widthSize / row, heightSize, widthSize / column);
 
-            renderer.sharedMaterial = parts.SharedMaterial;
+            renderer.sharedMaterial = data.material;
             renderer.enabled = true;
 
             await obj.transform.DOLocalMoveY(-20, 0.8f)
