@@ -31,6 +31,8 @@ namespace StackBuild
                 playerInput.enabled = true;
                 SwitchDevice(playerInput);
             }
+
+            Debug.Log(gameObject.name + "NetworkSpawn");
         }
 
         public override void OnNetworkDespawn()
@@ -40,18 +42,27 @@ namespace StackBuild
             var devices = InputSystem.devices;
             playerInput.gameObject.SetActive(true);
             SelectSwitchDevice(devices, playerInput, index);
+
+            Debug.Log(gameObject.name + "NetworkDespawn");
         }
 
         public override void OnGainedOwnership()
         {
+            if (!IsOwner)
+                return;
+
             var (_, playerInput, inputSender) = GetInputSet();
             GainedInput(playerInput, inputSender);
+
+            Debug.Log(gameObject.name + "GainedOwnership");
         }
 
         public override void OnLostOwnership()
         {
             var (_, playerInput, inputSender) = GetInputSet();
             LostInput(playerInput, inputSender);
+
+            Debug.Log(gameObject.name + "LostOwnership");
         }
 
         void LostInput(PlayerInput playerInput, InputSender inputSender)
