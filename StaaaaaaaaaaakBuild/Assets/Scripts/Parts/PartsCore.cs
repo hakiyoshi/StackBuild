@@ -5,22 +5,34 @@ using VContainer;
 
 namespace StackBuild
 {
-    [RequireComponent(typeof(NetworkObject))]
-    public class PartsCore : NetworkBehaviour
+    public class PartsCore : MonoBehaviour
     {
         [SerializeField] private InGameSettings settings;
         public InGameSettings Settings => settings;
 
-        private ReactiveProperty<bool> isActive = new ReactiveProperty<bool>();
-        public IReactiveProperty<bool> IsActive => isActive;
+        private ReactiveProperty<bool> isActive = new();
+        public IReadOnlyReactiveProperty<bool> IsActive => isActive;
 
-        private NetworkObject networkObject;
+        private ReactiveProperty<PartsId> partsId = new();
+        public IReadOnlyReactiveProperty<PartsId> PartsID => partsId;
+
+        [SerializeField] private PartsId initialId;
+
+        public void Start()
+        {
+            isActive.AddTo(this);
+            partsId.AddTo(this);
+
+            if (initialId != PartsId.Default)
+            {
+                partsId.Value = initialId;
+                isActive.Value = true;
+            }
+        }
 
         public PartsCore Spawn()
         {
             isActive.Value = true;
-
-            networkObject = GetComponent<NetworkObject>();
             return this;
         }
 
@@ -37,6 +49,16 @@ namespace StackBuild
         public void Hide()
         {
             isActive.Value = false;
+        }
+
+        public void SetPartsID(PartsId id)
+        {
+            partsId.Value = id;
+        }
+
+        public PartsData GetPartsData()
+        {
+            return settings.partsDataDictionary[partsId.Value];
         }
     }
 }
