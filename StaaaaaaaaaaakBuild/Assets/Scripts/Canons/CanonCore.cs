@@ -13,14 +13,13 @@ namespace StackBuild
     {
         [SerializeField] private float shootDuration = 0.07f;
         [SerializeField] private float shootPower = 10f;
-        [SerializeField] private float shootAngle = 5f;
+        //[SerializeField] private float shootAngle = 5f;
         [SerializeField] private Transform shootTarget;
 
         private Queue<PartsCore> queue = new Queue<PartsCore>();
 
         private void Start()
         {
-
             Observable.Interval(TimeSpan.FromSeconds(shootDuration))
                 .Where(_ => queue.Count > 0)
                 .Select(_ => queue.Dequeue().GetComponent<PartsPhysics>())
