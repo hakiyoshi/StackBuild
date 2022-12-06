@@ -80,10 +80,12 @@ GameObject:
   - component: {fileID: 8210988206114180680}
   - component: {fileID: 3501627865719752388}
   - component: {fileID: 2385707693316114193}
-  - component: {fileID: 5502800535980724027}
+  - component: {fileID: 7353934046920636666}
+  - component: {fileID: 1260899820477784982}
+  - component: {fileID: 770955626032095538}
   m_Layer: 6
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -221,7 +223,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerProperty: {fileID: 11400000, guid: 94434b52069cc2f4ba70d07e78b196cd, type: 2}
---- !u!114 &5502800535980724027
+--- !u!114 &7353934046920636666
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -236,17 +238,43 @@ MonoBehaviour:
   SyncPositionX: 1
   SyncPositionY: 1
   SyncPositionZ: 1
-  SyncRotAngleX: 0
+  SyncRotAngleX: 1
   SyncRotAngleY: 1
-  SyncRotAngleZ: 0
+  SyncRotAngleZ: 1
   SyncScaleX: 0
   SyncScaleY: 0
   SyncScaleZ: 0
-  PositionThreshold: 0.0009
+  PositionThreshold: 0.001
   RotAngleThreshold: 0.01
   ScaleThreshold: 0.01
   InLocalSpace: 0
   Interpolate: 1
+--- !u!136 &1260899820477784982
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4059882241921932020}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 2.05
+  m_Height: 20
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &770955626032095538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4059882241921932020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a64307260a134267a04b5addff60a462, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7282072317809821654
 GameObject:
   m_ObjectHideFlags: 0

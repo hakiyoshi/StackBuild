@@ -24,7 +24,7 @@ namespace StackBuild
             var (_, playerInput, inputSender) = GetInputSet();
             if (!IsOwner)
             {
-                LostInput(playerInput, inputSender);
+                LostInput(playerInput);
             }
             else
             {
@@ -52,7 +52,7 @@ namespace StackBuild
                 return;
 
             var (_, playerInput, inputSender) = GetInputSet();
-            GainedInput(playerInput, inputSender);
+            GainedInput(playerInput);
 
             Debug.Log(gameObject.name + "GainedOwnership");
         }
@@ -60,20 +60,18 @@ namespace StackBuild
         public override void OnLostOwnership()
         {
             var (_, playerInput, inputSender) = GetInputSet();
-            LostInput(playerInput, inputSender);
+            LostInput(playerInput);
 
             Debug.Log(gameObject.name + "LostOwnership");
         }
 
-        void LostInput(PlayerInput playerInput, InputSender inputSender)
+        void LostInput(PlayerInput playerInput)
         {
             playerInput.gameObject.SetActive(false);
-            inputSender.AllSetIsPause(true);
         }
 
-        void GainedInput(PlayerInput playerInput, InputSender inputSender)
+        void GainedInput(PlayerInput playerInput)
         {
-            inputSender.AllSetIsPause(false);
             playerInput.gameObject.SetActive(true);
             SwitchDevice(playerInput);
         }

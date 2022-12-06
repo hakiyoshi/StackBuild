@@ -229,10 +229,6 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
-    - target: {fileID: 4059882241921932020, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
-      propertyPath: m_TagString
-      value: P2
-      objectReference: {fileID: 0}
     - target: {fileID: 4173130662940194767, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
       propertyPath: CatchEffectObject
       value: 
@@ -299,6 +295,10 @@ PrefabInstance:
       propertyPath: playerProperty
       value: 
       objectReference: {fileID: 11400000, guid: 94434b52069cc2f4ba70d07e78b196cd, type: 2}
+    - target: {fileID: 1260899820477784982, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
+      propertyPath: m_Radius
+      value: 2.05
+      objectReference: {fileID: 0}
     - target: {fileID: 1939678117923349876, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
       propertyPath: data
       value: 0
@@ -358,10 +358,6 @@ PrefabInstance:
     - target: {fileID: 4059882241921932020, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
       propertyPath: m_Name
       value: Red
-      objectReference: {fileID: 0}
-    - target: {fileID: 4059882241921932020, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
-      propertyPath: m_TagString
-      value: P1
       objectReference: {fileID: 0}
     - target: {fileID: 4173130662940194767, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
       propertyPath: inputSender
