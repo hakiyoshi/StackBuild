@@ -1,7 +1,9 @@
 using System;
+using DG.Tweening;
 using UniRx;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace StackBuild
 {
@@ -29,23 +31,29 @@ namespace StackBuild
 
         private void Start()
         {
+            //キャラクターコントローラー
             if (TryGetComponent(out characterController))
             {
                 characterController.detectCollisions = false;
                 characterController.radius = property.Model.SphereColliderRadius;
             }
 
-            if (TryGetComponent(out SphereCollider collider))
+            //コライダーのサイズセット
+            if (TryGetComponent(out CapsuleCollider collider))
                 collider.radius = property.Model.SphereColliderRadius;
 
+            //開始時のY座標を取得
             startY = transform.position.y;
 
+            //開始時の回転を取得
             targetLook = transform.rotation;
 
+            //ダッシュ攻撃ヒット時の処理
             playerProperty.DashHitAction.Subscribe(x =>
             {
                 inputSender.Move.isPause = true;
                 dashHit = true;
+                velocity = Vector3.zero;
 
                 //指定時間後スタンフラグを元に戻す
                 Observable.Timer(TimeSpan.FromSeconds(x.characterProperty.Dash.Attack.StunTime)).Subscribe(_ =>
@@ -69,9 +77,16 @@ namespace StackBuild
             if(!dashHit)
                 characterController.Move(velocity * Time.deltaTime);
 
+            //Yを固定する
             var position = transform.position;
             position = new Vector3(position.x, startY, position.z);
             transform.position = position;
+        }
+
+        private void OnControllerColliderHit(ControllerColliderHit hit)
+        {
+            //何かに当たったらvelocityを0にする
+            velocity = Vector3.zero;
         }
 
         void MoveVelocity()
@@ -126,6 +141,7 @@ namespace StackBuild
 
         Vector3 CreateMoveDirection()
         {
+            //ポーズしてたら0で返す
             if(inputSender.Move.isPause)
                 return Vector3.zero;
 
