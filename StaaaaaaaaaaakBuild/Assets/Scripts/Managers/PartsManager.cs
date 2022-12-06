@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using UniRx;
 using Unity.Netcode;
 using UnityEngine;
 using VContainer;
@@ -15,6 +17,7 @@ namespace StackBuild
         [SerializeField] private PartsCore prefab;
         [SerializeField] private CanonManager canonManager;
 
+        private PartsId[] idArray;
         public PartsPool pool { get; private set; }
 
         public int count => pool.Count;
@@ -23,21 +26,20 @@ namespace StackBuild
         {
             pool = new PartsPool(prefab, transform);
 
+            idArray = settings.partsDataDictionary.Keys.ToArray();
+
             SpawnTimerAsync(this.GetCancellationTokenOnDestroy()).Forget();
         }
 
         private PartsCore RandomMeshSpawn()
         {
-            return Spawn(Random.Range(0, settings.partsMeshList.Count));
+            return Spawn( idArray[Random.Range(0, idArray.Count())] );
         }
 
-        private PartsCore Spawn(int index)
+        private PartsCore Spawn(PartsId id)
         {
             var core = pool.Rent();
-            if (core.gameObject.TryGetComponent(out PartsMesh partsMesh))
-            {
-                partsMesh.SetPartsData(index);
-            }
+            core.SetPartsID(id);
             return core;
         }
 
