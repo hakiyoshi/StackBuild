@@ -5,12 +5,38 @@ using UnityEngine;
 
 namespace StackBuild
 {
-    [Serializable]
-    public class PartsMeshData
+    public enum PartsId
     {
-        public string name;
+        Default,
+
+        SmallCube,
+
+        SmallMetal,
+        SmallPlastic,
+        SmallWood,
+
+        MediumMetal,
+        MediumPlastic,
+        MediumWood,
+
+        LargeMetal,
+        LargePlastic,
+        LargeWood,
+    }
+
+    public enum MaterialId
+    {
+        Metal,
+        Plastic,
+        Wood,
+    }
+
+    [Serializable]
+    public class PartsData
+    {
         public Material material;
         public Mesh mesh;
+        public SDictionary<MaterialId, int> containsMaterials;
     }
     [Serializable]
     public class PartsSpawnRule
@@ -20,13 +46,26 @@ namespace StackBuild
         public float minSeconds;
         public float maxSeconds;
     }
+    [Serializable]
+    public class StackData
+    {
+        public string name;
+        public Material material;
+        public Mesh mesh;
+        public int count;
+        public int score;
+        public SDictionary<MaterialId, int> needMaterials;
+    }
 
     [CreateAssetMenu(menuName = "StackBuild/In-Game Settings")]
     public class InGameSettings : ScriptableObject
     {
         [Header("Parts")]
-        public List<PartsMeshData> partsMeshList = new();
+        public SDictionary<PartsId, PartsData> partsDataDictionary = new();
         public List<PartsSpawnRule> spawnRuleList = new();
+
+        [Header("Building")]
+        public List<StackData> stackDataList = new();
     }
 }
 
