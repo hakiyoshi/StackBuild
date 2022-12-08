@@ -16,7 +16,7 @@ namespace StackBuild
         {
             TryGetComponent(out characterController);
 
-            playerProperty.DashHitAction.Subscribe(x =>
+            playerProperty.HitDashAttack.Subscribe(x =>
             {
 
                 var dir = (transform.position - x.PlayerObject.transform.position).normalized;

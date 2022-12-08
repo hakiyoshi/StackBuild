@@ -1,11 +1,10 @@
 ﻿using System;
-using DG.Tweening;
 using UniRx;
 using UnityEngine;
 
 namespace StackBuild
 {
-    public class DashHitAnimation : MonoBehaviour
+    public class PlayerHitEffect : MonoBehaviour
     {
         [SerializeField] private PlayerProperty playerProperty;
 
@@ -13,7 +12,6 @@ namespace StackBuild
         {
             playerProperty.HitDashAttack.Subscribe(x =>
             {
-                transform.DOShakeRotation(x.characterProperty.Dash.Attack.StunTime, 10.0f, 5, 10f);
 
             }).AddTo(this);
         }

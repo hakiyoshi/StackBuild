@@ -9,7 +9,7 @@ namespace StackBuild
         [field: SerializeField] public CharacterProperty characterProperty { get; private set; }
 
         public GameObject PlayerObject = null;
-        public Subject<PlayerProperty> DashHitAction { get; private set; } = new Subject<PlayerProperty>();
+        public Subject<PlayerProperty> HitDashAttack { get; private set; } = new Subject<PlayerProperty>();
 
 
         public void Initialize(CharacterProperty character)

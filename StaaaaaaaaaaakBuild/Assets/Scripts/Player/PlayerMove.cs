@@ -44,7 +44,7 @@ namespace StackBuild
             startY = transform.position.y;
 
             //ダッシュ攻撃ヒット時の処理
-            playerProperty.DashHitAction.Subscribe(x =>
+            playerProperty.HitDashAttack.Subscribe(x =>
             {
                 inputSender.Move.isPause = true;
                 dashHit = true;

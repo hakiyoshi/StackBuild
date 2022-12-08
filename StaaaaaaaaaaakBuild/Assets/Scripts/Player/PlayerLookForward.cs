@@ -28,7 +28,7 @@ namespace StackBuild
             targetLook = transform.rotation;
 
             //ダッシュ攻撃が当たったら
-            playerProperty.DashHitAction.Subscribe(x =>
+            playerProperty.HitDashAttack.Subscribe(x =>
             {
                 dashHit = true;
 

@@ -61,7 +61,7 @@ namespace StackBuild
             if (!IsOwner)
                 return;
 
-            playerProperty.DashHitAction.OnNext(playerProperty);
+            playerProperty.HitDashAttack.OnNext(playerProperty);
         }
 
         private void Start()
@@ -92,7 +92,7 @@ namespace StackBuild
                 DashServerRpc();
             }).AddTo(this);
 
-            playerProperty.DashHitAction.Subscribe(x =>
+            playerProperty.HitDashAttack.Subscribe(x =>
             {
                 //ダッシュを強制終了させる
                 dashSequence.Kill(true);
@@ -126,7 +126,7 @@ namespace StackBuild
                 }
                 else
                 {
-                    playerDash.playerProperty.DashHitAction.OnNext(playerProperty);
+                    playerDash.playerProperty.HitDashAttack.OnNext(playerProperty);
                 }
             }
 
