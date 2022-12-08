@@ -36,10 +36,6 @@ namespace StackBuild
                 characterController.radius = property.Model.SphereColliderRadius;
             }
 
-            //コライダーのサイズセット
-            if (TryGetComponent(out CapsuleCollider collider))
-                collider.radius = property.Model.SphereColliderRadius;
-
             //開始時のY座標を取得
             startY = transform.position.y;
 

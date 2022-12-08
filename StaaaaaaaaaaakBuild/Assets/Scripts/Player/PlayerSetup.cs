@@ -10,6 +10,10 @@ namespace StackBuild
         private void Start()
         {
             playerProperty.PlayerObject = this.gameObject;
+
+            //コライダーのサイズセット
+            if (TryGetComponent(out CapsuleCollider collider))
+                collider.radius = playerProperty.characterProperty.Model.SphereColliderRadius;
         }
     }
 }

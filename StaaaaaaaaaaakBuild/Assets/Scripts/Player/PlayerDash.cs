@@ -114,7 +114,10 @@ namespace StackBuild
 
         private void OnControllerColliderHit(ControllerColliderHit hit)
         {
-            if (!IsSpawned || !IsOwner || velocity.sqrMagnitude <= 0.0f)
+            if (IsSpawned && !IsOwner)
+                return;
+
+            if (velocity.sqrMagnitude <= 0.0f)
                 return;
 
             //ヒット時の相手にヒット情報を送る
@@ -133,6 +136,8 @@ namespace StackBuild
             //当たったらその場でダッシュを止める
             velocity = Vector3.zero;
             dashSequence.Kill(true);
+
+
         }
 
         void DashMove()
