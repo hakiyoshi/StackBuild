@@ -30,7 +30,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2756057559404044433}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0.00021985787, y: 0, z: 0}
 --- !u!1 &252741625754070343
 GameObject:
   m_ObjectHideFlags: 0
@@ -322,7 +322,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4633629665405224743}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0.0002002716, z: 0}
 --- !u!1 &1816379272024549549
 GameObject:
   m_ObjectHideFlags: 0
@@ -612,7 +612,7 @@ Transform:
   - {fileID: 4633629665405224743}
   m_Father: {fileID: 1988481106966465216}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 12.5766735, y: 0, z: 0}
 --- !u!1 &2606152352163220856
 GameObject:
   m_ObjectHideFlags: 0
@@ -644,7 +644,7 @@ Transform:
   - {fileID: 2931046857605354809}
   m_Father: {fileID: 8379320679731032563}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0.00005870578, y: -118.78473, z: 179.9999}
 --- !u!1 &2755326461222878724
 GameObject:
   m_ObjectHideFlags: 0
@@ -1001,7 +1001,7 @@ Transform:
   - {fileID: 2756057559404044433}
   m_Father: {fileID: 1988481106966465216}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 4.975379, y: 1.1927872, z: -1.2006671}
 --- !u!1 &4305511814789202023
 GameObject:
   m_ObjectHideFlags: 0
@@ -1698,7 +1698,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6007582228153578472}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0.00011172126, y: 0, z: 0}
 --- !u!1 &6756010720644631697
 GameObject:
   m_ObjectHideFlags: 0
@@ -2450,7 +2450,7 @@ Transform:
   - {fileID: 9011285228917880658}
   m_Father: {fileID: 8379320679731032563}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -0.000053796037, y: -61.215267, z: -0.00009093647}
 --- !u!1 &9065697072586319835
 GameObject:
   m_ObjectHideFlags: 0

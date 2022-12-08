@@ -21,8 +21,6 @@ namespace StackBuild
             }
         }
 
-        private Quaternion targetLook;
-
         private CharacterController characterController;
         private Vector3 velocity = Vector3.zero;
         private float startY = 20.0f;
@@ -44,9 +42,6 @@ namespace StackBuild
 
             //開始時のY座標を取得
             startY = transform.position.y;
-
-            //開始時の回転を取得
-            targetLook = transform.rotation;
 
             //ダッシュ攻撃ヒット時の処理
             playerProperty.DashHitAction.Subscribe(x =>
@@ -70,9 +65,6 @@ namespace StackBuild
                 return;
 
             MoveVelocity();
-            if(!dashHit)
-                LookForward();
-            Slope();
 
             if(!dashHit)
                 characterController.Move(velocity * Time.deltaTime);
@@ -111,32 +103,6 @@ namespace StackBuild
             if (velocity.sqrMagnitude >=
                 property.Move.MaxSpeed * property.Move.MaxSpeed)
                 velocity = velocity.normalized * property.Move.MaxSpeed;
-        }
-
-        void LookForward()
-        {
-            // 移動の入力をしているか、移動ベクトルが0じゃないか
-            if (CreateMoveDirection().sqrMagnitude > 0.0f && velocity.sqrMagnitude > 0.0f)
-                targetLook = Quaternion.LookRotation(-velocity);
-
-            //ターゲットの方向を向く
-            transform.rotation = Quaternion.Lerp(transform.rotation,
-                targetLook,
-                property.Move.LookForwardTime * Time.deltaTime);
-        }
-
-        void Slope()
-        {
-            //傾き率を計算
-            var raito = velocity.sqrMagnitude /
-                        (property.Move.MaxSpeed * property.Move.MaxSpeed);
-
-            //傾く方向を計算
-            var rotation = transform.rotation;
-            var target = Quaternion.AngleAxis(property.Move.SlopeAngle * raito, -transform.right) * rotation;
-
-            //傾けぇ
-            transform.rotation = Quaternion.Lerp(rotation, target, property.Move.SlopeTime * Time.deltaTime);
         }
 
         Vector3 CreateMoveDirection()
