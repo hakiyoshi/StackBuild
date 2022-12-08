@@ -20,6 +20,17 @@ namespace StackBuild
         private void Start()
         {
             modelSetup.modelObject.TryGetComponent(out animator);
+
+            inputSender.Dash.sender.ThrottleFirst(TimeSpan.FromSeconds(playerProperty.characterProperty.Dash.DashCoolTime)).Subscribe(x =>
+            {
+                animator.SetBool("Dash", true);
+
+                Observable.Timer(TimeSpan.FromSeconds(playerProperty.characterProperty.Dash.DashAccelerationTime)).Subscribe(x =>
+                {
+                    animator.SetBool("Dash", false);
+                }).AddTo(this);
+
+            }).AddTo(this);
         }
 
         private void Update()
