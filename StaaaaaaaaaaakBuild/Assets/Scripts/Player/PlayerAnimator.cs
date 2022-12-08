@@ -1,13 +1,10 @@
 ﻿using System;
-using Cysharp.Threading.Tasks;
-using DG.Tweening;
 using UniRx;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace StackBuild
 {
-    public class PlayerAnime : MonoBehaviour
+    public class PlayerAnimator : MonoBehaviour
     {
         [SerializeField] private ModelSetup modelSetup;
         [SerializeField] private PlayerProperty playerProperty;
@@ -23,13 +20,7 @@ namespace StackBuild
 
             inputSender.Dash.sender.ThrottleFirst(TimeSpan.FromSeconds(playerProperty.characterProperty.Dash.DashCoolTime)).Subscribe(x =>
             {
-                animator.SetBool("Dash", true);
-
-                Observable.Timer(TimeSpan.FromSeconds(playerProperty.characterProperty.Dash.DashAccelerationTime)).Subscribe(x =>
-                {
-                    animator.SetBool("Dash", false);
-                }).AddTo(this);
-
+                DashAnimation();
             }).AddTo(this);
         }
 
@@ -49,9 +40,14 @@ namespace StackBuild
             animator.SetFloat("Blend", animeBlend);
         }
 
-        Vector3 CreateMoveDirection()
+        void DashAnimation()
         {
-            return new Vector3(inputSender.Move.Value.x, 0.0f, inputSender.Move.Value.y);
+            animator.SetBool("Dash", true);
+
+            Observable.Timer(TimeSpan.FromSeconds(playerProperty.characterProperty.Dash.DashAccelerationTime)).Subscribe(x =>
+            {
+                animator.SetBool("Dash", false);
+            }).AddTo(this);
         }
     }
 }
