@@ -2,7 +2,7 @@
 
 namespace StackBuild
 {
-    public class EffectSetup : MonoBehaviour
+    public class CatchEffectSetup : MonoBehaviour
     {
         [SerializeField] private PlayerProperty playerProperty;
         [SerializeField] private MeshRenderer effectMeshRenderer;

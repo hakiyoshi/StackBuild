@@ -177,6 +177,10 @@ PrefabInstance:
       propertyPath: playerProperty
       value: 
       objectReference: {fileID: 11400000, guid: 8487fa649341de547a8fae4f65449f75, type: 2}
+    - target: {fileID: 3520838869869702648, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
+      propertyPath: m_Name
+      value: Particle
+      objectReference: {fileID: 0}
     - target: {fileID: 3597133375251422977, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
       propertyPath: inputSender
       value: 
@@ -335,6 +339,10 @@ PrefabInstance:
       propertyPath: playerProperty
       value: 
       objectReference: {fileID: 11400000, guid: 94434b52069cc2f4ba70d07e78b196cd, type: 2}
+    - target: {fileID: 3520838869869702648, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
+      propertyPath: m_Name
+      value: Particle
+      objectReference: {fileID: 0}
     - target: {fileID: 4059882241921932018, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
       propertyPath: playerProperty
       value: 
