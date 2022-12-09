@@ -73,6 +73,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1226202788620534386}
   - component: {fileID: 8418166405217333295}
+  - component: {fileID: 1873032510937793623}
   m_Layer: 6
   m_Name: Particle
   m_TagString: Untagged
@@ -110,6 +111,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerProperty: {fileID: 11400000, guid: 94434b52069cc2f4ba70d07e78b196cd, type: 2}
   <StunParticle>k__BackingField: {fileID: 5094709088034505819}
+--- !u!114 &1873032510937793623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3520838869869702648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02dc4af2ea2d4e5592159310c245ed9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerProperty: {fileID: 11400000, guid: 94434b52069cc2f4ba70d07e78b196cd, type: 2}
+  particle: {fileID: 8418166405217333295}
 --- !u!1 &4059882241921932020
 GameObject:
   m_ObjectHideFlags: 0

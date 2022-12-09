@@ -6,19 +6,23 @@ namespace StackBuild.Particle
     public class ParticleSetup : MonoBehaviour
     {
         [SerializeField] private PlayerProperty playerProperty;
-        [field: SerializeField] public ParticleSystem StunParticle { get; private set; }
+        [field: SerializeField] public ParticleSystem Stun { get; private set; }
+        public ParticleSystem Hit { get; private set; }
 
         private void Start()
         {
             //スタン
-            StunSetup();
+            //StunSetup();
+
+            //ヒット
+
         }
 
         void StunSetup()
         {
-            var main = StunParticle.main;
+            var main = Stun.main;
             main.duration = playerProperty.characterProperty.Attack.StunTime;
-            foreach (Transform child in StunParticle.transform)
+            foreach (Transform child in Stun.transform)
             {
                 if (!child.TryGetComponent(out ParticleSystem particle))
                     continue;
@@ -26,6 +30,11 @@ namespace StackBuild.Particle
                 main = particle.main;
                 main.duration = playerProperty.characterProperty.Attack.StunTime;
             }
+        }
+
+        void HitSetup()
+        {
+
         }
     }
 }

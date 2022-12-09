@@ -129,16 +129,15 @@ namespace StackBuild
                 }
                 else
                 {
+                    var hitPoint = new Vector3(hit.point.x, transform.position.y + 1.0f, hit.point.z);
                     playerDash.playerProperty.HitDashAttack.OnNext(
-                        new PlayerProperty.DashAttackInfo(playerProperty, hit.point));
+                        new PlayerProperty.DashAttackInfo(playerProperty, hitPoint));
                 }
             }
 
             //当たったらその場でダッシュを止める
             velocity = Vector3.zero;
             dashSequence.Kill(true);
-
-
         }
 
         void DashMove()

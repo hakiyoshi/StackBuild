@@ -11,20 +11,22 @@ namespace StackBuild
 
         [SerializeField] private ParticleSetup particle;
 
-        private Vector3 hitPosition;
-
         private void Start()
         {
             playerProperty.HitDashAttack.Subscribe(x =>
             {
-                particle.StunParticle.transform.position = hitPosition;
-                particle.StunParticle.Play();
+                if (x.playerProperty.characterProperty.Attack.StunTime != 0)
+                    StunParticle(x.HitPoint);
+
+
             }).AddTo(this);
         }
 
-        private void OnControllerColliderHit(ControllerColliderHit hit)
+        void StunParticle(in Vector3 hitPoint)
         {
-            hitPosition = hit.point;
+            particle.Stun.transform.position = hitPoint;
+            particle.Stun.Play();
+
         }
     }
 }
