@@ -19,11 +19,11 @@ namespace StackBuild
             playerProperty.HitDashAttack.Subscribe(x =>
             {
 
-                var dir = (transform.position - x.PlayerObject.transform.position).normalized;
-                var vec = dir * x.characterProperty.Attack.KnockbackPower;
+                var dir = (transform.position - x.playerProperty.PlayerObject.transform.position).normalized;
+                var vec = dir * x.playerProperty.characterProperty.Attack.KnockbackPower;
 
-                DOVirtual.Vector3(vec, Vector3.zero, x.characterProperty.Attack.KnockbackTime,
-                    value => velocity = value).SetEase(x.characterProperty.Attack.KnockbackEase);
+                DOVirtual.Vector3(vec, Vector3.zero, x.playerProperty.characterProperty.Attack.KnockbackTime,
+                    value => velocity = value).SetEase(x.playerProperty.characterProperty.Attack.KnockbackEase);
             }).AddTo(this);
         }
 

@@ -3481,6 +3481,11 @@ Transform:
   m_Father: {fileID: 1262796433}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 199.99536, y: 347.8596, z: 180.7367}
+--- !u!198 &1671554466 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 3295471282153348588, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
+  m_PrefabInstance: {fileID: 7714621389944949881}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1812539497
 GameObject:
   m_ObjectHideFlags: 0
@@ -4135,6 +4140,10 @@ PrefabInstance:
       propertyPath: testObject
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 2295853917975292312, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
+      propertyPath: <stunParticle>k__BackingField
+      value: 
+      objectReference: {fileID: 1671554466}
     - target: {fileID: 2833336638702474892, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
       propertyPath: SyncScaleX
       value: 0
@@ -4226,6 +4235,14 @@ PrefabInstance:
     - target: {fileID: 6288215957788482215, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 201348345
+      objectReference: {fileID: 0}
+    - target: {fileID: 6616736780759478707, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
+      propertyPath: m_Name
+      value: Particle
+      objectReference: {fileID: 0}
+    - target: {fileID: 6616736781406090319, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
+      propertyPath: m_Name
+      value: Particle
       objectReference: {fileID: 0}
     - target: {fileID: 7714621389661941214, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
       propertyPath: m_RootOrder

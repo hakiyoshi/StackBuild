@@ -11,12 +11,20 @@ namespace StackBuild
 
         [SerializeField] private ParticleSetup particle;
 
+        private Vector3 hitPosition;
+
         private void Start()
         {
             playerProperty.HitDashAttack.Subscribe(x =>
             {
-
+                particle.StunParticle.transform.position = hitPosition;
+                particle.StunParticle.Play();
             }).AddTo(this);
+        }
+
+        private void OnControllerColliderHit(ControllerColliderHit hit)
+        {
+            hitPosition = hit.point;
         }
     }
 }

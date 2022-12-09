@@ -33,7 +33,7 @@ namespace StackBuild
                 dashHit = true;
 
                 //指定時間後スタンフラグを元に戻す
-                Observable.Timer(TimeSpan.FromSeconds(x.characterProperty.Attack.StunTime)).Subscribe(_ =>
+                Observable.Timer(TimeSpan.FromSeconds(x.playerProperty.characterProperty.Attack.StunTime)).Subscribe(_ =>
                 {
                     dashHit = false;
                 }).AddTo(this);

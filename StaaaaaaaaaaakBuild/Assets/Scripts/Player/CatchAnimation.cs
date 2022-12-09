@@ -74,7 +74,7 @@ namespace StackBuild
                 inputSender.Catch.isPause = true;
 
                 //指定時間後に掴み無効かを解除する
-                Observable.Timer(TimeSpan.FromSeconds(x.characterProperty.Attack.CatchInvalidTime)).Subscribe(_ =>
+                Observable.Timer(TimeSpan.FromSeconds(x.playerProperty.characterProperty.Attack.CatchInvalidTime)).Subscribe(_ =>
                 {
                     inputSender.Catch.isPause = false;
                 }).AddTo(this);

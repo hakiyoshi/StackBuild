@@ -13,7 +13,10 @@ namespace StackBuild
         {
             playerProperty.HitDashAttack.Subscribe(x =>
             {
-                transform.DOShakeRotation(x.characterProperty.Attack.StunTime, 10.0f, 5, 10f);
+                if (x.playerProperty.characterProperty.Attack.StunTime == 0.0f)
+                    return;
+
+                transform.DOShakeRotation(x.playerProperty.characterProperty.Attack.StunTime, 10.0f, 5, 10f);
 
             }).AddTo(this);
         }

@@ -8,8 +8,18 @@ namespace StackBuild
     {
         [field: SerializeField] public CharacterProperty characterProperty { get; private set; }
 
-        public GameObject PlayerObject = null;
-        public Subject<PlayerProperty> HitDashAttack { get; private set; } = new Subject<PlayerProperty>();
+        [HideInInspector] public GameObject PlayerObject = null;
+
+        public struct DashAttackInfo
+        {
+            public PlayerProperty playerProperty;
+
+            public DashAttackInfo(PlayerProperty playerProperty)
+            {
+                this.playerProperty = playerProperty;
+            }
+        }
+        public Subject<DashAttackInfo> HitDashAttack { get; private set; } = new Subject<DashAttackInfo>();
 
 
         public void Initialize(CharacterProperty character)

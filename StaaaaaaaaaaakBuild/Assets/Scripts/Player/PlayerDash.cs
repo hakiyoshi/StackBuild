@@ -61,7 +61,7 @@ namespace StackBuild
             if (!IsOwner)
                 return;
 
-            playerProperty.HitDashAttack.OnNext(playerProperty);
+            playerProperty.HitDashAttack.OnNext(new PlayerProperty.DashAttackInfo(playerProperty));
         }
 
         private void Start()
@@ -99,7 +99,7 @@ namespace StackBuild
                 inputSender.Dash.isPause = true;
 
                 //指定時間経過後フラグを元に戻す
-                Observable.Timer(TimeSpan.FromSeconds(x.characterProperty.Attack.StunTime)).Subscribe(_ =>
+                Observable.Timer(TimeSpan.FromSeconds(x.playerProperty.characterProperty.Attack.StunTime)).Subscribe(_ =>
                 {
                     inputSender.Dash.isPause = false;
                 }).AddTo(this);
@@ -129,7 +129,7 @@ namespace StackBuild
                 }
                 else
                 {
-                    playerDash.playerProperty.HitDashAttack.OnNext(playerProperty);
+                    playerDash.playerProperty.HitDashAttack.OnNext(new PlayerProperty.DashAttackInfo(playerProperty));
                 }
             }
 
