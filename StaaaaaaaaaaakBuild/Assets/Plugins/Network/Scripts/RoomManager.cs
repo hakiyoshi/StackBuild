@@ -19,6 +19,7 @@ namespace NetworkSystem
         [SerializeField] private PlayerOption playerOption;
 
         private string LobbyCode = "";
+        private Rect windowRect = new Rect(0f, 0f, 200f, 100f);
 
 #if UNITY_EDITOR
         [SerializeField] private SceneAsset LoadScene;
@@ -37,6 +38,7 @@ namespace NetworkSystem
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
         [SerializeField] private bool DrawGui = true;
+
 #endif
 
         private void Awake()
@@ -49,69 +51,58 @@ namespace NetworkSystem
             if (!DrawGui)
                 return;
 
-            NetworkGUIWindow(0);
+            windowRect = GUILayout.Window(0, windowRect, NetworkGUIWindow, "Network");
         }
 
         void NetworkGUIWindow(int windowId)
         {
             const int fontSize = 25;
 
-            var button = GUI.skin.button;
-            button.fontSize = fontSize;
-
-            var textField = GUI.skin.textField;
-            textField.fontSize = fontSize;
-
-            var label = GUI.skin.label;
-            label.fontSize = fontSize;
-
-            GUILayout.BeginVertical(GUI.skin.window);
-
-            if (GUILayout.Button("Server", button))
+            if (GUILayout.Button("Server"))
             {
                 NetworkSystemManager.CreateRoomAsync(true, lobby, relay, lobbyOption, playerOption, this.GetCancellationTokenOnDestroy()).Forget();
             }
 
-            if (GUILayout.Button("Host", button))
+            if (GUILayout.Button("Host"))
             {
                 NetworkSystemManager.CreateRoomAsync(false, lobby, relay, lobbyOption, playerOption, this.GetCancellationTokenOnDestroy()).Forget();
             }
 
-            if (GUILayout.Button("QuickJoin", button))
+            if (GUILayout.Button("QuickJoin"))
             {
                 NetworkSystemManager.ClientQuickAsync(lobby, relay, this.GetCancellationTokenOnDestroy()).Forget();
             }
 
             GUILayout.Space(5);
-            LobbyCode = GUILayout.TextField(LobbyCode, 25, textField);
-            if (GUILayout.Button("LobbyCodeJoin", button))
+            LobbyCode = GUILayout.TextField(LobbyCode, 25);
+            if (GUILayout.Button("LobbyCodeJoin"))
             {
                 NetworkSystemManager.ClientCodeAsync(lobby, relay, LobbyCode, this.GetCancellationTokenOnDestroy()).Forget();
             }
 
-            if (GUILayout.Button("LobbyExit", button))
+            if (GUILayout.Button("LobbyExit"))
             {
                 NetworkSystemManager.NetworkExit(lobby, relay).Forget();
             }
 
             GUILayout.Space(10);
-            loadSceneName = GUILayout.TextField(loadSceneName, 25, textField);
-            if (GUILayout.Button("NextScene", button) && !string.IsNullOrEmpty(loadSceneName))
+            loadSceneName = GUILayout.TextField(loadSceneName, 25);
+            if (GUILayout.Button("NextScene") && !string.IsNullOrEmpty(loadSceneName))
             {
                 NetworkSystemSceneManager.LoadScene(loadSceneName);
             }
 
             if (lobby.lobbyInfo != null)
             {
-                GUILayout.Label("ロビー名: " + lobby.lobbyInfo.Name, label);
-                GUILayout.Label("ロビーコード: " + lobby.lobbyInfo.LobbyCode, label);
+                GUILayout.Label("ロビー名: " + lobby.lobbyInfo.Name);
+                GUILayout.Label("ロビーコード: " + lobby.lobbyInfo.LobbyCode);
 
-                GUILayout.Label("ロビープレイヤー数: " + lobby.lobbyInfo.Players.Count, label);
+                GUILayout.Label("ロビープレイヤー数: " + lobby.lobbyInfo.Players.Count);
                 if (NetworkManager.Singleton.IsServer)
-                    GUILayout.Label("リレープレイヤー数: " + NetworkManager.Singleton.ConnectedClients.Count, label);
+                    GUILayout.Label("リレープレイヤー数: " + NetworkManager.Singleton.ConnectedClients.Count);
 
                 string playerId = lobby.lobbyInfo.Players.Aggregate("", (current, player) => current + (player.Id + "\n"));
-                GUILayout.Label("プレイヤーID\n" + playerId, label);
+                GUILayout.Label("プレイヤーID\n" + playerId);
 
                 if (lobby.lobbyInfo.Data != null)
                 {
@@ -120,12 +111,12 @@ namespace NetworkSystem
                         GUILayout.Label(
                             $"key: {option.Key}\nvalue: {option.Value.Value}\n" +
                             $"visibility: {option.Value.Visibility}" +
-                            $"index: {option.Value.Index}", label);
+                            $"index: {option.Value.Index}");
                     }
                 }
             }
 
-            GUILayout.EndVertical();
+            GUI.DragWindow();
         }
 
         private async UniTask NetworkConnectionAtStartAsync(CancellationToken token)
