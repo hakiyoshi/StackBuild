@@ -11,12 +11,21 @@ namespace StackBuild.Particle
         private void Start()
         {
             //スタン
-
+            StunSetup();
         }
 
         void StunSetup()
         {
             var main = stunParticle.main;
+            main.duration = playerProperty.characterProperty.Attack.StunTime;
+            foreach (Transform child in stunParticle.transform)
+            {
+                if (!child.TryGetComponent(out ParticleSystem particle))
+                    continue;
+
+                main = particle.main;
+                main.duration = playerProperty.characterProperty.Attack.StunTime;
+            }
         }
     }
 }

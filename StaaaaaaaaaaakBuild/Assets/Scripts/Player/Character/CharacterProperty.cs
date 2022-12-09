@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace StackBuild
 {
-    [CreateAssetMenu(menuName = "Game/CharacterProperty/CharacterProperty")]
+    [CreateAssetMenu(menuName = "Game/CharacterProperty")]
     public class CharacterProperty : ScriptableObject
     {
         [field: SerializeField] public ModelProperty Model { get; private set; }

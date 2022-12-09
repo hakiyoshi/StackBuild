@@ -108,6 +108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb7d7f0aafda4e15ace243ad4b0ad756, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerProperty: {fileID: 11400000, guid: 94434b52069cc2f4ba70d07e78b196cd, type: 2}
   stunParticle: {fileID: 5094709088034505819}
 --- !u!1 &4059882241921932020
 GameObject:
