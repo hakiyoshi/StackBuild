@@ -18,7 +18,7 @@ namespace StackBuild
                 if (x.playerProperty.characterProperty.Attack.StunTime != 0)
                     StunParticle(x.HitPoint);
 
-
+                HitParticle(x.HitPoint);
             }).AddTo(this);
         }
 
@@ -26,7 +26,12 @@ namespace StackBuild
         {
             particle.Stun.transform.position = hitPoint;
             particle.Stun.Play();
+        }
 
+        void HitParticle(in Vector3 hitPoint)
+        {
+            particle.Hit.transform.position = hitPoint;
+            particle.Hit.Play();
         }
     }
 }

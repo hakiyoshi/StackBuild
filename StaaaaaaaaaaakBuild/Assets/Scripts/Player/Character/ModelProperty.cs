@@ -7,5 +7,6 @@ namespace StackBuild
     {
         [field: SerializeField] public GameObject CharacterModelPrefab { get; private set; }
         [field: SerializeField] public float SphereColliderRadius { get; private set; } = 3.5f;
+        [field: SerializeField] public GameObject HitEffect { get; private set; }
     }
 }

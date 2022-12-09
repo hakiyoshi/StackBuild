@@ -1,4 +1,5 @@
 ﻿using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace StackBuild.Particle
@@ -15,7 +16,7 @@ namespace StackBuild.Particle
             //StunSetup();
 
             //ヒット
-
+            HitSetup();
         }
 
         void StunSetup()
@@ -34,7 +35,8 @@ namespace StackBuild.Particle
 
         void HitSetup()
         {
-
+            Hit = Instantiate(playerProperty.characterProperty.Model.HitEffect, this.transform)
+                .GetComponent<ParticleSystem>();
         }
     }
 }
