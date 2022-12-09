@@ -20,10 +20,10 @@ namespace StackBuild
             {
 
                 var dir = (transform.position - x.PlayerObject.transform.position).normalized;
-                var vec = dir * x.characterProperty.Dash.Attack.KnockbackPower;
+                var vec = dir * x.characterProperty.Attack.KnockbackPower;
 
-                DOVirtual.Vector3(vec, Vector3.zero, x.characterProperty.Dash.Attack.KnockbackTime,
-                    value => velocity = value).SetEase(x.characterProperty.Dash.Attack.KnockbackEase);
+                DOVirtual.Vector3(vec, Vector3.zero, x.characterProperty.Attack.KnockbackTime,
+                    value => velocity = value).SetEase(x.characterProperty.Attack.KnockbackEase);
             }).AddTo(this);
         }
 

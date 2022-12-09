@@ -9,6 +9,7 @@ namespace StackBuild
         [field: SerializeField] public ModelProperty Model { get; private set; }
         [field: SerializeField] public MoveProperty Move { get; private set; }
         [field: SerializeField] public DashProperty Dash { get; private set; }
+        [field: SerializeField] public AttackProperty Attack { get; private set; }
         [field: SerializeField] public CatchProperty Catch { get; private set; }
     }
 }

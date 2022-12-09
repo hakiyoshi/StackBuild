@@ -47,7 +47,7 @@ namespace StackBuild
                 velocity = Vector3.zero;
 
                 //指定時間後スタンフラグを元に戻す
-                Observable.Timer(TimeSpan.FromSeconds(x.characterProperty.Dash.Attack.StunTime)).Subscribe(_ =>
+                Observable.Timer(TimeSpan.FromSeconds(x.characterProperty.Attack.StunTime)).Subscribe(_ =>
                 {
                     inputSender.Move.isPause = false;
                     dashHit = false;

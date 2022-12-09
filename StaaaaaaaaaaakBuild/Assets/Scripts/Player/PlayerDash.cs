@@ -99,7 +99,7 @@ namespace StackBuild
                 inputSender.Dash.isPause = true;
 
                 //指定時間経過後フラグを元に戻す
-                Observable.Timer(TimeSpan.FromSeconds(x.characterProperty.Dash.Attack.StunTime)).Subscribe(_ =>
+                Observable.Timer(TimeSpan.FromSeconds(x.characterProperty.Attack.StunTime)).Subscribe(_ =>
                 {
                     inputSender.Dash.isPause = false;
                 }).AddTo(this);
