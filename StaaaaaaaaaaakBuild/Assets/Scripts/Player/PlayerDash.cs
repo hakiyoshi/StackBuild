@@ -47,21 +47,21 @@ namespace StackBuild
         }
 
         [ServerRpc(RequireOwnership = false)]
-        void DashAttackServerRpc()
+        void DashAttackServerRpc(Vector3 hitPoint)
         {
             if (!IsServer)
                 return;
 
-            DashAttackClientRpc();
+            DashAttackClientRpc(hitPoint);
         }
 
         [ClientRpc]
-        void DashAttackClientRpc()
+        void DashAttackClientRpc(Vector3 hitPoint)
         {
             if (!IsOwner)
                 return;
 
-            playerProperty.HitDashAttack.OnNext(new PlayerProperty.DashAttackInfo(playerProperty));
+            playerProperty.HitDashAttack.OnNext(new PlayerProperty.DashAttackInfo(playerProperty, hitPoint));
         }
 
         private void Start()
@@ -125,11 +125,12 @@ namespace StackBuild
             {
                 if (playerDash.IsSpawned)
                 {
-                    playerDash.DashAttackServerRpc();
+                    playerDash.DashAttackServerRpc(hit.point);
                 }
                 else
                 {
-                    playerDash.playerProperty.HitDashAttack.OnNext(new PlayerProperty.DashAttackInfo(playerProperty));
+                    playerDash.playerProperty.HitDashAttack.OnNext(
+                        new PlayerProperty.DashAttackInfo(playerProperty, hit.point));
                 }
             }
 

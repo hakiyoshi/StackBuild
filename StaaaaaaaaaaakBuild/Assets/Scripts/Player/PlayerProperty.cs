@@ -13,10 +13,12 @@ namespace StackBuild
         public struct DashAttackInfo
         {
             public PlayerProperty playerProperty;
+            public Vector3 HitPoint;
 
-            public DashAttackInfo(PlayerProperty playerProperty)
+            public DashAttackInfo(PlayerProperty playerProperty, Vector3 hitPoint)
             {
                 this.playerProperty = playerProperty;
+                HitPoint = hitPoint;
             }
         }
         public Subject<DashAttackInfo> HitDashAttack { get; private set; } = new Subject<DashAttackInfo>();
