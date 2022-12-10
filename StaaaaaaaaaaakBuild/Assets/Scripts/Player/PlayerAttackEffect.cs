@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace StackBuild
 {
-    public class PlayerHitEffect : MonoBehaviour
+    public class PlayerAttackEffect : MonoBehaviour
     {
         [SerializeField] private PlayerProperty playerProperty;
 
