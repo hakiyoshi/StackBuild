@@ -8,9 +8,14 @@ namespace StackBuild
     {
         [SerializeField] private List<CanonCore> canonList;
 
+        public int GetRandomIndex()
+        {
+            return Random.Range(0, canonList.Count);
+        }
+
         public void RandomEnqueue(PartsCore[] parts)
         {
-            int index = Random.Range(0, canonList.Count);
+            int index = GetRandomIndex();
 
             for (int i = 0; i < parts.Length; i++)
             {
@@ -20,7 +25,7 @@ namespace StackBuild
 
         public void RandomEnqueue(PartsCore parts)
         {
-            Enqueue(Random.Range(0, canonList.Count), parts);
+            Enqueue(GetRandomIndex(), parts);
         }
 
         public void Enqueue(int index, PartsCore parts)
