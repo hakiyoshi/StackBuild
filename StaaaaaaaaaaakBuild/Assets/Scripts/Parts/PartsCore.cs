@@ -7,8 +7,8 @@ namespace StackBuild
 {
     public class PartsCore : MonoBehaviour
     {
-        [SerializeField] private InGameSettings settings;
-        public InGameSettings Settings => settings;
+        [SerializeField] private PartsSettings settings;
+        public PartsSettings Settings => settings;
 
         private ReactiveProperty<bool> isActive = new();
         public IReadOnlyReactiveProperty<bool> IsActive => isActive;
@@ -58,7 +58,7 @@ namespace StackBuild
 
         public PartsData GetPartsData()
         {
-            return settings.partsDataDictionary[partsId.Value];
+            return settings.PartsDataDictionary[partsId.Value];
         }
     }
 }

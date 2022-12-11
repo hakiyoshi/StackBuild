@@ -9,7 +9,6 @@ using UnityEngine.EventSystems;
 namespace StackBuild
 {
     [RequireComponent(typeof(PartsCore))]
-    [RequireComponent(typeof(ClientNetworkTransform))]
     [RequireComponent(typeof(Rigidbody))]
     public class PartsPhysics : MonoBehaviour
     {
@@ -18,13 +17,10 @@ namespace StackBuild
 
         private Rigidbody rb;
 
-        private void Awake()
-        {
-            TryGetComponent(out rb);
-        }
-
         private void Start()
         {
+            rb = GetComponent<Rigidbody>();
+
             partsCore.IsActive
                 .Subscribe((isActive) =>
                 {

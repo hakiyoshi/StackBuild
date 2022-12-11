@@ -62,7 +62,7 @@ namespace StackBuild
                 .Where(x => x != PartsId.Default)
                 .Subscribe(id =>
             {
-                var data = partsCore.Settings.partsDataDictionary[id];
+                var data = partsCore.Settings.PartsDataDictionary[id];
 
                 ID = id;
                 SharedMaterial = data.material;
