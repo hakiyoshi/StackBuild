@@ -13,8 +13,9 @@ namespace StackBuild
 {
     public class PartsManager : MonoBehaviour
     {
-        [SerializeField] private InGameSettings settings;
-        [SerializeField] private PartsCore prefab;
+        [SerializeField] private PartsSettings partsSettings;
+        [SerializeField] private PartsManagerSettings settings;
+        [SerializeField] private GameObject prefab;
         [SerializeField] private CanonManager canonManager;
 
         private PartsId[] idArray;
@@ -26,7 +27,7 @@ namespace StackBuild
         {
             pool = new PartsPool(prefab, transform);
 
-            idArray = settings.partsDataDictionary.Keys.ToArray();
+            idArray = partsSettings.PartsDataDictionary.Keys.ToArray();
 
             SpawnTimerAsync(this.GetCancellationTokenOnDestroy()).Forget();
         }
@@ -40,6 +41,7 @@ namespace StackBuild
         {
             var core = pool.Rent();
             core.SetPartsID(id);
+            core.transform.rotation = Quaternion.Euler(Random.Range(0f, 360f), Random.Range(0f, 360f), Random.Range(0f, 360f));
             return core;
         }
 
@@ -47,7 +49,7 @@ namespace StackBuild
         {
             while (!token.IsCancellationRequested)
             {
-                var spawnRule = settings.spawnRuleList.Find(x => x.threshould <= pool.Count);
+                var spawnRule = settings.SpawnRuleList.Find(x => x.threshould > pool.Count);
 
                 if (spawnRule == null)
                 {
@@ -55,9 +57,11 @@ namespace StackBuild
                     continue;
                 }
 
+                int index = canonManager.GetRandomIndex();
+
                 for (int i = 0; i < spawnRule.count; i++)
                 {
-                    canonManager.RandomEnqueue(RandomMeshSpawn());
+                    canonManager.Enqueue(index, RandomMeshSpawn());
                 }
 
                 await UniTask.Delay(TimeSpan.FromSeconds(Random.Range(spawnRule.minSeconds, spawnRule.maxSeconds)), cancellationToken: token);
