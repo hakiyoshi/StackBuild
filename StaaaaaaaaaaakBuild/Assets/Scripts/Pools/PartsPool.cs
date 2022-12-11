@@ -5,10 +5,10 @@ namespace StackBuild
 {
     public class PartsPool : ObjectPool<PartsCore>
     {
-        private readonly PartsCore prefab;
+        private readonly GameObject prefab;
         private readonly Transform parent;
 
-        public PartsPool(PartsCore prefab, Transform parent)
+        public PartsPool(GameObject prefab, Transform parent)
         {
             this.prefab = prefab;
             this.parent = parent;
@@ -16,7 +16,7 @@ namespace StackBuild
 
         protected override PartsCore CreateInstance()
         {
-            return GameObject.Instantiate(prefab, parent, true).Spawn();
+            return Object.Instantiate(prefab, parent).GetComponent<PartsCore>().Spawn();
         }
 
         protected override void OnBeforeRent(PartsCore instance)
