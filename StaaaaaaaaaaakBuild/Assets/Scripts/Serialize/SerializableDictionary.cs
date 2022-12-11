@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
-using System.Security;
-using Unity.VisualScripting;
-using UnityEditorInternal;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 namespace StackBuild
 {
@@ -19,24 +14,26 @@ namespace StackBuild
     [Serializable]
     public class SDictionary<TKey, TValue> : Dictionary<TKey, TValue>, ISerializationCallbackReceiver
     {
-        [SerializeField] private List<SKeyValuePair<TKey, TValue>> dictToList;
+        [SerializeField] private List<SKeyValuePair<TKey, TValue>> dictToList = new();
 
         public SDictionary()
         {
-            dictToList = new();
-        }
-
-        public void OnBeforeSerialize()
-        {
-            this.Clear();
+            OnAfterDeserialize();
         }
 
         public void OnAfterDeserialize()
         {
+            this.Clear();
+
             foreach (var data in dictToList)
             {
-                this.Add(data.Key, data.Value);
+                if (!this.TryAdd(data.Key, data.Value))
+                {
+                    Debug.Log($"Serializable Dictionary: 重複している項目があります。({data.Key})");
+                }
             }
         }
+
+        public void OnBeforeSerialize() {}
     }
 }
