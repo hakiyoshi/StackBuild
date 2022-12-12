@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <CharacterModelPrefab>k__BackingField: {fileID: 7589776343792720418, guid: 86e32f3fa751a0d4cb3b9f4cf9a7d0f0, type: 3}
   <SphereColliderRadius>k__BackingField: 3
+  <HitEffect>k__BackingField: {fileID: 6056925465993672788, guid: c34e589dcdceb3f4d890f6cc35873bb5, type: 3}
