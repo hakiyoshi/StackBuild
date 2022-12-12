@@ -32,6 +32,11 @@ namespace StackBuild
             SpawnTimerAsync(this.GetCancellationTokenOnDestroy()).Forget();
         }
 
+        private int GetActiveCount()
+        {
+            return transform.childCount - pool.Count;
+        }
+
         private PartsCore RandomMeshSpawn()
         {
             return Spawn( idArray[Random.Range(0, idArray.Count())] );
@@ -41,6 +46,7 @@ namespace StackBuild
         {
             var core = pool.Rent();
             core.SetPartsID(id);
+            core.SetPool(pool);
             core.transform.rotation = Quaternion.Euler(Random.Range(0f, 360f), Random.Range(0f, 360f), Random.Range(0f, 360f));
             return core;
         }
@@ -49,7 +55,7 @@ namespace StackBuild
         {
             while (!token.IsCancellationRequested)
             {
-                var spawnRule = settings.SpawnRuleList.Find(x => x.threshould > pool.Count);
+                var spawnRule = settings.SpawnRuleList.Find(x => x.threshould >= GetActiveCount());
 
                 if (spawnRule == null)
                 {
