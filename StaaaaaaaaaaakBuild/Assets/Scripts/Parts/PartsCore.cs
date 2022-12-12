@@ -1,4 +1,5 @@
 using UniRx;
+using UniRx.Triggers;
 using Unity.Netcode;
 using UnityEngine;
 using VContainer;
@@ -18,6 +19,8 @@ namespace StackBuild
 
         [SerializeField] private PartsId initialId;
 
+        private PartsPool parentPool = null;
+
         public void Start()
         {
             isActive.AddTo(this);
@@ -28,6 +31,10 @@ namespace StackBuild
                 partsId.Value = initialId;
                 isActive.Value = true;
             }
+
+            this.UpdateAsObservable()
+                .Where(_ => parentPool != null && transform.position.y < -5)
+                .Subscribe(_ => parentPool.Return(this));
         }
 
         public PartsCore Spawn()
@@ -59,6 +66,11 @@ namespace StackBuild
         public PartsData GetPartsData()
         {
             return settings.PartsDataDictionary[partsId.Value];
+        }
+
+        public void SetPool(PartsPool pool)
+        {
+            parentPool = pool;
         }
     }
 }
