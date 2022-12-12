@@ -7,7 +7,7 @@ namespace StackBuild
     {
         [field: Header("Move")]
         [field: SerializeField, Tooltip("加速度")] public float Acceleration { get; private set; } = 1000.0f;
-        [field: SerializeField, Tooltip("減速度")] public float Deceleration { get; private set; } = 0.99f;
+        [field: SerializeField, Tooltip("減速度")] public float Deceleration { get; private set; } = 0.95f;
         [field: SerializeField, Tooltip("最大速度")] public float MaxSpeed { get; private set; } = 20.0f;
 
         [field: Header("MoveAnimation")]

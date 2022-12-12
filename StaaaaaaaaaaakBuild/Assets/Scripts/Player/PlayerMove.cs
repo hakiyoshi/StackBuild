@@ -57,7 +57,7 @@ namespace StackBuild
 
         private void Update()
         {
-            if (!networkObject.IsOwner)
+            if (networkObject.IsSpawned && !networkObject.IsOwner)
                 return;
 
             MoveVelocity();
@@ -71,6 +71,14 @@ namespace StackBuild
             transform.position = position;
         }
 
+        private void FixedUpdate()
+        {
+            if (networkObject.IsSpawned && !networkObject.IsOwner)
+                return;
+
+            VelocityDeceleration();
+        }
+
         private void OnControllerColliderHit(ControllerColliderHit hit)
         {
             //何かに当たったらvelocityを0にする
@@ -82,13 +90,6 @@ namespace StackBuild
             //移動方向取得
             var dir = CreateMoveDirection();
 
-            //移動減衰
-            if (Mathf.Abs(dir.x) <= 0.0f)
-                velocity.x *= property.Move.Deceleration;
-
-            if (Mathf.Abs(dir.z) <= 0.0f)
-                velocity.z *= property.Move.Deceleration;
-
             //移動
             if (dir.sqrMagnitude > 0.0f)
             {
@@ -99,6 +100,19 @@ namespace StackBuild
             if (velocity.sqrMagnitude >=
                 property.Move.MaxSpeed * property.Move.MaxSpeed)
                 velocity = velocity.normalized * property.Move.MaxSpeed;
+        }
+
+        void VelocityDeceleration()
+        {
+            //移動方向取得
+            var dir = CreateMoveDirection();
+
+            //移動減衰
+            if (Mathf.Abs(dir.x) <= 0.0f)
+                velocity.x *= property.Move.Deceleration;
+
+            if (Mathf.Abs(dir.z) <= 0.0f)
+                velocity.z *= property.Move.Deceleration;
         }
 
         Vector3 CreateMoveDirection()
