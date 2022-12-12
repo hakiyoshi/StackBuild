@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DefaultMove
   m_EditorClassIdentifier: 
   <Acceleration>k__BackingField: 1000
-  <Deceleration>k__BackingField: 1000
+  <Deceleration>k__BackingField: 0.95
   <MaxSpeed>k__BackingField: 20
   <SlopeAngle>k__BackingField: 10
   <SlopeTime>k__BackingField: 5

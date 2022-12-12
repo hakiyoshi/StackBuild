@@ -8,11 +8,14 @@ namespace StackBuild
     public class PlayerManager : NetworkBehaviour
     {
         [field: SerializeField] public GameObject[] PlayerObjects { get; private set; } = Array.Empty<GameObject>();
+        [SerializeField] private PlayerManagerProperty playerManagerProperty;
 
         private void Start()
         {
             if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsServer)
                 OwnerAllocation();
+
+            playerManagerProperty.playerManager = this;
         }
 
         public override void OnNetworkSpawn()

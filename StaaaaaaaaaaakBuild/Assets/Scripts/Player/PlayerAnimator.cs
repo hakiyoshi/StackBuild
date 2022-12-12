@@ -10,7 +10,7 @@ namespace StackBuild
         [SerializeField] private PlayerProperty playerProperty;
         [SerializeField] private InputSender inputSender;
 
-        private Animator animator;
+        private Animator animator = null;
 
         private float animeBlend = 0.0f;
 
@@ -20,12 +20,18 @@ namespace StackBuild
 
             inputSender.Dash.sender.ThrottleFirst(TimeSpan.FromSeconds(playerProperty.characterProperty.Dash.DashCoolTime)).Subscribe(x =>
             {
+                if (animator == null)
+                    return;
+
                 DashAnimation();
             }).AddTo(this);
         }
 
         private void Update()
         {
+            if (animator == null)
+                return;
+
             MoveAnimation();
         }
 
