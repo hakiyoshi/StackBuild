@@ -13,6 +13,7 @@ namespace NetworkSystem
 {
     public class RoomManager : MonoBehaviour
     {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
         [SerializeField] private LobbyManager lobby;
         [SerializeField] private RelayManager relay;
         [SerializeField] private LobbyOption lobbyOption;
@@ -21,7 +22,6 @@ namespace NetworkSystem
         private string LobbyCode = "";
         private Rect windowRect = new Rect(0f, 0f, 200f, 100f);
 
-#if UNITY_EDITOR
         [SerializeField] private SceneAsset LoadScene;
         private void OnValidate()
         {
@@ -30,16 +30,15 @@ namespace NetworkSystem
             else
                 loadSceneName = "";
         }
-#endif
+
         [SerializeField] private string loadSceneName;
 
         [SerializeField] private bool StartNetworkIsServer = false;
         [SerializeField] private bool ConnectToNetworkAtStart = false;
 
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
+
         [SerializeField] private bool DrawGui = true;
 
-#endif
 
         private void Awake()
         {
@@ -131,6 +130,8 @@ namespace NetworkSystem
                 this.GetCancellationTokenOnDestroy());
             token.ThrowIfCancellationRequested();
         }
+
+#endif
     }
 
 }
