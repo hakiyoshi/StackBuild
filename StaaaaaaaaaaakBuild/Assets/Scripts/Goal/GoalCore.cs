@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using System.Transactions.Configuration;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UniRx;
 using UniRx.Triggers;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace StackBuild
@@ -46,37 +46,42 @@ namespace StackBuild
             collisionObject.OnTriggerEnterAsObservable()
                 .Where(x => x.gameObject.CompareTag("Parts"))
                 .Select(x => x.gameObject.GetComponent<PartsCore>())
-                .Where(x => x.PartsID.Value != PartsId.Default)
-                .Subscribe(parts =>
-                {
-                    foreach (var buildMaterial in parts.GetPartsData().containsMaterials)
-                    {
-                        partsCount[buildMaterial.Key] += buildMaterial.Value;
-                    }
-                    partsManager.pool.Return(parts);
-
-                    foreach (var data in settings.BuildingDataList)
-                    {
-                        bool isFailed = false;
-                        foreach (var need in data.needMaterials)
-                        {
-                            if (partsCount[need.Key] < need.Value)
-                            {
-                                isFailed = true;
-                                break;
-                            }
-                        }
-                        if (isFailed) continue;
-
-                        foreach (var need in data.needMaterials)
-                        {
-                            partsCount[need.Key] -= need.Value;
-                        }
-                        stackQueue.Enqueue(data);
-                    }
-                });
+                .Where(x => x.partsId.Value != PartsId.Default)
+                .Subscribe(Goal).AddTo(this);
 
             StackLoopAsync(this.GetCancellationTokenOnDestroy()).Forget();
+        }
+
+        [ServerRpc(RequireOwnership = true)]
+        private void Goal(PartsCore parts) => GoalImpl(parts);
+
+        [ClientRpc]
+        private void GoalImpl(PartsCore parts)
+        {
+            foreach (var buildMaterial in parts.GetPartsData().containsMaterials)
+            {
+                partsCount[buildMaterial.Key] += buildMaterial.Value;
+            }
+
+            foreach (var data in settings.BuildingDataList)
+            {
+                bool isFailed = false;
+                foreach (var need in data.needMaterials)
+                {
+                    if (partsCount[need.Key] < need.Value)
+                    {
+                        isFailed = true;
+                        break;
+                    }
+                }
+                if (isFailed) continue;
+
+                foreach (var need in data.needMaterials)
+                {
+                    partsCount[need.Key] -= need.Value;
+                }
+                stackQueue.Enqueue(data);
+            }
         }
 
         public void Enqueue(BuildingData data)
@@ -144,7 +149,7 @@ namespace StackBuild
         {
             token.ThrowIfCancellationRequested();
 
-            if (height < MaxHeight + 1) return;
+            if (height <= MaxHeight) return;
 
             totalHeight += MaxHeight;
             height -= MaxHeight;

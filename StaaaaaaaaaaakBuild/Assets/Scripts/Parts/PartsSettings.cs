@@ -32,6 +32,7 @@ namespace StackBuild
     [CreateAssetMenu(menuName = "Scriptable Objects/Parts Settings")]
     public class PartsSettings : ScriptableObject
     {
-        [field: SerializeField] public SDictionary<PartsId, PartsData> PartsDataDictionary { get; private set; } = new();
+        [field: SerializeField]
+        public SDictionary<PartsId, PartsData> PartsDataDictionary { get; private set; } = new();
     }
 }

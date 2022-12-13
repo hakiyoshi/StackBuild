@@ -14,6 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <PartsDataDictionary>k__BackingField:
     dictToList:
+    - Key: 0
+      Value:
+        material: {fileID: 2100000, guid: 9c4b3a7fa5063e0429a7d502025f8a14, type: 2}
+        mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+        containsMaterials:
+          dictToList: []
     - Key: 1
       Value:
         material: {fileID: -4973734387028869240, guid: c7b6c07d0a85b2241801ab610b3622fb, type: 3}

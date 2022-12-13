@@ -1,12 +1,10 @@
-﻿using System;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using Cysharp.Threading.Tasks;
 using UniRx;
+using UniRx.Triggers;
 using Unity.Netcode;
 using UnityEngine;
-using VContainer;
 using Random = UnityEngine.Random;
 
 namespace StackBuild
@@ -15,63 +13,87 @@ namespace StackBuild
     {
         [SerializeField] private PartsSettings partsSettings;
         [SerializeField] private PartsManagerSettings settings;
-        [SerializeField] private GameObject prefab;
         [SerializeField] private CanonManager canonManager;
 
-        private PartsId[] idArray;
-        public PartsPool pool { get; private set; }
-
-        public int count => pool.Count;
+        private PartsId[] IDArray => partsSettings.PartsDataDictionary.Keys.ToArray();
+        private Queue<PartsCore> queue = new();
+        private PartsCore[] children;
 
         private void Start()
         {
-            pool = new PartsPool(prefab, transform);
-
-            idArray = partsSettings.PartsDataDictionary.Keys.ToArray();
-
-            SpawnTimerAsync(this.GetCancellationTokenOnDestroy()).Forget();
-        }
-
-        private int GetActiveCount()
-        {
-            return transform.childCount - pool.Count;
-        }
-
-        private PartsCore RandomMeshSpawn()
-        {
-            return Spawn( idArray[Random.Range(0, idArray.Count())] );
-        }
-
-        private PartsCore Spawn(PartsId id)
-        {
-            var core = pool.Rent();
-            core.SetPartsID(id);
-            core.SetPool(pool);
-            core.transform.rotation = Quaternion.Euler(Random.Range(0f, 360f), Random.Range(0f, 360f), Random.Range(0f, 360f));
-            return core;
-        }
-
-        private async UniTaskVoid SpawnTimerAsync(CancellationToken token = default)
-        {
-            while (!token.IsCancellationRequested)
+            children = GetComponentsInChildren<PartsCore>();
+            foreach (var parts in children)
             {
-                var spawnRule = settings.SpawnRuleList.Find(x => x.threshould >= GetActiveCount());
+                queue.Enqueue(parts);
+            }
 
-                if (spawnRule == null)
+            StartCoroutine(SpawnTimerCoroutine());
+        }
+
+        IEnumerator SpawnTimerCoroutine()
+        {
+            while (true)
+            {
+                if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsServer)
                 {
-                    await UniTask.Yield(PlayerLoopTiming.Update, cancellationToken: token);
+                    yield return null;
+                    continue;
+                }
+
+                var rule = settings.SpawnRuleList.Find(x => x.threshould > GetActiveCount());
+                if (rule == null)
+                {
+                    yield return null;
                     continue;
                 }
 
                 int index = canonManager.GetRandomIndex();
-
-                for (int i = 0; i < spawnRule.count; i++)
+                for (int i = 0; i < rule.count; i++)
                 {
-                    canonManager.Enqueue(index, RandomMeshSpawn());
+                    var parts = Rent(GetRandomPartsId());
+                    canonManager.Enqueue(index, parts);
                 }
 
-                await UniTask.Delay(TimeSpan.FromSeconds(Random.Range(spawnRule.minSeconds, spawnRule.maxSeconds)), cancellationToken: token);
+                yield return new WaitForSeconds(Random.Range(rule.minSeconds, rule.maxSeconds));
             }
+        }
+
+        public PartsCore Rent(PartsId id = PartsId.Default)
+        {
+            if (queue.TryDequeue(out var parts))
+            {
+                parts.partsId.Value = id;
+            }
+            else
+            {
+                Debug.Log("PartsManager: 貸し出せるPartsはありません。");
+            }
+            return parts;
+        }
+
+        public void Return(PartsCore parts)
+        {
+            if (!parts.transform.IsChildOf(transform)) return;
+
+            parts.isActive.Value = false;
+            parts.partsId.Value = PartsId.Default;
+
+            queue.Enqueue(parts);
+        }
+
+        public PartsId GetRandomPartsId()
+        {
+            return IDArray[Random.Range(1, IDArray.Length)];
+        }
+
+        public int GetActiveCount()
+        {
+            return children.Length - queue.Count;
+        }
+
+        public int GetCount()
+        {
+            return children.Length;
         }
     }
 }

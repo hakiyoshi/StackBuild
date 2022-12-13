@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
 using UniRx;
+using Unity.Netcode;
 using UnityEngine;
-using VContainer;
 
 namespace StackBuild
 {
@@ -13,34 +10,12 @@ namespace StackBuild
     [RequireComponent(typeof(MeshFilter))]
     public class PartsMesh : MonoBehaviour
     {
-        [SerializeField] private PartsCore partsCore;
-        public PartsCore PartsCore => partsCore;
+        [field: SerializeField]
+        public PartsCore PartsCore { get; private set; }
 
         private MeshRenderer meshRenderer;
         private MeshCollider meshCollider;
         private MeshFilter meshFilter;
-
-        public PartsId ID
-        {
-            get;
-            private set;
-        }
-
-        public Material SharedMaterial
-        {
-            get => meshRenderer.sharedMaterial;
-            private set => meshRenderer.sharedMaterial = value;
-        }
-
-        public Mesh SharedMesh
-        {
-            get => meshFilter.sharedMesh;
-            private set
-            {
-                meshFilter.sharedMesh = value;
-                meshCollider.sharedMesh = value;
-            }
-        }
 
         private void Awake()
         {
@@ -51,23 +26,33 @@ namespace StackBuild
 
         private void Start()
         {
-            partsCore.IsActive
-                .Subscribe((isActive) =>
-            {
-                meshRenderer.enabled = isActive;
-                meshCollider.enabled = isActive;
-            }).AddTo(this);
+            PartsCore.isActive
+                .Subscribe(SetActive).AddTo(this);
 
-            partsCore.PartsID
-                .Where(x => x != PartsId.Default)
-                .Subscribe(id =>
-            {
-                var data = partsCore.Settings.PartsDataDictionary[id];
+            PartsCore.partsId
+                .Select(_ => PartsCore.GetPartsData())
+                .Subscribe(SetPartsMesh).AddTo(this);
+        }
 
-                ID = id;
-                SharedMaterial = data.material;
-                SharedMesh = data.mesh;
-            }).AddTo(this);
+        [ServerRpc(RequireOwnership = true)]
+        private void SetActive(bool isActive) => SetActiveClientRpc(isActive);
+
+        [ClientRpc]
+        private void SetActiveClientRpc(bool isActive)
+        {
+            meshRenderer.enabled = isActive;
+            meshCollider.enabled = isActive;
+        }
+
+        [ServerRpc(RequireOwnership = true)]
+        private void SetPartsMesh(PartsData data) => SetPartsMeshClientRpc(data);
+
+        [ClientRpc]
+        private void SetPartsMeshClientRpc(PartsData data)
+        {
+            meshRenderer.sharedMaterial = data.material;
+            meshFilter.sharedMesh = data.mesh;
+            meshCollider.sharedMesh = data.mesh;
         }
     }
 }

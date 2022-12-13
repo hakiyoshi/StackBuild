@@ -6,71 +6,46 @@ using VContainer;
 
 namespace StackBuild
 {
-    public class PartsCore : MonoBehaviour
+    public class PartsCore : NetworkBehaviour
     {
         [SerializeField] private PartsSettings settings;
         public PartsSettings Settings => settings;
 
-        private ReactiveProperty<bool> isActive = new();
-        public IReadOnlyReactiveProperty<bool> IsActive => isActive;
+        public PartsManager Parent => transform.GetComponentInParent<PartsManager>();
 
-        private ReactiveProperty<PartsId> partsId = new();
-        public IReadOnlyReactiveProperty<PartsId> PartsID => partsId;
+        public ReactiveProperty<bool> isActive = new(false);
 
-        [SerializeField] private PartsId initialId;
+        public ReactiveProperty<PartsId> partsId = new();
 
-        private PartsPool parentPool = null;
-
-        public void Start()
+        private void Awake()
         {
             isActive.AddTo(this);
             partsId.AddTo(this);
+        }
 
-            if (initialId != PartsId.Default)
-            {
-                partsId.Value = initialId;
-                isActive.Value = true;
-            }
+        private void Start()
+        {
+            this.OnTriggerEnterAsObservable()
+                .Where(collider => collider.CompareTag("Goal"))
+                .Subscribe(_ => Parent.Return(this));
 
             this.UpdateAsObservable()
-                .Where(_ => parentPool != null && transform.position.y < -5)
-                .Subscribe(_ => parentPool.Return(this));
+                .Select(_ => transform.position)
+                .DistinctUntilChanged()
+                .Skip(1)
+                .Where(pos => pos.y < -30)
+                .Subscribe(_ => Parent.Return(this));
         }
 
-        public PartsCore Spawn()
+        public override void OnNetworkSpawn()
         {
-            isActive.Value = true;
-            return this;
-        }
-
-        public void Despawn()
-        {
-            isActive.Value = false;
-        }
-
-        public void Show()
-        {
-            isActive.Value = true;
-        }
-
-        public void Hide()
-        {
-            isActive.Value = false;
-        }
-
-        public void SetPartsID(PartsId id)
-        {
-            partsId.Value = id;
+            base.OnNetworkSpawn();
+            Debug.Log($"Spawn {gameObject.name}");
         }
 
         public PartsData GetPartsData()
         {
             return settings.PartsDataDictionary[partsId.Value];
-        }
-
-        public void SetPool(PartsPool pool)
-        {
-            parentPool = pool;
         }
     }
 }
