@@ -27,9 +27,7 @@ namespace StackBuild
                     var sub = shootPos - transform.position;
                     var force = sub.normalized * settings.ShootPower;
 
-                    partsPhysics.Teleport(shootPos);
-                    partsPhysics.PartsCore.Show();
-                    partsPhysics.AddForce(force, ForceMode.VelocityChange);
+                    partsPhysics.Shoot(shootPos, force, ForceMode.VelocityChange);
                 }).AddTo(this);
         }
 
