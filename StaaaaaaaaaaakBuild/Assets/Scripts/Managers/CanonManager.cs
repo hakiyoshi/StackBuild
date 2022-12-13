@@ -29,11 +29,7 @@ namespace StackBuild
             Enqueue(GetRandomIndex(), parts);
         }
 
-        [ServerRpc(RequireOwnership = true)]
-        public void Enqueue(int index, PartsCore parts) => EnqueueImpl(index, parts);
-
-        [ClientRpc]
-        private void EnqueueImpl(int index, PartsCore parts)
+        public void Enqueue(int index, PartsCore parts)
         {
             canonList[index].Enqueue(parts);
         }
