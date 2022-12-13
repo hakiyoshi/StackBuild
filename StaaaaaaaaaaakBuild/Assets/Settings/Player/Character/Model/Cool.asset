@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Cool
   m_EditorClassIdentifier: 
   <CharacterModelPrefab>k__BackingField: {fileID: 4185790469128066595, guid: e9c348807e60d3040b4113c45a4dca6b, type: 3}
-  <SphereColliderRadius>k__BackingField: 3.5
+  <SphereColliderRadius>k__BackingField: 3
   <HitEffect>k__BackingField: {fileID: 6056925465993672788, guid: c34e589dcdceb3f4d890f6cc35873bb5, type: 3}

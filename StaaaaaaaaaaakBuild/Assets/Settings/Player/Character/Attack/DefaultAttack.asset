@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5af26d60896a489ca6f850f0ec338ce9, type: 3}
   m_Name: DefaultAttack
   m_EditorClassIdentifier: 
-  <CatchInvalidTime>k__BackingField: 5
-  <StunTime>k__BackingField: 5
-  <KnockbackPower>k__BackingField: 5
+  <CatchInvalidTime>k__BackingField: 1
+  <StunTime>k__BackingField: 0
+  <KnockbackPower>k__BackingField: 1
   <KnockbackTime>k__BackingField: 0.5
   <KnockbackEase>k__BackingField: 9
