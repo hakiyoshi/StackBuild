@@ -20171,8 +20171,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3557064073397423257}
-  - component: {fileID: 8415045266853535024}
   - component: {fileID: -5399018820719299470}
+  - component: {fileID: 5697520579740216908}
   m_Layer: 0
   m_Name: Cool_Mecha
   m_TagString: Untagged
@@ -20198,39 +20198,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!114 &8415045266853535024
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4185790469128066595}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29b83d4a35f24b0ba0b6cadde18924b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bania_mtl:
-  - {fileID: 2100000, guid: 4674ec3c8e092f94e823e2a0b27ec8f5, type: 2}
-  - {fileID: 2100000, guid: 95427e7659d981f4191cb9e2a08b6288, type: 2}
-  cool_mtl:
-  - {fileID: 2100000, guid: 525723a8703126947af7cbb6d30aa4dc, type: 2}
-  - {fileID: 2100000, guid: 88381cb2b109b9c4e9465462992e6cfc, type: 2}
-  playerManager: {fileID: 11400000, guid: ac7fcbac768fd6046bb1da6ab5e00c8d, type: 2}
-  bania_mtls:
-  - {fileID: 8929591013743221740}
-  - {fileID: 204194769832218450}
-  - {fileID: 5321387096130977641}
-  - {fileID: 4269478387446946420}
-  - {fileID: 8283577784008318313}
-  - {fileID: 5556087272190746603}
-  cool_mtls:
-  - {fileID: 3859239002081814560}
-  - {fileID: 3346297918395990617}
-  - {fileID: 9075747299116440647}
-  - {fileID: 3466352821808298698}
-  - {fileID: 4304729826087860947}
-  - {fileID: 6447339448828906810}
 --- !u!95 &-5399018820719299470
 Animator:
   serializedVersion: 4
@@ -20251,6 +20218,42 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &5697520579740216908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4185790469128066595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f246a8a927e246a98df99a150e29be4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerManagerProperty: {fileID: 11400000, guid: ac7fcbac768fd6046bb1da6ab5e00c8d, type: 2}
+  setupMaterials:
+  - type: 0
+    setMaterials:
+    - {fileID: 2100000, guid: 4674ec3c8e092f94e823e2a0b27ec8f5, type: 2}
+    - {fileID: 2100000, guid: 95427e7659d981f4191cb9e2a08b6288, type: 2}
+    setupObjects:
+    - {fileID: 7181639342288330016}
+    - {fileID: 3265859192146324476}
+    - {fileID: 533038762022070608}
+    - {fileID: 6972054497333595275}
+    - {fileID: 1782075377920695441}
+    - {fileID: 7323982282176832458}
+  - type: 1
+    setMaterials:
+    - {fileID: 2100000, guid: 525723a8703126947af7cbb6d30aa4dc, type: 2}
+    - {fileID: 2100000, guid: 88381cb2b109b9c4e9465462992e6cfc, type: 2}
+    setupObjects:
+    - {fileID: 8395347748455723456}
+    - {fileID: 3490885114251808418}
+    - {fileID: 415258796276737204}
+    - {fileID: 8853303810368265507}
+    - {fileID: 4926561481978557800}
+    - {fileID: 2906204660994918829}
 --- !u!1 &4260841523239165158
 GameObject:
   m_ObjectHideFlags: 0
