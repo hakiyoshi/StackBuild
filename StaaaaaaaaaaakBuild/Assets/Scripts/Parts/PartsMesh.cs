@@ -35,20 +35,20 @@ namespace StackBuild
         }
 
         [ServerRpc(RequireOwnership = true)]
-        private void SetActive(bool isActive) => SetActiveClientRpc(isActive);
+        private void SetActive(bool isActive) => SetActiveImpl(isActive);
 
         [ClientRpc]
-        private void SetActiveClientRpc(bool isActive)
+        private void SetActiveImpl(bool isActive)
         {
             meshRenderer.enabled = isActive;
             meshCollider.enabled = isActive;
         }
 
         [ServerRpc(RequireOwnership = true)]
-        private void SetPartsMesh(PartsData data) => SetPartsMeshClientRpc(data);
+        private void SetPartsMesh(PartsData data) => SetPartsMeshImpl(data);
 
         [ClientRpc]
-        private void SetPartsMeshClientRpc(PartsData data)
+        private void SetPartsMeshImpl(PartsData data)
         {
             meshRenderer.sharedMaterial = data.material;
             meshFilter.sharedMesh = data.mesh;

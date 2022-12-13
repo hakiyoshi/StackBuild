@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace StackBuild
 {
-    public class CanonManager : MonoBehaviour
+    public class CanonManager : NetworkBehaviour
     {
         [SerializeField] private List<CanonCore> canonList;
 
@@ -28,7 +29,11 @@ namespace StackBuild
             Enqueue(GetRandomIndex(), parts);
         }
 
-        public void Enqueue(int index, PartsCore parts)
+        [ServerRpc(RequireOwnership = true)]
+        public void Enqueue(int index, PartsCore parts) => EnqueueImpl(index, parts);
+
+        [ClientRpc]
+        private void EnqueueImpl(int index, PartsCore parts)
         {
             canonList[index].Enqueue(parts);
         }
