@@ -2031,6 +2031,7 @@ GameObject:
   - component: {fileID: 7070543610401112216}
   - component: {fileID: 7319796965514011649}
   - component: {fileID: 8718964732506068838}
+  - component: {fileID: 6383061185523912287}
   m_Layer: 0
   m_Name: Standard Character Model
   m_TagString: Untagged
@@ -2123,6 +2124,19 @@ MonoBehaviour:
     - {fileID: 5756763566169905268}
     - {fileID: 7953367985709187644}
     - {fileID: 4401063604225089938}
+--- !u!114 &6383061185523912287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7589776343792720418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12b0177cc99448eeaa0e0a798b184582, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meshRenderer: {fileID: 6424289685804193769}
 --- !u!1 &7953367985709187644
 GameObject:
   m_ObjectHideFlags: 0
