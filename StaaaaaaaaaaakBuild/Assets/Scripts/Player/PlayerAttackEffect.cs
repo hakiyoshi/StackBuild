@@ -24,7 +24,7 @@ namespace StackBuild
 
         void StunParticle(in Vector3 hitPoint)
         {
-            particle.Stun.transform.position = hitPoint;
+            //particle.Stun.transform.position = hitPoint;
             particle.Stun.Play();
         }
 
