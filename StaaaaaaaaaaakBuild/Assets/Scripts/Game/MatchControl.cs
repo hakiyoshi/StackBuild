@@ -68,6 +68,10 @@ namespace StackBuild.Game
         {
             state = MatchState.Finished;
             DisablePlayerMovement();
+            foreach (var hud in huds)
+            {
+                hud.SlideOutAsync().Forget();
+            }
             finishDisplay.gameObject.SetActive(true);
             finishDisplay.Display();
         }
