@@ -22,7 +22,7 @@ MonoBehaviour:
           dictToList: []
     - Key: 1
       Value:
-        material: {fileID: -4973734387028869240, guid: c7b6c07d0a85b2241801ab610b3622fb, type: 3}
+        material: {fileID: 2100000, guid: b17ce4944350dc04f98aaa28aa575f7f, type: 2}
         mesh: {fileID: 4496885475859389300, guid: c7b6c07d0a85b2241801ab610b3622fb, type: 3}
         containsMaterials:
           dictToList:
@@ -30,7 +30,7 @@ MonoBehaviour:
             Value: 1
     - Key: 2
       Value:
-        material: {fileID: -389402008792246631, guid: 4bbdcef794fe12441acd85e2215a9ba4, type: 3}
+        material: {fileID: 2100000, guid: 26e6364b43295c94bb49e000c2f76cd7, type: 2}
         mesh: {fileID: -2501353177796253522, guid: 4bbdcef794fe12441acd85e2215a9ba4, type: 3}
         containsMaterials:
           dictToList:
@@ -38,7 +38,7 @@ MonoBehaviour:
             Value: 1
     - Key: 3
       Value:
-        material: {fileID: -1444460858095362738, guid: 064f9a67ca2f98c448dfa8e37fc74900, type: 3}
+        material: {fileID: 2100000, guid: 640681d5ecce4f446af318db6a6c4da2, type: 2}
         mesh: {fileID: -1736622283181914040, guid: 064f9a67ca2f98c448dfa8e37fc74900, type: 3}
         containsMaterials:
           dictToList:

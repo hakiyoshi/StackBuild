@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
@@ -10,7 +11,7 @@ using UnityEngine;
 
 namespace StackBuild
 {
-    public class GoalCore : MonoBehaviour
+    public class GoalCore : NetworkBehaviour
     {
         [SerializeField] private GoalSettings settings;
         [SerializeField] private PartsManager partsManager;
@@ -26,6 +27,7 @@ namespace StackBuild
         private float PartsFallTime => settings.PartsFallTime;
         private float BaseFallTime => settings.BaseFallTime;
         private float LoopTime => settings.LoopTime;
+        private BuildingData[] BuildingDataArray => settings.BuildingDataList.ToArray();
 
         private Dictionary<MaterialId, int> partsCount = new();
         private Queue<BuildingData> stackQueue = new();
@@ -44,27 +46,25 @@ namespace StackBuild
             }
 
             collisionObject.OnTriggerEnterAsObservable()
+                .Where(_ => NetworkManager.Singleton != null && NetworkManager.Singleton.IsServer)
                 .Where(x => x.gameObject.CompareTag("Parts"))
                 .Select(x => x.gameObject.GetComponent<PartsCore>())
-                .Where(x => x.partsId.Value != PartsId.Default)
                 .Subscribe(Goal).AddTo(this);
 
             StackLoopAsync(this.GetCancellationTokenOnDestroy()).Forget();
         }
 
-        [ServerRpc(RequireOwnership = true)]
-        private void Goal(PartsCore parts) => GoalImpl(parts);
-
-        [ClientRpc]
-        private void GoalImpl(PartsCore parts)
+        private void Goal(PartsCore parts)
         {
             foreach (var buildMaterial in parts.GetPartsData().containsMaterials)
             {
                 partsCount[buildMaterial.Key] += buildMaterial.Value;
             }
 
-            foreach (var data in settings.BuildingDataList)
+            for (int i = 0; i < BuildingDataArray.Length; i++)
             {
+                var data = BuildingDataArray[i];
+
                 bool isFailed = false;
                 foreach (var need in data.needMaterials)
                 {
@@ -80,20 +80,29 @@ namespace StackBuild
                 {
                     partsCount[need.Key] -= need.Value;
                 }
-                stackQueue.Enqueue(data);
+                EnqueueServerRpc(i);
             }
         }
 
-        public void Enqueue(BuildingData data)
+        [ServerRpc(RequireOwnership = false)]
+        public void EnqueueServerRpc(int index)
         {
-            stackQueue.Enqueue(data);
+            EnqueueClientRpc(index);
         }
 
-        public void Finished()
+        [ClientRpc]
+        private void EnqueueClientRpc(int index)
         {
-            var pos = transform.position;
-            pos.y = 0;
-            transform.position = pos;
+            stackQueue.Enqueue(BuildingDataArray[index]);
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        public void FinishedServerRpc() => FinishedClientRpc();
+
+        [ClientRpc]
+        private void FinishedClientRpc()
+        {
+            transform.DOLocalMoveY(0, 1f);
         }
 
         private async UniTask StackLoopAsync(CancellationToken token = default)
@@ -106,7 +115,7 @@ namespace StackBuild
                 {
                     for (int i = 0; i < data.count; i++)
                     {
-                        StackAsync(data, token).Forget();
+                        StackAsync(data.material, token).Forget();
                         await BaseDownAsync(token);
                         await UniTask.Delay(TimeSpan.FromSeconds(LoopTime), cancellationToken: token);
                     }
@@ -115,7 +124,7 @@ namespace StackBuild
             }
         }
 
-        private async UniTask StackAsync(BuildingData data, CancellationToken token = default)
+        private async UniTask StackAsync(Material material, CancellationToken token = default)
         {
             token.ThrowIfCancellationRequested();
 
@@ -128,7 +137,7 @@ namespace StackBuild
                 z: (floorPartsCount % Column) * (WidthSize / Column) + (WidthSize / Column) - (WidthSize / 2));
             obj.transform.localScale = new Vector3(WidthSize / Row, HeightSize, WidthSize / Column);
 
-            meshRenderer.sharedMaterial = data.material;
+            meshRenderer.sharedMaterial = material;
             meshRenderer.enabled = true;
 
             floorPartsCount++;

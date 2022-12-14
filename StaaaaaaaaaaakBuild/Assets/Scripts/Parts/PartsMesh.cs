@@ -1,5 +1,4 @@
 using UniRx;
-using Unity.Netcode;
 using UnityEngine;
 
 namespace StackBuild
@@ -30,26 +29,19 @@ namespace StackBuild
                 .Subscribe(SetActive).AddTo(this);
 
             PartsCore.partsId
-                .Select(_ => PartsCore.GetPartsData())
                 .Subscribe(SetPartsMesh).AddTo(this);
         }
 
-        [ServerRpc(RequireOwnership = true)]
-        private void SetActive(bool isActive) => SetActiveImpl(isActive);
-
-        [ClientRpc]
-        private void SetActiveImpl(bool isActive)
+        private void SetActive(bool isActive)
         {
             meshRenderer.enabled = isActive;
             meshCollider.enabled = isActive;
         }
 
-        [ServerRpc(RequireOwnership = true)]
-        private void SetPartsMesh(PartsData data) => SetPartsMeshImpl(data);
-
-        [ClientRpc]
-        private void SetPartsMeshImpl(PartsData data)
+        private void SetPartsMesh(PartsId id)
         {
+            var data = PartsCore.Settings.PartsDataDictionary[id];
+
             meshRenderer.sharedMaterial = data.material;
             meshFilter.sharedMesh = data.mesh;
             meshCollider.sharedMesh = data.mesh;

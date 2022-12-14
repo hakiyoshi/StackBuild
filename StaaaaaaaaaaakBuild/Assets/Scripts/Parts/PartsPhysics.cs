@@ -1,10 +1,5 @@
-﻿using System.Threading;
-using UniRx;
-using UniRx.Triggers;
-using Unity.Netcode;
-using Unity.Netcode.Components;
+﻿using UniRx;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace StackBuild
 {
@@ -27,11 +22,7 @@ namespace StackBuild
                 .Subscribe(SetActive).AddTo(this);
         }
 
-        [ServerRpc(RequireOwnership = true)]
-        private void SetActive(bool isActive) => SetActiveImpl(isActive);
-
-        [ClientRpc]
-        private void SetActiveImpl(bool isActive)
+        private void SetActive(bool isActive)
         {
             if (isActive)
             {
@@ -45,13 +36,14 @@ namespace StackBuild
             }
         }
 
-            [ServerRpc(RequireOwnership = true)]
         public void Shoot(Vector3 pos, Vector3 force, ForceMode forceMode = ForceMode.Force)
         {
+            transform.position = pos;
             rb.velocity = Vector3.zero;
             rb.position = pos;
             PartsCore.isActive.Value = true;
             rb.AddForce(force, forceMode);
+            rb.AddTorque(force);
         }
     }
 }

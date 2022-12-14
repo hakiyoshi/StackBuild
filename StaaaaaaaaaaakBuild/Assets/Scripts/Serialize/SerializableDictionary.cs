@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace StackBuild
@@ -9,6 +10,14 @@ namespace StackBuild
     {
         public TKey Key;
         public TValue Value;
+
+        /*
+        public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+        {
+            serializer.SerializeValue(ref Key);
+            serializer.SerializeValue(ref Value);
+        }
+        */
     }
 
     [Serializable]

@@ -1,12 +1,10 @@
 using UniRx;
 using UniRx.Triggers;
-using Unity.Netcode;
 using UnityEngine;
-using VContainer;
 
 namespace StackBuild
 {
-    public class PartsCore : NetworkBehaviour
+    public class PartsCore : MonoBehaviour
     {
         [SerializeField] private PartsSettings settings;
         public PartsSettings Settings => settings;
@@ -33,14 +31,8 @@ namespace StackBuild
                 .Select(_ => transform.position)
                 .DistinctUntilChanged()
                 .Skip(1)
-                .Where(pos => pos.y < -30)
+                .Where(pos => pos.y < -30 && isActive.Value)
                 .Subscribe(_ => Parent.Return(this));
-        }
-
-        public override void OnNetworkSpawn()
-        {
-            base.OnNetworkSpawn();
-            Debug.Log($"Spawn {gameObject.name}");
         }
 
         public PartsData GetPartsData()

@@ -1,8 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UniRx;
-using UniRx.Triggers;
 using Unity.Netcode;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -26,7 +24,6 @@ namespace StackBuild
             {
                 queue.Enqueue(parts);
             }
-
             StartCoroutine(SpawnTimerCoroutine());
         }
 
@@ -74,6 +71,9 @@ namespace StackBuild
         public void Return(PartsCore parts)
         {
             if (!parts.transform.IsChildOf(transform)) return;
+
+            var net = parts.GetComponent<PartsNetworkSync>();
+            if (net.IsSpawned && NetworkManager.Singleton != null && !NetworkManager.Singleton.IsServer) return;
 
             parts.isActive.Value = false;
             parts.partsId.Value = PartsId.Default;
