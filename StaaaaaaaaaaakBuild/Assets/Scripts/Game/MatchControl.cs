@@ -22,6 +22,7 @@ namespace StackBuild.Game
         [SerializeField] private float startDelay;
         [SerializeField] private TimeDisplay timeDisplay;
         [SerializeField] private int flashTimeBelow;
+        [SerializeField] private FinishDisplay finishDisplay;
         [Header("Game Parameters")]
         [SerializeField] private float gameTime;
 
@@ -67,7 +68,8 @@ namespace StackBuild.Game
         {
             state = MatchState.Finished;
             DisablePlayerMovement();
-            Debug.Log("finish!!");
+            finishDisplay.gameObject.SetActive(true);
+            finishDisplay.Display();
         }
 
         private void Update()
