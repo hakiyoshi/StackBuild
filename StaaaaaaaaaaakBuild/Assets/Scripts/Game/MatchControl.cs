@@ -9,6 +9,7 @@ namespace StackBuild.Game
     public class MatchControl : MonoBehaviour
     {
 
+        [Header("Appearance")]
         [SerializeField] private IntroDisplay introDisplay;
         [SerializeField] private float introDisplayDuration;
         [SerializeField] private CanvasGroup fade;
@@ -19,6 +20,13 @@ namespace StackBuild.Game
         [SerializeField] private float hudDelay;
         [SerializeField] private StartDisplay startDisplay;
         [SerializeField] private float startDelay;
+        [SerializeField] private TimeDisplay timeDisplay;
+        [SerializeField] private int flashTimeBelow;
+        [Header("Game Parameters")]
+        [SerializeField] private float gameTime;
+
+        private float timeRemaining;
+        private MatchState state;
 
         private void Start()
         {
@@ -27,6 +35,8 @@ namespace StackBuild.Game
 
         private async UniTaskVoid RunMatch()
         {
+            state = MatchState.Starting;
+
             DisablePlayerMovement();
             AnimateCamera();
             introDisplay.Display();
@@ -46,9 +56,36 @@ namespace StackBuild.Game
             }
 
             await UniTask.Delay(TimeSpan.FromSeconds(startDelay));
+            timeRemaining = gameTime;
+            state = MatchState.Ingame;
             EnablePlayerMovement();
             startDisplay.gameObject.SetActive(true);
             startDisplay.Display();
+        }
+
+        private void FinishMatch()
+        {
+            state = MatchState.Finished;
+            DisablePlayerMovement();
+            Debug.Log("finish!!");
+        }
+
+        private void Update()
+        {
+            if (state != MatchState.Ingame) return;
+
+            int lastSeconds = Mathf.CeilToInt(timeRemaining);
+            timeRemaining = Mathf.Max(0, timeRemaining - Time.deltaTime);
+            int seconds = Mathf.CeilToInt(timeRemaining);
+            if (seconds != lastSeconds)
+            {
+                timeDisplay.Display(seconds, seconds <= flashTimeBelow);
+            }
+
+            if (timeRemaining == 0)
+            {
+                FinishMatch();
+            }
         }
 
         private void DisablePlayerMovement()
