@@ -16,35 +16,35 @@ MonoBehaviour:
   <HeightSize>k__BackingField: 3
   <Column>k__BackingField: 3
   <Row>k__BackingField: 3
-  <MaxHeight>k__BackingField: 10
+  <MaxHeight>k__BackingField: 16
   <PartsFallTime>k__BackingField: 0.8
   <BaseFallTime>k__BackingField: 1
   <LoopTime>k__BackingField: 0.05
   <BuildingDataList>k__BackingField:
   - name: Basic Metal
-    material: {fileID: 2100000, guid: b17ce4944350dc04f98aaa28aa575f7f, type: 2}
-    mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
-    count: 1
+    material: {fileID: 2100000, guid: 07126f5d8c8ded6498a8792dbe04ab54, type: 2}
+    mesh: {fileID: -2698138407178338390, guid: 2d4725b7384cded42b4b39b8ffeb9ea9, type: 3}
+    count: 10
     score: 10
     needMaterials:
       dictToList:
       - Key: 0
-        Value: 1
+        Value: 3
   - name: Basic Plastic
-    material: {fileID: 2100000, guid: 26e6364b43295c94bb49e000c2f76cd7, type: 2}
-    mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
-    count: 1
+    material: {fileID: 2100000, guid: 6d37a0fdb5624714b8022b6dc1ddf209, type: 2}
+    mesh: {fileID: 8459280426095363678, guid: ec0e8f3a83ed53d40b3c55896955ddfd, type: 3}
+    count: 10
     score: 10
     needMaterials:
       dictToList:
       - Key: 1
-        Value: 1
+        Value: 3
   - name: Basic Wood
-    material: {fileID: 2100000, guid: 640681d5ecce4f446af318db6a6c4da2, type: 2}
+    material: {fileID: 2100000, guid: ecf2b120a2413994aaecd3302820932f, type: 2}
     mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
-    count: 1
+    count: 10
     score: 10
     needMaterials:
       dictToList:
       - Key: 2
-        Value: 1
+        Value: 3

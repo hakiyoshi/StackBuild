@@ -42,6 +42,8 @@ namespace StackBuild
         {
             var data = PartsCore.Settings.PartsDataDictionary[id];
 
+            transform.localScale = Vector3.one * data.scale;
+
             meshRenderer.sharedMaterial = data.material;
             meshFilter.sharedMesh = data.mesh;
             meshCollider.sharedMesh = data.mesh;

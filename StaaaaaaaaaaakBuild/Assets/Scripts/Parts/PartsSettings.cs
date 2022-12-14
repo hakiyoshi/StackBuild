@@ -26,6 +26,7 @@ namespace StackBuild
     {
         public Material material;
         public Mesh mesh;
+        public float scale = 1f;
         public SDictionary<MaterialId, int> containsMaterials;
     }
 

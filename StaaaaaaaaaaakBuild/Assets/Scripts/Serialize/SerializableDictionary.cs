@@ -38,7 +38,7 @@ namespace StackBuild
             {
                 if (!this.TryAdd(data.Key, data.Value))
                 {
-                    Debug.Log($"Serializable Dictionary: 重複している項目があります。({data.Key})");
+                    Debug.LogAssertion($"Serializable Dictionary: 重複している項目があります。({data.Key})");
                 }
             }
         }
