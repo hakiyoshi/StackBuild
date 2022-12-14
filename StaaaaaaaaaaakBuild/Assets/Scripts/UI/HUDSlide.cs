@@ -33,7 +33,7 @@ namespace StackBuild.UI
 
         public async UniTaskVoid SlideOutAsync()
         {
-            await ((RectTransform)transform).DOPivot(initialPosition + amount, duration).SetEase(easing);
+            await ((RectTransform)transform).DOAnchorPos(initialPosition + amount, duration).SetEase(easing);
             gameObject.SetActive(false);
         }
 
