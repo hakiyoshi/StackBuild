@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 432848c1b20f402c9a30b460e6bea4a0, type: 3}
   m_Name: PlayerProperty_P2
   m_EditorClassIdentifier: 
-  <characterProperty>k__BackingField: {fileID: 11400000, guid: a255eb5a3e201804bb6af8c87c5325ca, type: 2}
+  <characterProperty>k__BackingField: {fileID: 11400000, guid: acfc5ad8b9d10de488e8a3f843072100, type: 2}
+  PlayerObject: {fileID: 0}

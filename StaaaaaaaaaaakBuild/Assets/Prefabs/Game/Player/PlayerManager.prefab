@@ -49,6 +49,7 @@ MonoBehaviour:
   <PlayerObjects>k__BackingField:
   - {fileID: 0}
   - {fileID: 0}
+  playerManagerProperty: {fileID: 11400000, guid: ac7fcbac768fd6046bb1da6ab5e00c8d, type: 2}
 --- !u!114 &7651625221020735156
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -79,7 +80,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputPrefab: {fileID: 5777875112543760121, guid: 57f55df1b20a97845b85d793c916ab9f, type: 3}
   playerInputProperty: {fileID: 11400000, guid: 0dd4cc4c4954c3942815643f00138d40, type: 2}
-  inputSenders:
-  - {fileID: 11400000, guid: 257012153c897ec40bf522400ed78a05, type: 2}
-  - {fileID: 11400000, guid: 41edcc5c67c950f41960218fc1ddfe47, type: 2}
   playerManager: {fileID: 7651625221020735162}

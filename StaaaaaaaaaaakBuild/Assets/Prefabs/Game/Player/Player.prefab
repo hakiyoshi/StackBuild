@@ -111,6 +111,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerProperty: {fileID: 11400000, guid: 94434b52069cc2f4ba70d07e78b196cd, type: 2}
   <Stun>k__BackingField: {fileID: 5094709088034505819}
+  playerManagerProperty: {fileID: 11400000, guid: ac7fcbac768fd6046bb1da6ab5e00c8d, type: 2}
+  hitParticlePrefab:
+  - {fileID: 6056925465993672788, guid: c34e589dcdceb3f4d890f6cc35873bb5, type: 3}
+  - {fileID: 5789713385372004132, guid: 0da34b7741ec15b4abe110219528bd9d, type: 3}
 --- !u!114 &1873032510937793623
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -431,12 +435,24 @@ PrefabInstance:
       value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 5602835525979160886, guid: 03afcf583dbfc9e4fbb22fa9c60e3261, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5602835525979160886, guid: 03afcf583dbfc9e4fbb22fa9c60e3261, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5602835525979160886, guid: 03afcf583dbfc9e4fbb22fa9c60e3261, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5602835525979160886, guid: 03afcf583dbfc9e4fbb22fa9c60e3261, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5602835525979160886, guid: 03afcf583dbfc9e4fbb22fa9c60e3261, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5602835525979160886, guid: 03afcf583dbfc9e4fbb22fa9c60e3261, type: 3}
       propertyPath: m_LocalPosition.z

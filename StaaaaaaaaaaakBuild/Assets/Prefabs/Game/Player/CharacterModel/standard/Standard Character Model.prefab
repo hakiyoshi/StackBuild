@@ -2030,6 +2030,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7070543610401112216}
   - component: {fileID: 7319796965514011649}
+  - component: {fileID: 8718964732506068838}
+  - component: {fileID: 6383061185523912287}
   m_Layer: 0
   m_Name: Standard Character Model
   m_TagString: Untagged
@@ -2074,6 +2076,67 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &8718964732506068838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7589776343792720418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f246a8a927e246a98df99a150e29be4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerManagerProperty: {fileID: 11400000, guid: ac7fcbac768fd6046bb1da6ab5e00c8d, type: 2}
+  setupMaterials:
+  - type: 1
+    setMaterials:
+    - {fileID: 2100000, guid: 03e4739f2d034754c89ce0ccee589409, type: 2}
+    - {fileID: 2100000, guid: 5f9c8dbbadad2004080e4a91132f4380, type: 2}
+    setupObjects:
+    - {fileID: 6896775547820667552}
+  - type: 1
+    setMaterials:
+    - {fileID: 2100000, guid: 58f00920b28eb804fa994670b0c7b2ff, type: 2}
+    - {fileID: 2100000, guid: 1e772d1cfc7d6f54399fdb2e5f3feb9c, type: 2}
+    setupObjects:
+    - {fileID: 5462224659309928484}
+    - {fileID: 2226325967243620954}
+    - {fileID: 2755326461222878724}
+    - {fileID: 4688775508000325151}
+    - {fileID: 4145639091770615724}
+    - {fileID: 1816379272024549549}
+    - {fileID: 9208344085183864055}
+    - {fileID: 9065697072586319835}
+    - {fileID: 5035022380549118114}
+    - {fileID: 488500483749906296}
+    - {fileID: 252741625754070343}
+    - {fileID: 3648171799678905007}
+    - {fileID: 1917412307055762443}
+    - {fileID: 5481360797751391676}
+    - {fileID: 5225012928677212560}
+    - {fileID: 8046916083008957233}
+    - {fileID: 604853332689377112}
+    - {fileID: 6756493532789645322}
+    - {fileID: 8021974655792829482}
+    - {fileID: 6756010720644631697}
+    - {fileID: 5756763566169905268}
+    - {fileID: 7953367985709187644}
+    - {fileID: 4401063604225089938}
+--- !u!114 &6383061185523912287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7589776343792720418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12b0177cc99448eeaa0e0a798b184582, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meshRenderer: {fileID: 6424289685804193769}
 --- !u!1 &7953367985709187644
 GameObject:
   m_ObjectHideFlags: 0

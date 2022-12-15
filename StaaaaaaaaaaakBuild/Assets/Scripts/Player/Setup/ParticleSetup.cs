@@ -10,6 +10,9 @@ namespace StackBuild.Particle
         [field: SerializeField] public ParticleSystem Stun { get; private set; }
         public ParticleSystem Hit { get; private set; }
 
+        [SerializeField] private PlayerManagerProperty playerManagerProperty;
+        [SerializeField] private GameObject[] hitParticlePrefab = new GameObject[2];
+
         private void Start()
         {
             //スタン
@@ -35,8 +38,13 @@ namespace StackBuild.Particle
 
         void HitSetup()
         {
-            Hit = Instantiate(playerProperty.characterProperty.Model.HitEffect, this.transform)
-                .GetComponent<ParticleSystem>();
+            //プレイヤープロパティから生成
+            // Hit = Instantiate(playerProperty.characterProperty.Model.HitEffect, this.transform)
+            //     .GetComponent<ParticleSystem>();
+
+            //チームから生成
+            var playerIndex = playerManagerProperty.playerManager.GetPlayerIndex(transform.parent.gameObject);
+            Hit = Instantiate(hitParticlePrefab[playerIndex], transform).GetComponent<ParticleSystem>();
         }
     }
 }
