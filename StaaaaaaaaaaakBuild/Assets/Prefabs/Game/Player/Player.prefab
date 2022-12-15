@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1111496776134160017}
   m_Layer: 0
   m_Name: Catch
-  m_TagString: Untagged
+  m_TagString: Catch
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -76,7 +76,7 @@ GameObject:
   - component: {fileID: 1873032510937793623}
   m_Layer: 6
   m_Name: Particle
-  m_TagString: Untagged
+  m_TagString: Particle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -385,7 +385,7 @@ GameObject:
   - component: {fileID: 8228495384509642522}
   m_Layer: 0
   m_Name: Model
-  m_TagString: Untagged
+  m_TagString: Model
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -417,7 +417,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 368205b25d2b4f2fb6aa18884bea133f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerProperty: {fileID: 0}
+  <playerProperty>k__BackingField: {fileID: 11400000, guid: 8487fa649341de547a8fae4f65449f75, type: 2}
+  <inputSender>k__BackingField: {fileID: 11400000, guid: 41edcc5c67c950f41960218fc1ddfe47, type: 2}
 --- !u!1001 &825653887211734380
 PrefabInstance:
   m_ObjectHideFlags: 0

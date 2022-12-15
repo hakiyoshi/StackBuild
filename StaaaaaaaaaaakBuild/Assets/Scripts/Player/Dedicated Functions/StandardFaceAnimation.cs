@@ -9,20 +9,12 @@ namespace StackBuild
     public class StandardFaceAnimation : MonoBehaviour
     {
         [SerializeField] private SkinnedMeshRenderer meshRenderer;
+        private ModelSetup modelSetup;
+        private InputSender inputSender => modelSetup.inputSender;
+        private PlayerProperty playerProperty => modelSetup.playerProperty;
 
-        private int standardFace = (int)FaceType.Normal;
-
-        private Material material
-        {
-            get { return meshRenderer.material; }
-            set { meshRenderer.material = value; }
-        }
-
-        private Vector2 Face
-        {
-            get { return material.GetVector("_Face"); }
-            set { material.SetVector("_Face", new Vector4(value.x, value.y)); }
-        }
+        private const string FaceName = "_Face";
+        int shaderFaceId = -1; //FaceのNameID
 
         enum FaceType : int
         {
@@ -38,10 +30,47 @@ namespace StackBuild
             new(0.5f, 0.8f),
         };
 
+        private Material material
+        {
+            get { return meshRenderer.material; }
+            set { meshRenderer.material = value; }
+        }
+
+        private Vector2 Face
+        {
+            get { return material.GetVector(shaderFaceId); }
+        }
+
+        void SetFace(Vector2 uv)
+        {
+            material.SetVector(shaderFaceId, new Vector4(uv.x, uv.y));
+        }
+
+        void SetFace(int faceTypeId)
+        {
+            material.SetVector(shaderFaceId, new Vector4(FaceUV[faceTypeId].x, FaceUV[faceTypeId].y));
+        }
+
+        void SetFace(FaceType type)
+        {
+            var uv = FaceUV[(int) type];
+            material.SetVector(shaderFaceId, new Vector4(uv.x, uv.y));
+        }
+
         private void Start()
         {
-            standardFace = Random.Range(0, 3);
-            Face = FaceUV[standardFace];
+            //モデルセットアップを取得
+            transform.parent.TryGetComponent(out modelSetup);
+
+            //マテリアルのSetVectorで使うFaceIdを取得
+            shaderFaceId = Shader.PropertyToID(FaceName);
+
+            //最初の表情
+            var startFace = Random.Range(0, 3);
+            SetFace(startFace);
+            DOVirtual.DelayedCall(1.0f, () => SetFace(FaceType.Normal));
+
+
         }
 
         private void Update()

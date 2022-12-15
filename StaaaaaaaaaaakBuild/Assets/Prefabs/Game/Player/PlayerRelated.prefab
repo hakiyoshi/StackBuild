@@ -435,6 +435,14 @@ PrefabInstance:
       propertyPath: playerProperty
       value: 
       objectReference: {fileID: 11400000, guid: 94434b52069cc2f4ba70d07e78b196cd, type: 2}
+    - target: {fileID: 8228495384509642522, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
+      propertyPath: <inputSender>k__BackingField
+      value: 
+      objectReference: {fileID: 11400000, guid: 257012153c897ec40bf522400ed78a05, type: 2}
+    - target: {fileID: 8228495384509642522, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
+      propertyPath: <playerProperty>k__BackingField
+      value: 
+      objectReference: {fileID: 11400000, guid: 94434b52069cc2f4ba70d07e78b196cd, type: 2}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 885e8797de73453429f9413b5f0abe87, type: 3}
