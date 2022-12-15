@@ -563,6 +563,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: suikomi_cool
       objectReference: {fileID: 0}
+    - target: {fileID: 8132400455210340810, guid: aa84dcd97e3867e449ba0e9648cdf288, type: 3}
+      propertyPath: m_TagString
+      value: Catch
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: aa84dcd97e3867e449ba0e9648cdf288, type: 3}
