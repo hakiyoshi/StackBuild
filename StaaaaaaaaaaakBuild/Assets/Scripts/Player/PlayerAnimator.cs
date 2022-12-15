@@ -18,13 +18,14 @@ namespace StackBuild
         {
             modelSetup.modelObject.TryGetComponent(out animator);
 
-            inputSender.Dash.sender.ThrottleFirst(TimeSpan.FromSeconds(playerProperty.characterProperty.Dash.DashCoolTime)).Subscribe(x =>
-            {
-                if (animator == null)
-                    return;
+            inputSender.Dash.sender.Where(x => x)
+                .ThrottleFirst(TimeSpan.FromSeconds(playerProperty.characterProperty.Dash.DashCoolTime)).Subscribe(_ =>
+                {
+                    if (animator == null)
+                        return;
 
-                DashAnimation();
-            }).AddTo(this);
+                    DashAnimation();
+                }).AddTo(this);
         }
 
         private void Update()
