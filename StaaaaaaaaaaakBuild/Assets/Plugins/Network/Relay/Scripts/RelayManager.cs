@@ -202,6 +202,9 @@ namespace NetworkSystem
 
         public void RelayExit()
         {
+            if (Unity.Netcode.NetworkManager.Singleton == null)
+                return;
+
             Unity.Netcode.NetworkManager.Singleton.Shutdown(true);
             onRelaySetting.OnNext(SettingEvent.Exit);
             Debug.Log("Relayアロケーションを退出しました");
