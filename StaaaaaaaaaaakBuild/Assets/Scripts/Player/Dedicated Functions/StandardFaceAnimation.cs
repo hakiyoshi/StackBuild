@@ -1,5 +1,6 @@
 ﻿using System;
 using DG.Tweening;
+using UniRx;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
@@ -12,9 +13,12 @@ namespace StackBuild
         private ModelSetup modelSetup;
         private InputSender inputSender => modelSetup.inputSender;
         private PlayerProperty playerProperty => modelSetup.playerProperty;
+        private CharacterProperty property => playerProperty.characterProperty;
 
         private const string FaceName = "_Face";
         int shaderFaceId = -1; //FaceのNameID
+
+        private int standardFace = (int) FaceType.Normal;
 
         enum FaceType : int
         {
@@ -70,12 +74,39 @@ namespace StackBuild
             SetFace(startFace);
             DOVirtual.DelayedCall(1.0f, () => SetFace(FaceType.Normal));
 
+            inputSender.Dash.sender.Where(x => x).ThrottleFirst(TimeSpan.FromSeconds(property.Dash.DashCoolTime)).Subscribe(_ =>
+            {
+                SetFace(FaceType.Anger);
 
-        }
+                //ダッシュが終わるタイミングで普通に戻す
+                DOVirtual.DelayedCall(property.Dash.DashAccelerationTime + property.Dash.DashDeceleratingTime,
+                    () => SetFace(standardFace));
+            }).AddTo(this);
 
-        private void Update()
-        {
+            playerProperty.HitDashAttack.Subscribe(x =>
+            {
+                var faceType = FaceType.Normal;
+                var returnTime = 1.0f;
 
+                if (x.playerProperty.characterProperty.Attack.StunTime != 0)
+                {
+                    //スタンする場合
+                    faceType = FaceType.Anger;
+                    returnTime = x.playerProperty.characterProperty.Attack.StunTime;
+                }
+                else
+                {
+                    //スタンしない場合
+                    faceType = FaceType.Bewilderment;
+                    returnTime = 1.0f;
+                }
+
+                SetFace(faceType);
+
+                //指定時間で普通に戻す
+                DOVirtual.DelayedCall(returnTime,
+                    () => SetFace(standardFace));
+            }).AddTo(this);
         }
     }
 }
