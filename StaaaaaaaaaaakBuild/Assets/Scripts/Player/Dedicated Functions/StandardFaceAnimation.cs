@@ -88,10 +88,10 @@ namespace StackBuild
                 var faceType = FaceType.Normal;
                 var returnTime = 1.0f;
 
-                if (x.playerProperty.characterProperty.Attack.StunTime != 0)
+                if (x.playerProperty.characterProperty.Attack.StunTime != 0.0f)
                 {
                     //スタンする場合
-                    faceType = FaceType.Anger;
+                    faceType = FaceType.xFace;
                     returnTime = x.playerProperty.characterProperty.Attack.StunTime;
                 }
                 else

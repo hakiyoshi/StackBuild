@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace StackBuild
@@ -11,23 +13,65 @@ namespace StackBuild
             SkinnedMeshRenderer,
         }
 
+#if UNITY_EDITOR
+        //シェーダープロパティ名のショートカット
+        enum ShaderColorNameShortcut
+        {
+            None,
+            Color,
+            Emission,
+        }
+
+        private readonly string[] ShaderColorName =
+        {
+            "",
+            "_Color",
+            "_EmissionColor",
+        };
+#endif
+
         [System.Serializable]
         struct SetupMaterial
         {
             public SetupType type;
-            public Material[] setMaterials;
+#if UNITY_EDITOR
+            public ShaderColorNameShortcut shaderColorNameShortcut;
+#endif
+            public string colorName;
+            [ColorUsage(true, true)]public Color[] setColors;
+
             public List<GameObject> setupObjects;
 
-            public SetupMaterial(Material[] set)
+
+
+            public SetupMaterial(int n = 0)
             {
-                setMaterials = new Material[2];
                 setupObjects = null;
                 type = SetupType.SkinnedMeshRenderer;
+
+                colorName = "";
+                setColors = new Color[2];
+
+#if UNITY_EDITOR
+                shaderColorNameShortcut = ShaderColorNameShortcut.Color;
+#endif
             }
         }
 
         [SerializeField] private PlayerManagerProperty playerManagerProperty;
         [SerializeField] private List<SetupMaterial> setupMaterials = new List<SetupMaterial>();
+
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            for (var i = 0; i < setupMaterials.Count; i++)
+            {
+                var material = setupMaterials[i];
+                material.colorName =ShaderColorName[(int) material.shaderColorNameShortcut];
+                setupMaterials[i] = material;
+            }
+        }
+#endif
 
         private void Start()
         {
@@ -42,22 +86,26 @@ namespace StackBuild
             {
                 foreach (var obj in set.setupObjects)
                 {
-                    SetupTypeMaterial(set.type, obj, set.setMaterials[playerIndex]);
+                    if(set.setColors.Length <= playerIndex)
+                        continue;
+
+                    SetupTypeMaterial(set.type, obj, set.colorName,
+                        set.setColors[playerIndex]);
                 }
             }
 
             Destroy(this);
         }
 
-        void SetupTypeMaterial(SetupType type, GameObject setupObject, Material setMaterial)
+        void SetupTypeMaterial(SetupType type, GameObject setupObject, string colorName, Color setColor)
         {
             switch (type)
             {
                 case SetupType.ParticleSystemRenderer:
-                    setupObject.GetComponent<ParticleSystemRenderer>().material = setMaterial;
+                    setupObject.GetComponent<ParticleSystemRenderer>().material.SetColor(colorName, setColor);
                     break;
                 case SetupType.SkinnedMeshRenderer:
-                    setupObject.GetComponent<SkinnedMeshRenderer>().material = setMaterial;
+                    setupObject.GetComponent<SkinnedMeshRenderer>().material.SetColor(colorName, setColor);
                     break;
                 default:
                     return;
