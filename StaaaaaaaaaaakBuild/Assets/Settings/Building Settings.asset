@@ -12,7 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cae835b8c6f740ce9d229b6e8607d629, type: 3}
   m_Name: Building Settings
   m_EditorClassIdentifier: 
-  BuildingDataDictionary:
+  <WidthSize>k__BackingField: 18
+  <HeightSize>k__BackingField: 6
+  <Column>k__BackingField: 3
+  <Row>k__BackingField: 3
+  <MaxHeight>k__BackingField: 15
+  <PartsFallTime>k__BackingField: 0.6
+  <BaseFallTime>k__BackingField: 1
+  <LoopTime>k__BackingField: 0.03
+  <StackPrefab>k__BackingField: {fileID: 7779452958479151147, guid: c781c16edb51ead44ae894d2a29933a5, type: 3}
+  <BuildingDataDictionary>k__BackingField:
     dictToList:
     - Key: 0
       Value:
@@ -24,7 +33,7 @@ MonoBehaviour:
         mesh: {fileID: -2072903605290071342, guid: b74ff54bc6867ae4aa950e785a5aec32, type: 3}
     - Key: 2
       Value:
-        material: {fileID: 2100000, guid: 206dc62464643d7498e6740e1b036c49, type: 2}
+        material: {fileID: 2100000, guid: 7c4debc0a657f7948811d2c56739923e, type: 2}
         mesh: {fileID: -7123147199564449528, guid: 3de6065e05601c8419a745ef04c578ef, type: 3}
     - Key: 3
       Value:
