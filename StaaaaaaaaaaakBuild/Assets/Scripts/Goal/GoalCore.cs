@@ -38,6 +38,8 @@ namespace StackBuild
         private float totalHeight = 0;
         private int floorPartsCount = 0;
 
+        public float TotalHeight => totalHeight;
+
         private void Start()
         {
             buildingBase = Instantiate(stackPrefab, stackPos);
