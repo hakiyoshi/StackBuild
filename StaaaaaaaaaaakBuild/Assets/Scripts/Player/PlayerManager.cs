@@ -60,5 +60,18 @@ namespace StackBuild
             Debug.Assert(index != -1);
             return index;
         }
+
+        public static GameObject GetPlayerObject(Transform myself)
+        {
+            while (myself != null)
+            {
+                if (myself.transform.parent != null && myself.transform.parent.parent == null)
+                    return myself.gameObject;
+
+                myself = myself.parent;
+            }
+
+            return null;
+        }
     }
 }
