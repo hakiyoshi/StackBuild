@@ -25,6 +25,8 @@ namespace StackBuild.Game
         [SerializeField] private FinishDisplay finishDisplay;
         [Header("Game Parameters")]
         [SerializeField] private float gameTime;
+        [Header("System")]
+        [SerializeField] private PlayerInputProperty playerInputProperty;
 
         private float timeRemaining;
         private MatchState state;
@@ -96,12 +98,18 @@ namespace StackBuild.Game
 
         private void DisablePlayerMovement()
         {
-            // TODO
+            foreach (var input in playerInputProperty.PlayerInputs)
+            {
+                input.DeactivateInput();
+            }
         }
 
         private void EnablePlayerMovement()
         {
-            // TODO
+            foreach (var input in playerInputProperty.PlayerInputs)
+            {
+                input.ActivateInput();
+            }
         }
 
         private void AnimateCamera()
