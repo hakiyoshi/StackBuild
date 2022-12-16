@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3ce0b0f084e48d18d9b4df547722b17, type: 3}
   m_Name: Canon Settings
   m_EditorClassIdentifier: 
-  <ShootDuration>k__BackingField: 0.07
-  <ShootPower>k__BackingField: 10
+  <ShootDuration>k__BackingField: 0.5
+  <ShootPower>k__BackingField: 15
   <ShootAngle>k__BackingField: 5

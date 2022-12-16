@@ -10,12 +10,15 @@ namespace StackBuild
         [field: SerializeField] public GameObject[] PlayerObjects { get; private set; } = Array.Empty<GameObject>();
         [SerializeField] private PlayerManagerProperty playerManagerProperty;
 
+        private void Awake()
+        {
+            playerManagerProperty.playerManager = this;
+        }
+
         private void Start()
         {
             if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsServer)
                 OwnerAllocation();
-
-            playerManagerProperty.playerManager = this;
         }
 
         public override void OnNetworkSpawn()

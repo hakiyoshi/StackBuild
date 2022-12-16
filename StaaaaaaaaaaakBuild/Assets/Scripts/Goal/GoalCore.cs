@@ -8,12 +8,14 @@ using UniRx;
 using UniRx.Triggers;
 using Unity.Netcode;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace StackBuild
 {
     public class GoalCore : NetworkBehaviour
     {
         [SerializeField] private GoalSettings settings;
+        [SerializeField] private BuildSettings buildSettings;
         [SerializeField] private PartsManager partsManager;
         [SerializeField] private GameObject collisionObject;
         [SerializeField] private GameObject stackPrefab;
@@ -27,10 +29,10 @@ namespace StackBuild
         private float PartsFallTime => settings.PartsFallTime;
         private float BaseFallTime => settings.BaseFallTime;
         private float LoopTime => settings.LoopTime;
-        private BuildingData[] BuildingDataArray => settings.BuildingDataList.ToArray();
+        private FloorData[] FloorDataArray => settings.FloorDataList.ToArray();
 
         private Dictionary<MaterialId, int> partsCount = new();
-        private Queue<BuildingData> stackQueue = new();
+        private Queue<FloorData> stackQueue = new();
         private GameObject buildingBase;
         private float height = 0;
         private float totalHeight = 0;
@@ -46,7 +48,7 @@ namespace StackBuild
             }
 
             collisionObject.OnTriggerEnterAsObservable()
-                .Where(_ => NetworkManager.Singleton != null && NetworkManager.Singleton.IsServer)
+                .Where(_ => settings.IsLocalPlayTest || (NetworkManager.Singleton != null && NetworkManager.Singleton.IsServer))
                 .Where(x => x.gameObject.CompareTag("Parts"))
                 .Select(x => x.gameObject.GetComponent<PartsCore>())
                 .Subscribe(Goal).AddTo(this);
@@ -61,9 +63,9 @@ namespace StackBuild
                 partsCount[buildMaterial.Key] += buildMaterial.Value;
             }
 
-            for (int i = 0; i < BuildingDataArray.Length; i++)
+            for (int i = 0; i < FloorDataArray.Length; i++)
             {
-                var data = BuildingDataArray[i];
+                var data = FloorDataArray[i];
 
                 bool isFailed = false;
                 foreach (var need in data.needMaterials)
@@ -80,7 +82,15 @@ namespace StackBuild
                 {
                     partsCount[need.Key] -= need.Value;
                 }
-                EnqueueServerRpc(i);
+
+                if (settings.IsLocalPlayTest)
+                {
+                    stackQueue.Enqueue(FloorDataArray[i]);
+                }
+                else
+                {
+                    EnqueueServerRpc(i);
+                }
             }
         }
 
@@ -93,7 +103,7 @@ namespace StackBuild
         [ClientRpc]
         private void EnqueueClientRpc(int index)
         {
-            stackQueue.Enqueue(BuildingDataArray[index]);
+            stackQueue.Enqueue(FloorDataArray[index]);
         }
 
         [ServerRpc(RequireOwnership = false)]
@@ -111,11 +121,11 @@ namespace StackBuild
 
             while (!token.IsCancellationRequested)
             {
-                while (stackQueue.TryDequeue(out var data))
+                while (stackQueue.TryDequeue(out var floorData))
                 {
-                    for (int i = 0; i < data.count; i++)
+                    foreach (var id in floorData.buildingIds)
                     {
-                        StackAsync(data.material, token).Forget();
+                        StackAsync(buildSettings.BuildingDataDictionary[id], token).Forget();
                         await BaseDownAsync(token);
                         await UniTask.Delay(TimeSpan.FromSeconds(LoopTime), cancellationToken: token);
                     }
@@ -124,21 +134,29 @@ namespace StackBuild
             }
         }
 
-        private async UniTask StackAsync(Material material, CancellationToken token = default)
+        private async UniTask StackAsync(BuildingData data, CancellationToken token = default)
         {
             token.ThrowIfCancellationRequested();
 
             var obj = Instantiate(stackPrefab, buildingBase.transform);
-            if (!obj.TryGetComponent(out MeshRenderer meshRenderer)) return;
 
             obj.transform.localPosition = new Vector3(
                 x: (Row - floorPartsCount / Column) * (WidthSize / Row) + (WidthSize / Row) - (WidthSize / 2),
                 y: totalHeight + height + 20,
                 z: (floorPartsCount % Column) * (WidthSize / Column) + (WidthSize / Column) - (WidthSize / 2));
+            obj.transform.localRotation = Quaternion.Euler(0f, Random.Range(0, 3) * 90f, 0f);
             obj.transform.localScale = new Vector3(WidthSize / Row, HeightSize, WidthSize / Column);
 
-            meshRenderer.sharedMaterial = material;
-            meshRenderer.enabled = true;
+            if (obj.TryGetComponent(out MeshFilter meshFilter))
+            {
+                meshFilter.sharedMesh = data.mesh;
+            }
+
+            if (obj.TryGetComponent(out MeshRenderer meshRenderer))
+            {
+                meshRenderer.sharedMaterial = data.material;
+                meshRenderer.enabled = true;
+            }
 
             floorPartsCount++;
 

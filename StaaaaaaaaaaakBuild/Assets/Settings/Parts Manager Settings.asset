@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9bdd7f2b10444a59eb88f43e8e7a3c1, type: 3}
   m_Name: Parts Manager Settings
   m_EditorClassIdentifier: 
+  isLocalPlayTest: 1
   <SpawnRuleList>k__BackingField:
   - threshould: 10
     count: 3

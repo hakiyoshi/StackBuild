@@ -31,7 +31,7 @@ namespace StackBuild
         {
             while (true)
             {
-                if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsServer)
+                if (!settings.isLocalPlayTest && (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsServer))
                 {
                     yield return null;
                     continue;
@@ -73,7 +73,7 @@ namespace StackBuild
             if (!parts.transform.IsChildOf(transform)) return;
 
             var net = parts.GetComponent<PartsNetworkSync>();
-            if (net.IsSpawned && NetworkManager.Singleton != null && !NetworkManager.Singleton.IsServer) return;
+            if (!settings.isLocalPlayTest || (net.IsSpawned && NetworkManager.Singleton != null && !NetworkManager.Singleton.IsServer)) return;
 
             parts.isActive.Value = false;
             parts.partsId.Value = PartsId.Default;
