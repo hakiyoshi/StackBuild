@@ -13,7 +13,7 @@ namespace StackBuild
 
             //コライダーのサイズセット
             if (TryGetComponent(out CapsuleCollider collider))
-                collider.radius = playerProperty.characterProperty.Model.SphereColliderRadius + 0.5f;
+                collider.radius = playerProperty.characterProperty.Model.SphereColliderRadius;
         }
     }
 }
