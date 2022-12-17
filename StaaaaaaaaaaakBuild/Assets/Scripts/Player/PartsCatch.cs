@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UniRx;
+using UniRx.Triggers;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -20,13 +22,27 @@ namespace StackBuild
             }
         }
 
+        private Dictionary<int, Rigidbody> partsCash = new();
+
         private void OnTriggerStay(Collider other)
         {
             if (!other.CompareTag("Parts"))
                 return;
 
-            if(inputSender.Catch.Value && other.TryGetComponent(out Rigidbody rb))
+            if(inputSender.Catch.Value)
+            {
+                if (!partsCash.TryGetValue(other.gameObject.GetInstanceID(), out Rigidbody rb))
+                {
+                    //キーがない場合
+                    other.TryGetComponent(out rb);
+                    partsCash.Add(other.gameObject.GetInstanceID(), rb);
+                    rb.OnDestroyAsObservable().Subscribe(_ =>
+                    {
+                        partsCash.Remove(other.gameObject.GetInstanceID());
+                    }).AddTo(this);
+                }
                 Catch(rb);
+            }
         }
 
         private void Catch(Rigidbody rb)
