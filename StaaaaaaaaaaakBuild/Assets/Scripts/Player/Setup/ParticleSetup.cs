@@ -1,6 +1,4 @@
-﻿using System;
-using Unity.VisualScripting;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace StackBuild.Particle
 {
@@ -16,7 +14,7 @@ namespace StackBuild.Particle
         private void Start()
         {
             //スタン
-            //StunSetup();
+            StunSetup();
 
             //ヒット
             HitSetup();
@@ -42,7 +40,7 @@ namespace StackBuild.Particle
             // Hit = Instantiate(playerProperty.characterProperty.Model.HitEffect, this.transform)
             //     .GetComponent<ParticleSystem>();
 
-            //チームから生成
+            //プレイヤーIDから生成
             var playerIndex = playerManagerProperty.playerManager.GetPlayerIndex(transform.parent.gameObject);
             Hit = Instantiate(hitParticlePrefab[playerIndex], transform).GetComponent<ParticleSystem>();
         }

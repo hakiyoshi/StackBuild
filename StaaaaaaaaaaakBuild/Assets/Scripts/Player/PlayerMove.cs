@@ -88,7 +88,7 @@ namespace StackBuild
         void MoveVelocity()
         {
             //移動方向取得
-            var dir = CreateMoveDirection();
+            var dir = CreateMoveDirection().normalized;
 
             //移動
             if (dir.sqrMagnitude > 0.0f)

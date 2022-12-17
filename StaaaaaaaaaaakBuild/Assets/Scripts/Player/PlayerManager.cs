@@ -63,5 +63,19 @@ namespace StackBuild
             Debug.Assert(index != -1);
             return index;
         }
+
+        public static GameObject GetPlayerObject(Transform playerChild)
+        {
+            var layerMask = LayerMask.GetMask("P1", "P2");
+            while (playerChild != null)
+            {
+                if ((1 << playerChild.gameObject.layer & layerMask) != 0)
+                    return playerChild.gameObject;
+
+                playerChild = playerChild.parent;
+            }
+
+            return null;
+        }
     }
 }

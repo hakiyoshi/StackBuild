@@ -4,7 +4,8 @@ namespace StackBuild
 {
     public class ModelSetup : MonoBehaviour
     {
-        [SerializeField] private PlayerProperty playerProperty;
+        [field: SerializeField] public PlayerProperty playerProperty { get; private set; }
+        [field: SerializeField] public InputSender inputSender { get; private set; }
 
         public GameObject modelObject { get; private set; }
 
