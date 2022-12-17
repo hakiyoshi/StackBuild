@@ -18,6 +18,7 @@ namespace StackBuild
         private PartsId[] IDArray => partsSettings.PartsDataDictionary.Keys.ToArray();
         private Queue<PartsCore> queue = new();
         private PartsCore[] children;
+        private Dictionary<int, Rigidbody> partsRigidbodyDictionary = new();
 
         private void Start()
         {
@@ -26,6 +27,13 @@ namespace StackBuild
             {
                 queue.Enqueue(parts);
             }
+
+            var rbs = GetComponentsInChildren<Rigidbody>();
+            foreach (var rb in rbs)
+            {
+                partsRigidbodyDictionary[rb.gameObject.GetInstanceID()] = rb;
+            }
+
             StartCoroutine(SpawnTimerCoroutine());
         }
 
@@ -90,6 +98,11 @@ namespace StackBuild
         public int GetCount()
         {
             return children.Length;
+        }
+
+        public Rigidbody GetPartsRigidbody(int instanceId)
+        {
+            return partsRigidbodyDictionary[instanceId];
         }
     }
 }
