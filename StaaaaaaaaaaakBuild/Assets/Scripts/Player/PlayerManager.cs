@@ -61,14 +61,15 @@ namespace StackBuild
             return index;
         }
 
-        public static GameObject GetPlayerObject(Transform myself)
+        public static GameObject GetPlayerObject(Transform playerChild)
         {
-            while (myself != null)
+            var layerMask = LayerMask.GetMask("P1", "P2");
+            while (playerChild != null)
             {
-                if (myself.transform.parent != null && myself.transform.parent.parent == null)
-                    return myself.gameObject;
+                if ((1 << playerChild.gameObject.layer & layerMask) != 0)
+                    return playerChild.gameObject;
 
-                myself = myself.parent;
+                playerChild = playerChild.parent;
             }
 
             return null;
