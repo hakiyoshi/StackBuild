@@ -43,6 +43,7 @@ namespace StackBuild.Game
             DisablePlayerMovement();
             AnimateCamera();
             introDisplay.Display();
+            timeDisplay.Display(Mathf.RoundToInt(gameTime));
             await UniTask.Delay(TimeSpan.FromSeconds(introDisplayDuration));
 
             await fade.DOFade(1, fadeIn).From(0).SetEase(Ease.InQuad);
