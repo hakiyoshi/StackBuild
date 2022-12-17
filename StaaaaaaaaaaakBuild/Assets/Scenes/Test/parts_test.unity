@@ -123,6 +123,17 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &38754114 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 558933221254924068, guid: 53797dc918dcf4c4f84d58997990ede9, type: 3}
+  m_PrefabInstance: {fileID: 934446952}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7ca0020cf09d52459e30f19a5c1cf09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &57040539
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -214,6 +225,14 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3571626307994262756, guid: 5a1d94e4c70b40743bc626ca51bd4734, type: 3}
+      propertyPath: buildingCore
+      value: 
+      objectReference: {fileID: 551735409}
+    - target: {fileID: 3571626307994262756, guid: 5a1d94e4c70b40743bc626ca51bd4734, type: 3}
+      propertyPath: collisionObject
+      value: 
+      objectReference: {fileID: 940895642}
     - target: {fileID: 3571626307994262757, guid: 5a1d94e4c70b40743bc626ca51bd4734, type: 3}
       propertyPath: m_Name
       value: Goal L
@@ -428,7 +447,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 377001501}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 10, y: 1, z: 10}
@@ -1058,6 +1077,10 @@ PrefabInstance:
       propertyPath: buildingCore
       value: 
       objectReference: {fileID: 551735409}
+    - target: {fileID: 7909347572663846741, guid: 5e2a30d206f66ff4983219820fbf203f, type: 3}
+      propertyPath: collisionObject
+      value: 
+      objectReference: {fileID: 940895640}
     - target: {fileID: 7909347572663846742, guid: 5e2a30d206f66ff4983219820fbf203f, type: 3}
       propertyPath: m_RootOrder
       value: 11
@@ -1276,6 +1299,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8347072241304567018, guid: c327370f790f8544d84a7288d3991a6f, type: 3}
+      propertyPath: canonManager
+      value: 
+      objectReference: {fileID: 38754114}
     - target: {fileID: 8347072241304567019, guid: c327370f790f8544d84a7288d3991a6f, type: 3}
       propertyPath: m_Name
       value: Parts Manager
@@ -1542,7 +1569,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1583303480}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 10, y: 2, z: 10}
