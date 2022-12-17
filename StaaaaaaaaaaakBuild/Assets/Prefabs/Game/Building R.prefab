@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5637207992087717521}
   - component: {fileID: 5637207992087717520}
+  - component: {fileID: 8739208146717400083}
   m_Layer: 0
   m_Name: Building R
   m_TagString: Untagged
@@ -47,6 +48,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   settings: {fileID: 11400000, guid: be8e86dfe26133840940dc6b6680e6af, type: 2}
   stackPos: {fileID: 5637207992343150935}
+--- !u!114 &8739208146717400083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5637207992087717523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 951099334
+  AlwaysReplicateAsRoot: 0
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!1 &5637207992343150934
 GameObject:
   m_ObjectHideFlags: 0

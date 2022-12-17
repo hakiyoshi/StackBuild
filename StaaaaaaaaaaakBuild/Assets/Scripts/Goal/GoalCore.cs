@@ -92,14 +92,5 @@ namespace StackBuild
         {
             Enqueue(index);
         }
-
-        [ServerRpc(RequireOwnership = false)]
-        public void FinishedServerRpc() => FinishedClientRpc();
-
-        [ClientRpc]
-        private void FinishedClientRpc()
-        {
-            transform.DOLocalMoveY(0, 1f);
-        }
     }
 }

@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Rendering;
 using Random = UnityEngine.Random;
 
 namespace StackBuild
 {
-    public class BuildingCore : MonoBehaviour
+    public class BuildingCore : NetworkBehaviour
     {
         [SerializeField] private BuildSettings settings;
         [SerializeField] private Transform stackPos;
@@ -42,7 +43,7 @@ namespace StackBuild
             StackLoopAsync(this.GetCancellationTokenOnDestroy()).Forget();
         }
 
-        private async UniTask StackLoopAsync(CancellationToken token = default)
+        private async UniTask StackLoopAsync(CancellationToken token)
         {
             token.ThrowIfCancellationRequested();
 
@@ -58,7 +59,7 @@ namespace StackBuild
             }
         }
 
-        private async UniTask StackAsync(BuildCubeData data, CancellationToken token = default)
+        private async UniTask StackAsync(BuildCubeData data, CancellationToken token)
         {
             token.ThrowIfCancellationRequested();
 
@@ -96,7 +97,7 @@ namespace StackBuild
                 .WithCancellation(token);
         }
 
-        private async UniTask BaseDownAsync(CancellationToken token = default)
+        private async UniTask BaseDownAsync(CancellationToken token)
         {
             token.ThrowIfCancellationRequested();
 
@@ -110,6 +111,25 @@ namespace StackBuild
                 .SetDelay(PartsFallTime)
                 .SetRelative(true)
                 .WithCancellation(token);
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        public void FinishedServerRpc()
+        {
+            if (!IsServer) return;
+
+            FinishedClientRpc();
+        }
+
+        [ClientRpc]
+        private void FinishedClientRpc()
+        {
+            Finished();
+        }
+
+        public void Finished()
+        {
+            buildingBase.transform.DOLocalMoveY(0, 1f);
         }
     }
 }
