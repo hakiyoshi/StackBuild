@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cae835b8c6f740ce9d229b6e8607d629, type: 3}
+  m_Name: Building Settings
+  m_EditorClassIdentifier: 
+  <WidthSize>k__BackingField: 18
+  <HeightSize>k__BackingField: 6
+  <Column>k__BackingField: 3
+  <Row>k__BackingField: 3
+  <MaxHeight>k__BackingField: 15
+  <PartsFallTime>k__BackingField: 0.6
+  <BaseFallTime>k__BackingField: 1
+  <LoopTime>k__BackingField: 0.03
+  <StackPrefab>k__BackingField: {fileID: 7779452958479151147, guid: c781c16edb51ead44ae894d2a29933a5, type: 3}
+  <BuildingDataDictionary>k__BackingField:
+    dictToList:
+    - Key: 0
+      Value:
+        material: {fileID: 2100000, guid: 07126f5d8c8ded6498a8792dbe04ab54, type: 2}
+        mesh: {fileID: -2698138407178338390, guid: 2d4725b7384cded42b4b39b8ffeb9ea9, type: 3}
+    - Key: 1
+      Value:
+        material: {fileID: 2100000, guid: c3b6637d45c9a7f4789f1d00d2dc0245, type: 2}
+        mesh: {fileID: -2072903605290071342, guid: b74ff54bc6867ae4aa950e785a5aec32, type: 3}
+    - Key: 2
+      Value:
+        material: {fileID: 2100000, guid: 7c4debc0a657f7948811d2c56739923e, type: 2}
+        mesh: {fileID: -7123147199564449528, guid: 3de6065e05601c8419a745ef04c578ef, type: 3}
+    - Key: 3
+      Value:
+        material: {fileID: 2100000, guid: 6d37a0fdb5624714b8022b6dc1ddf209, type: 2}
+        mesh: {fileID: 8459280426095363678, guid: ec0e8f3a83ed53d40b3c55896955ddfd, type: 3}
+    - Key: 4
+      Value:
+        material: {fileID: 2100000, guid: e87ab5ea6c1287a4d9c17ccec200e98b, type: 2}
+        mesh: {fileID: 2601806006494887631, guid: 49d47582f304ab9488ac429759cae109, type: 3}
+    - Key: 5
+      Value:
+        material: {fileID: 2100000, guid: 206dc62464643d7498e6740e1b036c49, type: 2}
+        mesh: {fileID: -8216764738345505240, guid: 33a4b90527d06d246af7a60098f52827, type: 3}
+    - Key: 6
+      Value:
+        material: {fileID: 2100000, guid: ecf2b120a2413994aaecd3302820932f, type: 2}
+        mesh: {fileID: 3869391946401929101, guid: da7fd381019cb644084b148ae0abff7a, type: 3}
+    - Key: 7
+      Value:
+        material: {fileID: 2100000, guid: 86dd0c5a209dd7f4abd33c6a17981955, type: 2}
+        mesh: {fileID: -103100677967931109, guid: 411373eb1114ea14cbe21a5b37c3b2fb, type: 3}
+    - Key: 8
+      Value:
+        material: {fileID: 2100000, guid: 64fbc4e07e7e887428f3fe14281c485c, type: 2}
+        mesh: {fileID: 3725667490278262047, guid: 49bf61604eca1774fb267527d6c2ed84, type: 3}

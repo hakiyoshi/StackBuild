@@ -1,17 +1,32 @@
-﻿using UnityEngine;
+﻿using UniRx;
+using UnityEngine;
 
 namespace StackBuild
 {
     [CreateAssetMenu(menuName = "Game/PlayerProperty")]
     public class PlayerProperty : ScriptableObject
     {
-        [field: Header("Move")]
-        [field: SerializeField] public float Acceleration { get; private set; } = 1000.0f;
-        [field: SerializeField] public float Deceleration { get; private set; } = 0.99f;
-        [field: SerializeField] public float MaxSpeed { get; private set; } = 20.0f;
+        [field: SerializeField] public CharacterProperty characterProperty { get; private set; }
 
-        [field: Header("Catch")]
-        [field: SerializeField] public float CatchupPower { get; private set; } = 400.0f;
-        [field: SerializeField] public Vector3 CatchupOffsetPosition { get; private set; } = new Vector3(0.0f, -5.0f, 0.0f);
+        [HideInInspector] public GameObject PlayerObject = null;
+
+        public struct DashAttackInfo
+        {
+            public PlayerProperty playerProperty;
+            public Vector3 HitPoint;
+
+            public DashAttackInfo(PlayerProperty playerProperty, Vector3 hitPoint)
+            {
+                this.playerProperty = playerProperty;
+                HitPoint = hitPoint;
+            }
+        }
+        public Subject<DashAttackInfo> HitDashAttack { get; private set; } = new Subject<DashAttackInfo>();
+
+
+        public void Initialize(CharacterProperty character)
+        {
+            characterProperty = character;
+        }
     }
 }

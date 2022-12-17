@@ -18,6 +18,8 @@ namespace StackBuild
         private PlayerInput[] playerInputs = new PlayerInput[MAX_DEVICEID];
         public PlayerInput[] PlayerInputs => playerInputs;
 
+        [field: SerializeField] public InputSender[] inputSenders { get; private set; } = new InputSender[MAX_DEVICEID];
+
         public void SettingPlayerDevice(int playerId, InputDevice device, bool isOnline)
         {
             var id = 0;

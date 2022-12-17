@@ -5,15 +5,11 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace StackBuild
 {
-    [RequireComponent(typeof(PlayerManager))]
     public class PlayerInputManager : MonoBehaviour
     {
         [SerializeField] private GameObject inputPrefab;
         [SerializeField] private PlayerInputProperty playerInputProperty;
-        [SerializeField] private InputSender[] inputSenders = Array.Empty<InputSender>();
-
-        //管理用
-        private PlayerInput[] playerInputs = new PlayerInput[PlayerInputProperty.MAX_DEVICEID];
+        [SerializeField] private PlayerManager playerManager;
 
         private void Awake()
         {
@@ -22,15 +18,12 @@ namespace StackBuild
 
         void SettingPlayerInput()
         {
-            if (!TryGetComponent(out PlayerManager playerManager))
-                return;
-
             var playerObjects = playerManager.PlayerObjects;
             var devices = InputSystem.devices;
+            var parent = transform.parent;
             for (var i = 0; i < playerObjects.Length; i++)
             {
-                var parent = playerObjects[i].transform;
-
+                //var parent = playerObjects[i].transform;
                 if(SelectSetDevice(i, parent, devices))
                     continue;
 
@@ -85,10 +78,13 @@ namespace StackBuild
             PlayerInput playerInput = null;
             if (device == null)
             {
-                //デバイス未設定
-                playerInput = PlayerInput.Instantiate(inputPrefab, playerIndex);
+                //デバイス未設定(適当にキーボードマウス指定してActiveをfalseにする)
+                playerInput = PlayerInput.Instantiate(inputPrefab, playerIndex: playerIndex,
+                    controlScheme: "keyboard&Mouse",
+                    pairWithDevices: new InputDevice[] {Keyboard.current, Mouse.current});
+                playerInput.gameObject.SetActive(false);
             }
-            else if ((Keyboard.current != null && Keyboard.current.deviceId == device.deviceId) ||
+            else if (device == null || (Keyboard.current != null && Keyboard.current.deviceId == device.deviceId) ||
                      (Mouse.current != null && Mouse.current.deviceId == device.deviceId))
             {
                 //キーボード、マウス
@@ -103,14 +99,13 @@ namespace StackBuild
                     controlScheme: "Gamepad", pairWithDevice: device);
             }
 
-            playerInputs[playerIndex] = playerInput;
             StartInputObjectSetting(playerInput, parent, playerIndex);
         }
 
         void StartInputObjectSetting(PlayerInput playerInput, Transform parent, int playerIndex)
         {
             playerInput.transform.parent = parent;
-            playerInput.gameObject.GetComponent<Input>().inputSender = inputSenders[playerIndex];
+            playerInput.gameObject.GetComponent<Input>().inputSender = playerInputProperty.inputSenders[playerIndex];
             playerInputProperty.PlayerInputs[playerIndex] = playerInput;
         }
     }

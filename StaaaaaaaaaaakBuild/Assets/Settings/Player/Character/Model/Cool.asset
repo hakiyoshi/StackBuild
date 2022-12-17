@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28ac473de36842d5a34b591ea3f244a7, type: 3}
+  m_Name: Cool
+  m_EditorClassIdentifier: 
+  <CharacterModelPrefab>k__BackingField: {fileID: 4185790469128066595, guid: e9c348807e60d3040b4113c45a4dca6b, type: 3}
+  <SphereColliderRadius>k__BackingField: 3
+  <HitEffect>k__BackingField: {fileID: 6056925465993672788, guid: c34e589dcdceb3f4d890f6cc35873bb5, type: 3}

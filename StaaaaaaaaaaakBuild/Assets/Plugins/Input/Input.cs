@@ -15,11 +15,14 @@ public class Input : MonoBehaviour
         TryGetComponent(out input);
 
         var player = input.actions.FindActionMap("Player");
-        ActionMapFromEventStarted(player, "Catch").Subscribe(x => inputSender.SendCatch(true)).AddTo(this);
-        ActionMapFromEventCanceled(player, "Catch").Subscribe(x => inputSender.SendCatch(false)).AddTo(this);
+        ActionMapFromEventPerformed(player, "Move").Subscribe(x => inputSender.Move.Send(x.ReadValue<Vector2>())).AddTo(this);
+        ActionMapFromEventCanceled(player, "Move").Subscribe(_ => inputSender.Move.Send(Vector2.zero)).AddTo(this);
 
-        ActionMapFromEventPerformed(player, "Move").Subscribe(x => inputSender.SendMove(x.ReadValue<Vector2>())).AddTo(this);
-        ActionMapFromEventCanceled(player, "Move").Subscribe(x => inputSender.SendMove(Vector2.zero)).AddTo(this);
+        ActionMapFromEventStarted(player, "Catch").Subscribe(_ => inputSender.Catch.Send(true)).AddTo(this);
+        ActionMapFromEventCanceled(player, "Catch").Subscribe(_ => inputSender.Catch.Send(false)).AddTo(this);
+
+        ActionMapFromEventStarted(player, "Dash").Subscribe(_ => inputSender.Dash.Send(true)).AddTo(this);
+        ActionMapFromEventCanceled(player, "Dash").Subscribe(_ => inputSender.Dash.Send(false)).AddTo(this);
     }
 
     private IObservable<InputAction.CallbackContext> ActionMapFromEventStarted(InputActionMap actionMap, string actionName)
