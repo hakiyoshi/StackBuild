@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7096bc16d85b492f915fd4ee0e23ed88, type: 3}
-  m_Name: CoolCharacterProperty 1
+  m_Name: CuteCharacterProperty
   m_EditorClassIdentifier: 
-  <Model>k__BackingField: {fileID: 11400000, guid: cf7c02f91244cc9499d7c0613c1633cf, type: 2}
+  <Model>k__BackingField: {fileID: 11400000, guid: 3649007573f491e43a914a255ed8e485, type: 2}
   <Move>k__BackingField: {fileID: 11400000, guid: 929c566f937b50743bec5275181da7d6, type: 2}
   <Dash>k__BackingField: {fileID: 11400000, guid: 63fecd0bbc6e3964a8dc5b5c49eea461, type: 2}
   <Attack>k__BackingField: {fileID: 11400000, guid: bea00ad1dd34a3c4aaed44518272cc50, type: 2}
