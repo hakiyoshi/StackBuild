@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UniRx;
+using UniRx.Triggers;
 using Unity.Netcode;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -31,14 +33,8 @@ namespace StackBuild
         {
             while (true)
             {
-                if (!settings.isLocalPlayTest && (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsServer))
-                {
-                    yield return null;
-                    continue;
-                }
-
                 var rule = settings.SpawnRuleList.Find(x => x.threshould > GetActiveCount());
-                if (rule == null)
+                if (rule == null && !settings.isLocalPlayTest && (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsServer))
                 {
                     yield return null;
                     continue;
