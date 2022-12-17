@@ -11,19 +11,14 @@ namespace StackBuild
         [SerializeField] private float extrapolateFromSeconds = 0.5f;
 
         private PartsCore partsCore = null;
-        private PartsMesh partsMesh = null;
-        private PartsPhysics partsPhysics = null;
         private Rigidbody rb = null;
         private NetworkObject networkObject;
         private NetworkVariable<bool> isActiveNetworkVariable = new();
         private NetworkVariable<PartsId> partsIdNetworkVariable = new();
-        private NetworkVariable<Vector3> velocityNetworkVariable = new();
 
         private void Awake()
         {
             TryGetComponent(out partsCore);
-            TryGetComponent(out partsMesh);
-            TryGetComponent(out partsPhysics);
             TryGetComponent(out rb);
             TryGetComponent(out networkObject);
         }
