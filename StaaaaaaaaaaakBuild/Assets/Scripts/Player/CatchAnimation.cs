@@ -55,7 +55,7 @@ namespace StackBuild
             startScale = CatchEffectObject.localScale;
             catchAudio = pool.Rent(catchCue);
 
-            inputSender.Catch.sender.Subscribe(x =>
+            inputSender.Catch.sender.Skip(1).Subscribe(x =>
             {
                 if (x)
                 {
@@ -73,7 +73,7 @@ namespace StackBuild
                     CatchEffectObject.DOScale(startScale, property.Catch.CatchEffectDisappearingTime);
 
                     //サウンド再生
-                    //pool.Rent(catchCancelCue).PlayAndReturnWhenStopped();
+                    pool.Rent(catchCancelCue).PlayAndReturnWhenStopped();
                     catchAudio.audioSource.Stop();
                 }
 
@@ -81,7 +81,7 @@ namespace StackBuild
                     CatchServerRpc(x);
             }).AddTo(this);
 
-            playerProperty.HitDashAttack.Subscribe(x =>
+            playerProperty.HitDashAttack.Skip(1).Subscribe(x =>
             {
                 //入力をリセット＆掴む処理無効化
                 inputSender.Catch.Send(false);
