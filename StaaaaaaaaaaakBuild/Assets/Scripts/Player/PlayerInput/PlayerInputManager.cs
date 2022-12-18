@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
@@ -76,15 +77,7 @@ namespace StackBuild
         void SettingPlayerInput(int playerIndex, Transform parent, InputDevice device)
         {
             PlayerInput playerInput = null;
-            if (device == null)
-            {
-                //デバイス未設定(適当にキーボードマウス指定してActiveをfalseにする)
-                playerInput = PlayerInput.Instantiate(inputPrefab, playerIndex: playerIndex,
-                    controlScheme: "keyboard&Mouse",
-                    pairWithDevices: new InputDevice[] {Keyboard.current, Mouse.current});
-                playerInput.gameObject.SetActive(false);
-            }
-            else if (device == null || (Keyboard.current != null && Keyboard.current.deviceId == device.deviceId) ||
+            if (device != null && (Keyboard.current != null && Keyboard.current.deviceId == device.deviceId) ||
                      (Mouse.current != null && Mouse.current.deviceId == device.deviceId))
             {
                 //キーボード、マウス
@@ -92,11 +85,19 @@ namespace StackBuild
                     controlScheme: "keyboard&Mouse",
                     pairWithDevices: new InputDevice[] {Keyboard.current, Mouse.current});
             }
-            else
+            else if(device != null && Gamepad.all.Any(gamepad => gamepad.deviceId == device.deviceId))
             {
                 //ゲームパッド
                 playerInput = PlayerInput.Instantiate(inputPrefab, playerIndex: playerIndex,
                     controlScheme: "Gamepad", pairWithDevice: device);
+            }
+            else
+            {
+                //デバイス未設定(適当にキーボードマウス指定してActiveをfalseにする)
+                playerInput = PlayerInput.Instantiate(inputPrefab, playerIndex: playerIndex,
+                    controlScheme: "keyboard&Mouse",
+                    pairWithDevices: new InputDevice[] {Keyboard.current, Mouse.current});
+                playerInput.gameObject.SetActive(false);
             }
 
             StartInputObjectSetting(playerInput, parent, playerIndex);
