@@ -16,6 +16,7 @@ namespace StackBuild
         [SerializeField] private AudioCue catchCue;
         [SerializeField] private AudioCue catchCancelCue;
         [SerializeField] private AudioSourcePool pool;
+        private AudioSourceWatching catchAudio;
 
         private CharacterProperty property
         {
@@ -52,6 +53,7 @@ namespace StackBuild
         {
             //初期化
             startScale = CatchEffectObject.localScale;
+            catchAudio = pool.Rent(catchCue);
 
             inputSender.Catch.sender.Subscribe(x =>
             {
@@ -63,7 +65,7 @@ namespace StackBuild
                             property.Catch.CatchEffectAppearanceTime);
 
                     //サウンド再生
-                    pool.Rent(catchCue).PlayAndReturnWhenStopped();
+                    catchAudio.audioSource.Play();
                 }
                 else
                 {
@@ -71,7 +73,8 @@ namespace StackBuild
                     CatchEffectObject.DOScale(startScale, property.Catch.CatchEffectDisappearingTime);
 
                     //サウンド再生
-                    pool.Rent(catchCancelCue).PlayAndReturnWhenStopped();
+                    //pool.Rent(catchCancelCue).PlayAndReturnWhenStopped();
+                    catchAudio.audioSource.Stop();
                 }
 
                 if(IsSpawned && IsOwner)
