@@ -36,16 +36,9 @@ namespace StackBuild
             }
         }
 
-        private bool isReturnStop = false;
-
         private void Awake()
         {
             TryGetComponent(out Audio);
-
-            audioSource.ObserveEveryValueChanged(x => x.isPlaying).Where(x => !x && isReturnStop).Subscribe(_ =>
-            {
-                ReturnAudio();
-            }).AddTo(this);
         }
 
         public void StartOfUse(AudioCue cue)
@@ -64,13 +57,15 @@ namespace StackBuild
             }
 
             audioSource.Play(delay);
-            isReturnStop = true;
+            audioSource.ObserveEveryValueChanged(x => x.isPlaying).Where(x => !x).First().Subscribe(x =>
+            {
+                ReturnAudio();
+            }).AddTo(this);
         }
 
         public void ReturnAudio()
         {
             isUse = false;
-            isReturnStop = false;
             audioSource.Stop();
         }
     }

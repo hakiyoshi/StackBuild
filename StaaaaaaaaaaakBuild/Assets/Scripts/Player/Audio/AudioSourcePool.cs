@@ -14,7 +14,7 @@ namespace StackBuild
 
         public AudioSourceWatching Rent(AudioCue cue)
         {
-            if (!audioPool.TryDequeue(out AudioSourceWatching audio) || !audio.isUse)
+            if (!audioPool.TryDequeue(out AudioSourceWatching audio) || audio.isUse)
             {
                 if (poolMaxSize >= 0 && audioPool.Count >= poolMaxSize)
                 {
