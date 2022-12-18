@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using StackBuild.Game;
-using UniRx;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Rendering;
 using Random = UnityEngine.Random;
 
 namespace StackBuild
@@ -14,7 +13,6 @@ namespace StackBuild
     public class BuildingCore : NetworkBehaviour
     {
         [SerializeField] private BuildSettings settings;
-        [SerializeField] private MatchControl matchControl;
         [SerializeField] private Transform stackPos;
 
         private Queue<BuildCubeId> stackQueue = new();
@@ -22,8 +20,6 @@ namespace StackBuild
         private float height = 0;
         private float totalHeight = 0;
         private int floorPartsCount = 0;
-        private CancellationTokenSource cts;
-        private float timeMultiplier = 1.0f;
 
         private float WidthSize => settings.WidthSize;
         private float HeightSize => settings.HeightSize;
@@ -44,41 +40,10 @@ namespace StackBuild
         {
             buildingBase = Instantiate(settings.StackPrefab, stackPos);
 
-            matchControl.State.Subscribe(state =>
-            {
-                if (state == MatchState.Starting)
-                {
-                    timeMultiplier = 1.0f;
-                    StopStackTimer();
-                    StartStackTimer();
-                }
-                else if (state == MatchState.Finished)
-                {
-                    timeMultiplier = 0.1f;
-                    Finished();
-                }
-            }).AddTo(this);
+            StackLoopAsync(this.GetCancellationTokenOnDestroy()).Forget();
         }
 
-        private void StartStackTimer()
-        {
-            StopStackTimer();
-
-            cts = new();
-            cts.AddTo(this);
-            StackTimerAsync(cts.Token).Forget();
-        }
-
-        private void StopStackTimer()
-        {
-            if (cts == null) return;
-
-            cts.Cancel();
-            cts.Dispose();
-            cts = null;
-        }
-
-        private async UniTask StackTimerAsync(CancellationToken token)
+        private async UniTask StackLoopAsync(CancellationToken token)
         {
             token.ThrowIfCancellationRequested();
 
@@ -88,7 +53,7 @@ namespace StackBuild
                 {
                     StackAsync(settings.BuildingDataDictionary[buildingId], token).Forget();
                     await BaseDownAsync(token);
-                    await UniTask.Delay(TimeSpan.FromSeconds(LoopTime * timeMultiplier), cancellationToken: token);
+                    await UniTask.Delay(TimeSpan.FromSeconds(LoopTime), cancellationToken: token);
                 }
                 await UniTask.Yield(PlayerLoopTiming.Update, cancellationToken: token);
             }
@@ -126,7 +91,7 @@ namespace StackBuild
                 floorPartsCount = 0;
             }
 
-            await obj.transform.DOLocalMoveY(-20, PartsFallTime * timeMultiplier)
+            await obj.transform.DOLocalMoveY(-20, PartsFallTime)
                 .SetEase(Ease.InCubic)
                 .SetRelative(true)
                 .WithCancellation(token);
@@ -141,7 +106,7 @@ namespace StackBuild
             totalHeight += MaxHeight;
             height -= MaxHeight;
 
-            await buildingBase.transform.DOLocalMoveY(-MaxHeight, BaseFallTime * timeMultiplier)
+            await buildingBase.transform.DOLocalMoveY(-MaxHeight, BaseFallTime)
                 .SetEase(Ease.OutBack)
                 .SetDelay(PartsFallTime)
                 .SetRelative(true)
@@ -159,26 +124,12 @@ namespace StackBuild
         [ClientRpc]
         private void FinishedClientRpc()
         {
-            if (IsOwner) return;
-
-            FinishedImpl();
+            Finished();
         }
 
-        private void Finished()
+        public void Finished()
         {
-            if (IsSpawned && !IsOwner)
-            {
-                FinishedServerRpc();
-            }
-            else
-            {
-                FinishedImpl();
-            }
-        }
-
-        private void FinishedImpl()
-        {
-            buildingBase.transform.DOLocalMoveY(0, settings.FinishedUpTime);
+            buildingBase.transform.DOLocalMoveY(0, 1f);
         }
     }
 }
