@@ -101,7 +101,8 @@ namespace StackBuild.Game
         {
             foreach (var input in playerInputProperty.PlayerInputs)
             {
-                input.DeactivateInput();
+                if (input == null || input.gameObject == null) continue;
+                input.gameObject.SetActive(false);
             }
         }
 
@@ -109,7 +110,8 @@ namespace StackBuild.Game
         {
             foreach (var input in playerInputProperty.PlayerInputs)
             {
-                input.ActivateInput();
+                if (input == null || input.gameObject == null) continue;
+                input.gameObject.SetActive(true);
             }
         }
 
