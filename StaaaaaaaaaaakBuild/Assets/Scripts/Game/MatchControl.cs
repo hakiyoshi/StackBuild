@@ -2,6 +2,7 @@ using System;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using StackBuild.UI;
+using UniRx;
 using UnityEngine;
 
 namespace StackBuild.Game
@@ -29,16 +30,18 @@ namespace StackBuild.Game
         [SerializeField] private PlayerInputProperty playerInputProperty;
 
         private float timeRemaining;
-        private MatchState state;
+        private readonly ReactiveProperty<MatchState> state = new();
+        public IReadOnlyReactiveProperty<MatchState> State => state;
 
         private void Start()
         {
             RunMatch().Forget();
+            state.AddTo(this);
         }
 
         private async UniTaskVoid RunMatch()
         {
-            state = MatchState.Starting;
+            state.Value = MatchState.Starting;
 
             DisablePlayerMovement();
             AnimateCamera();
@@ -61,7 +64,7 @@ namespace StackBuild.Game
 
             await UniTask.Delay(TimeSpan.FromSeconds(startDelay));
             timeRemaining = gameTime;
-            state = MatchState.Ingame;
+            state.Value = MatchState.Ingame;
             EnablePlayerMovement();
             startDisplay.gameObject.SetActive(true);
             startDisplay.Display();
@@ -69,7 +72,7 @@ namespace StackBuild.Game
 
         private void FinishMatch()
         {
-            state = MatchState.Finished;
+            state.Value = MatchState.Finished;
             DisablePlayerMovement();
             foreach (var hud in huds)
             {
@@ -81,7 +84,7 @@ namespace StackBuild.Game
 
         private void Update()
         {
-            if (state != MatchState.Ingame) return;
+            if (state.Value != MatchState.Ingame) return;
 
             int lastSeconds = Mathf.CeilToInt(timeRemaining);
             timeRemaining = Mathf.Max(0, timeRemaining - Time.deltaTime);
