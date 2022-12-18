@@ -1,5 +1,6 @@
 ﻿using System;
 using DG.Tweening;
+using StackBuild.Audio;
 using UniRx;
 using Unity.Netcode;
 using UnityEngine;
@@ -11,6 +12,10 @@ namespace StackBuild
     {
         [SerializeField] private InputSender inputSender;
         [SerializeField] private PlayerProperty playerProperty;
+
+        [SerializeField] private AudioCue dashAudioCue;
+        [SerializeField] private AudioSourcePool pool;
+
         private ParticleSystem dashParticle;
         private CharacterController characterController;
 
@@ -88,8 +93,10 @@ namespace StackBuild
                     DashMove();
 
                 DashEffect();
-
                 DashServerRpc();
+
+                var audio = pool.Rent(dashAudioCue);
+                audio.PlayAndReturnWhenStopped();
             }).AddTo(this);
 
             playerProperty.HitDashAttack.Subscribe(x =>

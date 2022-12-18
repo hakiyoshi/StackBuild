@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4932811bb8e0397438c57cdd36114d35, type: 3}
-  m_Name: CuteMove
+  m_Name: MoveStandard
   m_EditorClassIdentifier: 
   <Loop>k__BackingField: 1
-  <Clip>k__BackingField: {fileID: 0}
+  <Clip>k__BackingField: {fileID: 8300000, guid: 2b6f55c2cf3e1b045b9c120c6edd8854, type: 3}
