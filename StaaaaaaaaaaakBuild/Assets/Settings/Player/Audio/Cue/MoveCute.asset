@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: MoveCute
   m_EditorClassIdentifier: 
   <Loop>k__BackingField: 1
-  <Clip>k__BackingField: {fileID: 0}
+  <Clip>k__BackingField: {fileID: 8300000, guid: ed7e8ea9d58280042a0aaff56e0fbdd0, type: 3}

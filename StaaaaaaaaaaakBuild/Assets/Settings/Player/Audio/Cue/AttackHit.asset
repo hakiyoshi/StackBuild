@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: AttackHit
   m_EditorClassIdentifier: 
   <Loop>k__BackingField: 0
-  <Clip>k__BackingField: {fileID: 0}
+  <Clip>k__BackingField: {fileID: 8300000, guid: f31557325877e954790f3d2da756da4f, type: 3}

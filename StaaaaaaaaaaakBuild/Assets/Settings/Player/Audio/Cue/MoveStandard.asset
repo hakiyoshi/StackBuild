@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: MoveStandard
   m_EditorClassIdentifier: 
   <Loop>k__BackingField: 1
-  <Clip>k__BackingField: {fileID: 8300000, guid: 2b6f55c2cf3e1b045b9c120c6edd8854, type: 3}
+  <Clip>k__BackingField: {fileID: 8300000, guid: feb1a6443f76c5b479682498da236047, type: 3}
