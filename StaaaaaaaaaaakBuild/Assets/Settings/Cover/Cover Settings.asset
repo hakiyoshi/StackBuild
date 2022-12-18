@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4932811bb8e0397438c57cdd36114d35, type: 3}
-  m_Name: CoolMove
+  m_Script: {fileID: 11500000, guid: 9040c5fefbb9459bad6dd0070beaee2c, type: 3}
+  m_Name: Cover Settings
   m_EditorClassIdentifier: 
-  <Loop>k__BackingField: 1
-  <Clip>k__BackingField: {fileID: 0}
+  <AppearanceTime>k__BackingField: 5
+  <IntervalTime>k__BackingField: 10
