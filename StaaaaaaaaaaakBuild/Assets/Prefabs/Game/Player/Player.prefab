@@ -291,6 +291,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputSender: {fileID: 11400000, guid: 41edcc5c67c950f41960218fc1ddfe47, type: 2}
   playerProperty: {fileID: 11400000, guid: 8487fa649341de547a8fae4f65449f75, type: 2}
+  attackHitAudioCue: {fileID: 11400000, guid: fe974cf856128824a91950fff1007fcc, type: 2}
   dashAudioCue: {fileID: 11400000, guid: 6cdbcad2829c89645aecb007f6fd9856, type: 2}
   pool: {fileID: 0}
 --- !u!114 &3501627865719752388

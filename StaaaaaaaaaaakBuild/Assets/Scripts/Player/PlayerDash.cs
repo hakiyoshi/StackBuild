@@ -13,6 +13,7 @@ namespace StackBuild
         [SerializeField] private InputSender inputSender;
         [SerializeField] private PlayerProperty playerProperty;
 
+        [SerializeField] private AudioCue attackHitAudioCue;
         [SerializeField] private AudioCue dashAudioCue;
         [SerializeField] private AudioSourcePool pool;
 
@@ -95,8 +96,8 @@ namespace StackBuild
                 DashEffect();
                 DashServerRpc();
 
-                var audio = pool.Rent(dashAudioCue);
-                audio.PlayAndReturnWhenStopped();
+                //ヒット時の処理
+                pool.Rent(dashAudioCue).PlayAndReturnWhenStopped();
             }).AddTo(this);
 
             playerProperty.HitDashAttack.Subscribe(x =>
@@ -110,6 +111,9 @@ namespace StackBuild
                 {
                     inputSender.Dash.isPause = false;
                 }).AddTo(this);
+
+                //ヒット音
+                pool.Rent(attackHitAudioCue).PlayAndReturnWhenStopped();
             }).AddTo(this);
         }
 
