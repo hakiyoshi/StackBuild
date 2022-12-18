@@ -63,6 +63,9 @@ MonoBehaviour:
   inputSender: {fileID: 11400000, guid: 257012153c897ec40bf522400ed78a05, type: 2}
   playerProperty: {fileID: 0}
   CatchEffectObject: {fileID: 195155947029088633}
+  catchCue: {fileID: 11400000, guid: a2ecff0170d7b744c96e96bca3caa0cc, type: 2}
+  catchCancelCue: {fileID: 11400000, guid: 97be8e711cc1cac41b1963e478372fb9, type: 2}
+  pool: {fileID: 0}
 --- !u!1 &3520838869869702648
 GameObject:
   m_ObjectHideFlags: 0
