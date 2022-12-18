@@ -3773,6 +3773,53 @@ PrefabInstance:
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 39d2a04ae13226d4dabd49dd02da5678, type: 3}
+--- !u!1 &2008915052
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2008915054}
+  - component: {fileID: 2008915053}
+  m_Layer: 0
+  m_Name: AudioSourcePool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2008915053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2008915052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9a64095621c47d3b3818d722cbca32c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AudioPrefab: {fileID: 3083451245806891321, guid: 7488c1080aab08d44a04836ed748e3ba, type: 3}
+  parentObject: {fileID: 2008915054}
+  poolMaxSize: 5
+--- !u!4 &2008915054
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2008915052}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.0696163, y: 6.7195606, z: 0.2500801}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2055135318
 GameObject:
   m_ObjectHideFlags: 0
@@ -4140,6 +4187,14 @@ PrefabInstance:
       propertyPath: testObject
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 1944601774670025219, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
+      propertyPath: pool
+      value: 
+      objectReference: {fileID: 2008915053}
+    - target: {fileID: 1944601774897469439, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
+      propertyPath: pool
+      value: 
+      objectReference: {fileID: 2008915053}
     - target: {fileID: 2295853917975292312, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
       propertyPath: <stunParticle>k__BackingField
       value: 
