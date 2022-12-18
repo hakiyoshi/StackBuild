@@ -1,6 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using Cysharp.Threading.Tasks;
+using StackBuild.Game;
 using UniRx;
 using UniRx.Triggers;
 using Unity.Netcode;
@@ -14,11 +18,13 @@ namespace StackBuild
         [SerializeField] private PartsSettings partsSettings;
         [SerializeField] private PartsManagerSettings settings;
         [SerializeField] private CanonManager canonManager;
+        [SerializeField] private MatchControl matchControl;
 
         private PartsId[] IDArray => partsSettings.PartsDataDictionary.Keys.ToArray();
         private Queue<PartsCore> queue = new();
         private PartsCore[] children;
         private Dictionary<int, Rigidbody> partsRigidbodyDictionary = new();
+        private CancellationTokenSource cts;
 
         private void Start()
         {
@@ -34,17 +40,46 @@ namespace StackBuild
                 partsRigidbodyDictionary[rb.gameObject.GetInstanceID()] = rb;
             }
 
-            StartCoroutine(SpawnTimerCoroutine());
+            if (matchControl == null) return;
+            matchControl.State.Subscribe(state =>
+            {
+                if (state == MatchState.Ingame)
+                {
+                    StartSpawnTimer();
+                }
+                else
+                {
+                    StopSpawnTimer();
+                }
+            }).AddTo(this);
         }
 
-        IEnumerator SpawnTimerCoroutine()
+        private void StartSpawnTimer()
         {
-            while (true)
+            StopSpawnTimer();
+            cts = new();
+            cts.AddTo(this);
+
+            SpawnTimerAsync(cts.Token).Forget();
+        }
+
+        private void StopSpawnTimer()
+        {
+            if (cts == null) return;
+
+            cts.Cancel();
+            cts.Dispose();
+            cts = null;
+        }
+
+        private async UniTask SpawnTimerAsync(CancellationToken token)
+        {
+            while (!token.IsCancellationRequested)
             {
                 var rule = settings.SpawnRuleList.Find(x => x.threshould > GetActiveCount());
-                if (rule == null && !settings.isLocalPlayTest && (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsServer))
+                if (rule == null || !settings.isLocalPlayTest && (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsServer))
                 {
-                    yield return null;
+                    await UniTask.Yield(PlayerLoopTiming.Update, token);
                     continue;
                 }
 
@@ -55,7 +90,7 @@ namespace StackBuild
                     canonManager.Enqueue(index, parts);
                 }
 
-                yield return new WaitForSeconds(Random.Range(rule.minSeconds, rule.maxSeconds));
+                await UniTask.Delay(TimeSpan.FromSeconds(Random.Range(rule.minSeconds, rule.maxSeconds)), cancellationToken: token);
             }
         }
 
