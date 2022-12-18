@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
@@ -84,7 +85,7 @@ namespace StackBuild
                     pairWithDevices: new InputDevice[] {Keyboard.current, Mouse.current});
                 playerInput.gameObject.SetActive(false);
             }
-            else if (device == null || (Keyboard.current != null && Keyboard.current.deviceId == device.deviceId) ||
+            else if ((Keyboard.current != null && Keyboard.current.deviceId == device.deviceId) ||
                      (Mouse.current != null && Mouse.current.deviceId == device.deviceId))
             {
                 //キーボード、マウス
@@ -92,7 +93,7 @@ namespace StackBuild
                     controlScheme: "keyboard&Mouse",
                     pairWithDevices: new InputDevice[] {Keyboard.current, Mouse.current});
             }
-            else
+            else if(Gamepad.all.Any(gamepad => gamepad.deviceId == device.deviceId))
             {
                 //ゲームパッド
                 playerInput = PlayerInput.Instantiate(inputPrefab, playerIndex: playerIndex,
