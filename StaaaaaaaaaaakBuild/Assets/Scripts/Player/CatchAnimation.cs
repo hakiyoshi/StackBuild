@@ -81,7 +81,7 @@ namespace StackBuild
                     CatchServerRpc(x);
             }).AddTo(this);
 
-            playerProperty.HitDashAttack.Skip(1).Subscribe(x =>
+            playerProperty.HitDashAttack.Subscribe(x =>
             {
                 //入力をリセット＆掴む処理無効化
                 inputSender.Catch.Send(false);
