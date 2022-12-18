@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using StackBuild.Game;
 using UniRx;
 using Unity.Netcode;
 using UnityEngine;
@@ -10,6 +11,7 @@ namespace StackBuild
     public class CoverCore : NetworkBehaviour
     {
         [SerializeField] private CoverSettings settings;
+        [SerializeField] private MatchControl matchControl;
 
         private MeshRenderer meshRenderer = null;
         private MeshCollider meshCollider = null;
@@ -31,13 +33,23 @@ namespace StackBuild
 
             isOpen.Subscribe(value =>
             {
-                meshRenderer.enabled = value;
-                meshCollider.enabled = value;
+                meshRenderer.enabled = !value;
+                meshCollider.enabled = !value;
+            }).AddTo(this);
+
+            matchControl.State.Subscribe(state =>
+            {
+                if (state == MatchState.Ingame)
+                {
+                    StartCoverLoop();
+                }
+                else
+                {
+                    StopCoverLoop();
+                }
             }).AddTo(this);
 
             SetCoverOpen(false);
-
-            StartCoverLoop();
         }
 
         public void StartCoverLoop()

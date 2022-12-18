@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9040c5fefbb9459bad6dd0070beaee2c, type: 3}
   m_Name: Cover Settings
   m_EditorClassIdentifier: 
-  <AppearanceTime>k__BackingField: 15
-  <IntervalTime>k__BackingField: 5
+  <AppearanceTime>k__BackingField: 5
+  <IntervalTime>k__BackingField: 10
