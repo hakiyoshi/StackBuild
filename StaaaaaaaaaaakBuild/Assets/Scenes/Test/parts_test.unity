@@ -540,6 +540,10 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1251658806330010960, guid: 75e32094395b79c469c4c763bf3388a1, type: 3}
+      propertyPath: matchControl
+      value: 
+      objectReference: {fileID: 1075649765}
     - target: {fileID: 1251658806330010961, guid: 75e32094395b79c469c4c763bf3388a1, type: 3}
       propertyPath: m_RootOrder
       value: 8
@@ -614,6 +618,10 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5637207992087717520, guid: ae91d53d228a5a94bb8a7d55c2a2c920, type: 3}
+      propertyPath: matchControl
+      value: 
+      objectReference: {fileID: 1075649765}
     - target: {fileID: 5637207992087717521, guid: ae91d53d228a5a94bb8a7d55c2a2c920, type: 3}
       propertyPath: m_RootOrder
       value: 9
@@ -1132,7 +1140,7 @@ MonoBehaviour:
   timeDisplay: {fileID: 108745041}
   flashTimeBelow: 0
   finishDisplay: {fileID: 97984236}
-  gameTime: 60
+  gameTime: 20
   playerInputProperty: {fileID: 11400000, guid: 0dd4cc4c4954c3942815643f00138d40, type: 2}
 --- !u!4 &1075649766
 Transform:
