@@ -1,6 +1,7 @@
 ﻿using System;
 using StackBuild.Audio;
 using UniRx;
+using UniRx.Triggers;
 using UnityEngine;
 
 namespace StackBuild
@@ -27,24 +28,24 @@ namespace StackBuild
             get
             {
                 if (!isUse)
-                {
                     Debug.LogError("Called even though AudioSourceWatching's Active is false.");
-                    return null;
-                }
 
                 return Audio;
             }
         }
+
+        private AudioSourcePool audioSourcePool = null;
 
         private void Awake()
         {
             TryGetComponent(out Audio);
         }
 
-        public void StartOfUse(AudioCue cue)
+        public void StartOfUse(AudioCue cue, AudioSourcePool pool)
         {
-            audioSource.clip = cue.Clip;
-            audioSource.loop = cue.Loop;
+            Audio.clip = cue.Clip;
+            Audio.loop = cue.Loop;
+            audioSourcePool = pool;
             isUse = true;
         }
 
@@ -56,8 +57,8 @@ namespace StackBuild
                 return;
             }
 
-            audioSource.Play(delay);
-            audioSource.ObserveEveryValueChanged(x => x.isPlaying).Where(x => !x).First().Subscribe(x =>
+            Audio.Play(delay);
+            this.UpdateAsObservable().Where(_ => !Audio.isPlaying).First().Subscribe(_ =>
             {
                 ReturnAudio();
             }).AddTo(this);
@@ -66,7 +67,8 @@ namespace StackBuild
         public void ReturnAudio()
         {
             isUse = false;
-            audioSource.Stop();
+            Audio.Stop();
+            audioSourcePool.ReturnAudio(this);
         }
     }
 }
