@@ -9,19 +9,11 @@ namespace StackBuild.UI
     public class StackbuildButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
     {
 
-        private static readonly Color NormalBackgroundColor   = new(1.0f,   1.0f,   1.0f,   0.25f);
-        private static readonly Color NormalBorderColor       = new(1.0f,   1.0f,   1.0f,   1.0f);
-        private static readonly Color NormalTextColor         = new(0.0f,   0.0f,   0.0f,   1.0f);
-        private static readonly Color HoveredBackgroundColor  = new(1.0f,   1.0f,   1.0f,   1.0f);
-        private static readonly Color PressedBackgroundColor  = new(0.878f, 0.878f, 0.878f, 1.0f);
-        private static readonly Color DisabledBackgroundColor = new(0.502f, 0.502f, 0.502f, 0.5f);
-        private static readonly Color DisabledBorderColor     = new(0.502f, 0.502f, 0.502f, 1.0f);
-        private static readonly Color DisabledTextColor       = new(0.2f,   0.2f,   0.2f,   1.0f);
-
         [SerializeField] private string text;
         [SerializeField] private Sprite iconImage;
         [SerializeField] private bool showIcon;
         [SerializeField] private bool disabled;
+        [SerializeField] private StackbuildButtonStyle style;
         [Space]
         [SerializeField] private Button button;
         [SerializeField] private TMP_Text label;
@@ -54,20 +46,21 @@ namespace StackBuild.UI
 
         private void UpdateColor()
         {
+            if(style == null) return;
             if (disabled)
             {
-                background.color = DisabledBackgroundColor;
-                border.color     = DisabledBorderColor;
-                label.color      = DisabledTextColor;
+                background.color = style.DisabledBackgroundColor;
+                border.color     = style.DisabledBorderColor;
+                label.color      = style.DisabledTextColor;
                 return;
             }
 
             bool isSelectedOrHovered = isSelected || isHovered;
 
-            background.color = isPressed ? PressedBackgroundColor :
-                isSelectedOrHovered ? HoveredBackgroundColor : NormalBackgroundColor;
-            border.color     = NormalBorderColor;
-            label.color      = NormalTextColor;
+            background.color = isPressed ? style.PressedBackgroundColor :
+                isSelectedOrHovered ? style.HoveredBackgroundColor : style.NormalBackgroundColor;
+            border.color     = style.NormalBorderColor;
+            label.color      = style.NormalTextColor;
         }
 
         void ISelectHandler.OnSelect(BaseEventData eventData)
