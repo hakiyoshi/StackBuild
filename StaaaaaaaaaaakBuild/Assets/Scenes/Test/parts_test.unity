@@ -1126,9 +1126,9 @@ MonoBehaviour:
   - {fileID: 108745042}
   - {fileID: 1370252631}
   - {fileID: 810397482}
-  hudDelay: 0
+  hudDelay: 0.2
   startDisplay: {fileID: 1439057432}
-  startDelay: 1
+  startDelay: 0.8
   timeDisplay: {fileID: 108745041}
   flashTimeBelow: 0
   finishDisplay: {fileID: 97984236}
@@ -1285,6 +1285,10 @@ PrefabInstance:
       propertyPath: canonManager
       value: 
       objectReference: {fileID: 38754114}
+    - target: {fileID: 8347072241304567018, guid: c327370f790f8544d84a7288d3991a6f, type: 3}
+      propertyPath: matchControl
+      value: 
+      objectReference: {fileID: 1075649765}
     - target: {fileID: 8347072241304567019, guid: c327370f790f8544d84a7288d3991a6f, type: 3}
       propertyPath: m_Name
       value: Parts Manager
