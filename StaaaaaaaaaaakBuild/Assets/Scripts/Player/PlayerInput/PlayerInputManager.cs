@@ -77,8 +77,8 @@ namespace StackBuild
         void SettingPlayerInput(int playerIndex, Transform parent, InputDevice device)
         {
             PlayerInput playerInput = null;
-            if (device != null && (Keyboard.current != null && Keyboard.current.deviceId == device.deviceId) ||
-                     (Mouse.current != null && Mouse.current.deviceId == device.deviceId))
+            if (device != null && ((Keyboard.current != null && Keyboard.current.deviceId == device.deviceId) ||
+                                   (Mouse.current != null && Mouse.current.deviceId == device.deviceId)))
             {
                 //キーボード、マウス
                 playerInput = PlayerInput.Instantiate(inputPrefab, playerIndex: playerIndex,
