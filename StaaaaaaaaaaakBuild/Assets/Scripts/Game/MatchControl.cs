@@ -26,6 +26,7 @@ namespace StackBuild.Game
         [SerializeField] private FinishDisplay finishDisplay;
         [SerializeField] private ResultsDisplay resultsDisplay;
         [SerializeField] private float resultsDelay;
+        [SerializeField] private GameOverScreen gameOverScreen;
         [Header("Game Parameters")]
         [SerializeField] private float gameTime;
         [Header("System")]
@@ -83,7 +84,8 @@ namespace StackBuild.Game
             finishDisplay.Display();
 
             await UniTask.Delay(TimeSpan.FromSeconds(resultsDelay));
-            resultsDisplay.DisplayAsync().Forget();
+            await resultsDisplay.DisplayAsync();
+            gameOverScreen.ShowAsync().Forget();
         }
 
         private void Update()

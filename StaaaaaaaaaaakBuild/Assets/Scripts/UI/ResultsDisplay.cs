@@ -26,6 +26,7 @@ namespace StackBuild.UI
         [SerializeField] private float heightDisplayDelay;
         [SerializeField] private float heightDisplayDuration;
         [SerializeField] private float winDisplayDelay;
+        [SerializeField] private float moveDelay;
 
         public async UniTask DisplayAsync()
         {
@@ -58,6 +59,11 @@ namespace StackBuild.UI
                     ? player.heightDisplay.DisplayWinAsync()
                     : player.heightDisplay.DisplayLoseAsync()).Forget();
             }
+
+            await UniTask.Delay(TimeSpan.FromSeconds(moveDelay));
+            await players.Aggregate(DOTween.Sequence(),
+                (seq, player) =>
+                    seq.Join(player.heightDisplay.transform.DOLocalMoveY(300, 0.5f).SetEase(Ease.InOutQuart)));
         }
 
     }
