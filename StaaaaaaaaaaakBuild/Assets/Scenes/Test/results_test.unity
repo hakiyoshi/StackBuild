@@ -2376,7 +2376,7 @@ MonoBehaviour:
   heightDisplayDelay: 1
   heightDisplayDuration: 4
   winDisplayDelay: 0.5
-  moveDelay: 0.75
+  moveDelay: 1.25
 --- !u!1001 &1906969153
 PrefabInstance:
   m_ObjectHideFlags: 0
