@@ -24,6 +24,8 @@ namespace StackBuild.Game
         [SerializeField] private TimeDisplay timeDisplay;
         [SerializeField] private int flashTimeBelow;
         [SerializeField] private FinishDisplay finishDisplay;
+        [SerializeField] private ResultsDisplay resultsDisplay;
+        [SerializeField] private float resultsDelay;
         [Header("Game Parameters")]
         [SerializeField] private float gameTime;
         [Header("System")]
@@ -70,7 +72,7 @@ namespace StackBuild.Game
             startDisplay.Display();
         }
 
-        private void FinishMatch()
+        private async UniTaskVoid FinishMatch()
         {
             state.Value = MatchState.Finished;
             DisablePlayerMovement();
@@ -80,6 +82,9 @@ namespace StackBuild.Game
             }
             finishDisplay.gameObject.SetActive(true);
             finishDisplay.Display();
+
+            await UniTask.Delay(TimeSpan.FromSeconds(resultsDelay));
+            resultsDisplay.DisplayAsync().Forget();
         }
 
         private void Update()
@@ -96,7 +101,7 @@ namespace StackBuild.Game
 
             if (timeRemaining == 0)
             {
-                FinishMatch();
+                FinishMatch().Forget();
             }
         }
 
