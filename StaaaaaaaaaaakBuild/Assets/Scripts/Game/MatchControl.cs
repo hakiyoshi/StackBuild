@@ -80,7 +80,6 @@ namespace StackBuild.Game
             {
                 hud.SlideOutAsync().Forget();
             }
-            finishDisplay.gameObject.SetActive(true);
             finishDisplay.Display();
 
             await UniTask.Delay(TimeSpan.FromSeconds(resultsDelay));

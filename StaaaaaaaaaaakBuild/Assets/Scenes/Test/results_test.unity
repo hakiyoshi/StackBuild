@@ -633,6 +633,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Results Height Display (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 3200900250154123476, guid: 0e52c22b365ea8444b929e38032c7f03, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3200900250154123476, guid: 0e52c22b365ea8444b929e38032c7f03, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 0e52c22b365ea8444b929e38032c7f03, type: 3}
@@ -1295,7 +1303,7 @@ MonoBehaviour:
   flashTimeBelow: 0
   finishDisplay: {fileID: 97984236}
   resultsDisplay: {fileID: 1812256305}
-  resultsDelay: 3
+  resultsDelay: 2
   gameTime: 10
   playerInputProperty: {fileID: 11400000, guid: 0dd4cc4c4954c3942815643f00138d40, type: 2}
 --- !u!4 &1075649766
@@ -1678,9 +1686,9 @@ MonoBehaviour:
   m_LookaheadTime: 0
   m_LookaheadSmoothing: 0
   m_LookaheadIgnoreY: 0
-  m_XDamping: 1
-  m_YDamping: 1
-  m_ZDamping: 1
+  m_XDamping: 0
+  m_YDamping: 0
+  m_ZDamping: 0
   m_TargetMovementOnly: 1
   m_ScreenX: 0.5
   m_ScreenY: 0.5
@@ -1953,10 +1961,6 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6072253210104248015, guid: 229c8e580215c8a43be1abe10691848d, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6072253210522406130, guid: 229c8e580215c8a43be1abe10691848d, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
@@ -1967,10 +1971,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6334795998009179712, guid: 229c8e580215c8a43be1abe10691848d, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6334795998126358968, guid: 229c8e580215c8a43be1abe10691848d, type: 3}
-      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6755034548042950340, guid: 229c8e580215c8a43be1abe10691848d, type: 3}
@@ -2669,6 +2669,14 @@ PrefabInstance:
     - target: {fileID: 3200900250134465431, guid: 0e52c22b365ea8444b929e38032c7f03, type: 3}
       propertyPath: m_Name
       value: Results Height Display
+      objectReference: {fileID: 0}
+    - target: {fileID: 3200900250154123476, guid: 0e52c22b365ea8444b929e38032c7f03, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3200900250154123476, guid: 0e52c22b365ea8444b929e38032c7f03, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
