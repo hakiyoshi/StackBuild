@@ -22,8 +22,8 @@ namespace StackBuild
         private float height = 0;
         private float totalHeight = 0;
         private int floorPartsCount = 0;
+        private bool isFinished = false;
         private CancellationTokenSource cts;
-        private float timeMultiplier = 1.0f;
 
         private float WidthSize => settings.WidthSize;
         private float HeightSize => settings.HeightSize;
@@ -48,13 +48,13 @@ namespace StackBuild
             {
                 if (state == MatchState.Starting)
                 {
-                    timeMultiplier = 1.0f;
+                    isFinished = false;
                     StopStackTimer();
                     StartStackTimer();
                 }
                 else if (state == MatchState.Finished)
                 {
-                    timeMultiplier = 0.1f;
+                    isFinished = true;
                     Finished();
                 }
             }).AddTo(this);
@@ -88,7 +88,8 @@ namespace StackBuild
                 {
                     StackAsync(settings.BuildingDataDictionary[buildingId], token).Forget();
                     await BaseDownAsync(token);
-                    await UniTask.Delay(TimeSpan.FromSeconds(LoopTime * timeMultiplier), cancellationToken: token);
+                    if (isFinished) continue;
+                    await UniTask.Delay(TimeSpan.FromSeconds(LoopTime), cancellationToken: token);
                 }
                 await UniTask.Yield(PlayerLoopTiming.Update, cancellationToken: token);
             }
@@ -126,7 +127,7 @@ namespace StackBuild
                 floorPartsCount = 0;
             }
 
-            await obj.transform.DOLocalMoveY(-20, PartsFallTime * timeMultiplier)
+            await obj.transform.DOLocalMoveY(-20, PartsFallTime)
                 .SetEase(Ease.InCubic)
                 .SetRelative(true)
                 .WithCancellation(token);
@@ -141,7 +142,9 @@ namespace StackBuild
             totalHeight += MaxHeight;
             height -= MaxHeight;
 
-            await buildingBase.transform.DOLocalMoveY(-MaxHeight, BaseFallTime * timeMultiplier)
+            if (isFinished) return;
+
+            await buildingBase.transform.DOLocalMoveY(-MaxHeight, BaseFallTime)
                 .SetEase(Ease.OutBack)
                 .SetDelay(PartsFallTime)
                 .SetRelative(true)
