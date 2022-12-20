@@ -74,7 +74,7 @@ namespace StackBuild
             SetFace(startFace);
             DOVirtual.DelayedCall(1.0f, () => SetFace(FaceType.Normal));
 
-            inputSender.Dash.sender.Where(x => x).ThrottleFirst(TimeSpan.FromSeconds(property.Dash.DashCoolTime)).Subscribe(_ =>
+            inputSender.Dash.sender.Skip(1).Where(x => x).ThrottleFirst(TimeSpan.FromSeconds(property.Dash.DashCoolTime)).Subscribe(_ =>
             {
                 SetFace(FaceType.Anger);
 

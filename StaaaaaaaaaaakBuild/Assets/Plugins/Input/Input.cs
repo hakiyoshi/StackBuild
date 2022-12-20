@@ -45,4 +45,18 @@ public class Input : MonoBehaviour
             x => actionMap[actionName].canceled += x,
             x => actionMap[actionName].canceled -= x);
     }
+
+    private void OnEnable()
+    {
+        inputSender.Catch.isPause = false;
+        inputSender.Dash.isPause = false;
+        inputSender.Move.isPause = false;
+    }
+
+    private void OnDisable()
+    {
+        inputSender.Catch.isPause = true;
+        inputSender.Dash.isPause = true;
+        inputSender.Move.isPause = true;
+    }
 }

@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Dash
   m_EditorClassIdentifier: 
   <Loop>k__BackingField: 0
-  <Clip>k__BackingField: {fileID: 0}
+  <Clip>k__BackingField: {fileID: 8300000, guid: b3ae6037d58d7d8488ce5d92a5d1f5dd, type: 3}

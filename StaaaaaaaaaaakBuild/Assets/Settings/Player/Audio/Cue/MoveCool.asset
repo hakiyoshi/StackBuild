@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: MoveCool
   m_EditorClassIdentifier: 
   <Loop>k__BackingField: 1
-  <Clip>k__BackingField: {fileID: 0}
+  <Clip>k__BackingField: {fileID: 8300000, guid: a1fee5c46cb2efb4985f75ca78dd93eb, type: 3}

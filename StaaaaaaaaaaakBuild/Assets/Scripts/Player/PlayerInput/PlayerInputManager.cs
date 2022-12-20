@@ -24,7 +24,16 @@ namespace StackBuild
             var parent = transform.parent;
             for (var i = 0; i < playerObjects.Length; i++)
             {
-                //var parent = playerObjects[i].transform;
+                var deviceid = playerInputProperty.DeviceIds[i];
+
+                //デバイス設定しない場合
+                if(deviceid == PlayerInputProperty.UNSETID)
+                {
+                    SettingPlayerInput(i, parent, null);
+                    continue;
+                }
+
+                //デバイス設定する場合
                 if(SelectSetDevice(i, parent, devices))
                     continue;
 
@@ -35,7 +44,9 @@ namespace StackBuild
         bool SelectSetDevice(int playerIndex, Transform parent, in ReadOnlyArray<InputDevice> devices)
         {
             var deviceid = playerInputProperty.DeviceIds[playerIndex];
-            if (deviceid == PlayerInputProperty.UNSETID)
+
+            //Autoの場合何もせず抜ける
+            if (deviceid == PlayerInputProperty.AUTOSETID)
                 return false;
 
             foreach (var device in devices)
@@ -77,13 +88,14 @@ namespace StackBuild
         void SettingPlayerInput(int playerIndex, Transform parent, InputDevice device)
         {
             PlayerInput playerInput = null;
-            if (device != null && (Keyboard.current != null && Keyboard.current.deviceId == device.deviceId) ||
-                     (Mouse.current != null && Mouse.current.deviceId == device.deviceId))
+            if (device != null && ((Keyboard.current != null && Keyboard.current.deviceId == device.deviceId) ||
+                                   (Mouse.current != null && Mouse.current.deviceId == device.deviceId)))
             {
                 //キーボード、マウス
                 playerInput = PlayerInput.Instantiate(inputPrefab, playerIndex: playerIndex,
                     controlScheme: "keyboard&Mouse",
                     pairWithDevices: new InputDevice[] {Keyboard.current, Mouse.current});
+                device = Keyboard.current;
             }
             else if(device != null && Gamepad.all.Any(gamepad => gamepad.deviceId == device.deviceId))
             {
@@ -98,8 +110,11 @@ namespace StackBuild
                     controlScheme: "keyboard&Mouse",
                     pairWithDevices: new InputDevice[] {Keyboard.current, Mouse.current});
                 playerInput.gameObject.SetActive(false);
+                device = null;
             }
 
+            //デバイスの種類をセットしておく
+            playerInputProperty.SettingPlayerDevice(playerIndex, device, false, false);
             StartInputObjectSetting(playerInput, parent, playerIndex);
         }
 
@@ -108,6 +123,14 @@ namespace StackBuild
             playerInput.transform.parent = parent;
             playerInput.gameObject.GetComponent<Input>().inputSender = playerInputProperty.inputSenders[playerIndex];
             playerInputProperty.PlayerInputs[playerIndex] = playerInput;
+        }
+
+        private void OnDestroy()
+        {
+            for (int i = 0; i < PlayerInputProperty.MAX_DEVICEID; i++)
+            {
+                playerInputProperty.SettingPlayerDevice(i, null, false);
+            }
         }
     }
 }

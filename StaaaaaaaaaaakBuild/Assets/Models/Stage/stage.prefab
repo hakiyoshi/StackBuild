@@ -898,8 +898,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settings: {fileID: 11400000, guid: f26521aec7c34ad40bd2c56af8921b54, type: 2}
-  meshRenderer: {fileID: 54272437618158832}
-  meshCollider: {fileID: 1987454960808568212}
+  matchControl: {fileID: 0}
 --- !u!114 &2777040919795742131
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1150,8 +1149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settings: {fileID: 11400000, guid: f26521aec7c34ad40bd2c56af8921b54, type: 2}
-  meshRenderer: {fileID: 7346059574666964573}
-  meshCollider: {fileID: 874746207539552314}
+  matchControl: {fileID: 0}
 --- !u!114 &3777623954182322793
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2731,7 +2729,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 10, y: 2, z: 10}
+  m_Size: {x: 10, y: 1, z: 10}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &6327820303929248014
 PrefabInstance:

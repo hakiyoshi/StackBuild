@@ -540,6 +540,10 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1251658806330010960, guid: 75e32094395b79c469c4c763bf3388a1, type: 3}
+      propertyPath: matchControl
+      value: 
+      objectReference: {fileID: 1075649765}
     - target: {fileID: 1251658806330010961, guid: 75e32094395b79c469c4c763bf3388a1, type: 3}
       propertyPath: m_RootOrder
       value: 8
@@ -614,6 +618,10 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5637207992087717520, guid: ae91d53d228a5a94bb8a7d55c2a2c920, type: 3}
+      propertyPath: matchControl
+      value: 
+      objectReference: {fileID: 1075649765}
     - target: {fileID: 5637207992087717521, guid: ae91d53d228a5a94bb8a7d55c2a2c920, type: 3}
       propertyPath: m_RootOrder
       value: 9
@@ -1126,9 +1134,9 @@ MonoBehaviour:
   - {fileID: 108745042}
   - {fileID: 1370252631}
   - {fileID: 810397482}
-  hudDelay: 0
+  hudDelay: 0.2
   startDisplay: {fileID: 1439057432}
-  startDelay: 1
+  startDelay: 0.8
   timeDisplay: {fileID: 108745041}
   flashTimeBelow: 0
   finishDisplay: {fileID: 97984236}
@@ -1285,6 +1293,10 @@ PrefabInstance:
       propertyPath: canonManager
       value: 
       objectReference: {fileID: 38754114}
+    - target: {fileID: 8347072241304567018, guid: c327370f790f8544d84a7288d3991a6f, type: 3}
+      propertyPath: matchControl
+      value: 
+      objectReference: {fileID: 1075649765}
     - target: {fileID: 8347072241304567019, guid: c327370f790f8544d84a7288d3991a6f, type: 3}
       propertyPath: m_Name
       value: Parts Manager
@@ -1968,57 +1980,9 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
-    - target: {fileID: 7324661770301479358, guid: 63768ccfdd29a4e42b89fbf2f2a4151b, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7324661770301479358, guid: 63768ccfdd29a4e42b89fbf2f2a4151b, type: 3}
-      propertyPath: m_Intensity
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7324661770301479358, guid: 63768ccfdd29a4e42b89fbf2f2a4151b, type: 3}
-      propertyPath: m_Shadows.m_Bias
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 7324661770301479358, guid: 63768ccfdd29a4e42b89fbf2f2a4151b, type: 3}
-      propertyPath: m_CullingMask.m_Bits
-      value: 487
-      objectReference: {fileID: 0}
-    - target: {fileID: 7324661770301479358, guid: 63768ccfdd29a4e42b89fbf2f2a4151b, type: 3}
-      propertyPath: m_UseColorTemperature
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7324661770978409130, guid: 63768ccfdd29a4e42b89fbf2f2a4151b, type: 3}
-      propertyPath: m_Intensity
-      value: 7.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7324661770978409130, guid: 63768ccfdd29a4e42b89fbf2f2a4151b, type: 3}
-      propertyPath: m_Lightmapping
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7324661770978409130, guid: 63768ccfdd29a4e42b89fbf2f2a4151b, type: 3}
-      propertyPath: m_ColorTemperature
-      value: 6000
-      objectReference: {fileID: 0}
     - target: {fileID: 7324661770978409131, guid: 63768ccfdd29a4e42b89fbf2f2a4151b, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
-      objectReference: {fileID: 0}
-    - target: {fileID: 7324661770978409133, guid: 63768ccfdd29a4e42b89fbf2f2a4151b, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.0058507295
-      objectReference: {fileID: 0}
-    - target: {fileID: 7324661770978409133, guid: 63768ccfdd29a4e42b89fbf2f2a4151b, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.00051187276
-      objectReference: {fileID: 0}
-    - target: {fileID: 7324661770978409133, guid: 63768ccfdd29a4e42b89fbf2f2a4151b, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.99617755
-      objectReference: {fileID: 0}
-    - target: {fileID: 7324661770978409133, guid: 63768ccfdd29a4e42b89fbf2f2a4151b, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0.08715428
       objectReference: {fileID: 0}
     - target: {fileID: 7324661770978409133, guid: 63768ccfdd29a4e42b89fbf2f2a4151b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

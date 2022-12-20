@@ -11,17 +11,24 @@ namespace StackBuild
         public PlayerInputProperty playerInputProperty;
         public PlayerManager playerManager;
 
-        (int, PlayerInput, InputSender) GetInputSet()
+        private int playerIndex
         {
-            var playerIndex = playerManager.GetPlayerIndex(this.gameObject);
+            get
+            {
+                return playerManager.GetPlayerIndex(this.gameObject);
+            }
+        }
+
+        (PlayerInput, InputSender) GetInputSet()
+        {
             var playerInput = playerInputProperty.PlayerInputs[playerIndex];
             var inputSender = playerInputProperty.inputSenders[playerIndex];
-            return (playerIndex, playerInput, inputSender);
+            return (playerInput, inputSender);
         }
 
         public override void OnNetworkSpawn()
         {
-            var (_, playerInput, inputSender) = GetInputSet();
+            var (playerInput, inputSender) = GetInputSet();
             if (!IsOwner)
             {
                 LostInput(playerInput);
@@ -35,11 +42,11 @@ namespace StackBuild
 
         public override void OnNetworkDespawn()
         {
-            var (index, playerInput, _) = GetInputSet();
+            var (playerInput, _) = GetInputSet();
 
             var devices = InputSystem.devices;
             playerInput.gameObject.SetActive(true);
-            SelectSwitchDevice(devices, playerInput, index);
+            SelectSwitchDevice(devices, playerInput, playerIndex);
         }
 
         public override void OnGainedOwnership()
@@ -47,13 +54,13 @@ namespace StackBuild
             if (!IsOwner)
                 return;
 
-            var (_, playerInput, inputSender) = GetInputSet();
+            var (playerInput, inputSender) = GetInputSet();
             GainedInput(playerInput);
         }
 
         public override void OnLostOwnership()
         {
-            var (_, playerInput, inputSender) = GetInputSet();
+            var (playerInput, inputSender) = GetInputSet();
             LostInput(playerInput);
         }
 
@@ -95,10 +102,12 @@ namespace StackBuild
                     (Mouse.current != null && Mouse.current.device.deviceId == deviceid))
                 {
                     playerInput.SwitchCurrentControlScheme("Keyboard&Mouse", Keyboard.current, Mouse.current);
+                    playerInputProperty.SettingPlayerDevice(playerIndex, Keyboard.current, false, false);
                 }
                 else
                 {
                     playerInput.SwitchCurrentControlScheme("Gamepad", device);
+                    playerInputProperty.SettingPlayerDevice(playerIndex, device, false, false);
                 }
 
                 return true;
@@ -116,10 +125,12 @@ namespace StackBuild
                     (Mouse.current != null && Mouse.current.device.deviceId == device.deviceId))
             {
                 playerInput.SwitchCurrentControlScheme("Keyboard&Mouse", Keyboard.current, Mouse.current);
+                playerInputProperty.SettingPlayerDevice(playerIndex, Keyboard.current, false, false);
             }
             else
             {
                 playerInput.SwitchCurrentControlScheme("Gamepad", device);
+                playerInputProperty.SettingPlayerDevice(playerIndex, device, false, false);
             }
         }
     }

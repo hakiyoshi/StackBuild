@@ -119,10 +119,11 @@ namespace StackBuild.Game
 
         private void EnablePlayerMovement()
         {
-            foreach (var input in playerInputProperty.PlayerInputs)
+            for (int i = 0; i < PlayerInputProperty.MAX_DEVICEID; i++)
             {
+                var input = playerInputProperty.PlayerInputs[i];
                 if (input == null || input.gameObject == null) continue;
-                input.gameObject.SetActive(true);
+                input.gameObject.SetActive(playerInputProperty.DeviceIds[i] != PlayerInputProperty.UNSETID);
             }
         }
 
