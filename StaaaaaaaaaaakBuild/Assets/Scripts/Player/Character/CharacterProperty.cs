@@ -7,6 +7,7 @@ namespace StackBuild
     public class CharacterProperty : ScriptableObject
     {
         [field: SerializeField] public ModelProperty Model { get; private set; }
+        [field: SerializeField] public Sprite Sprite { get; private set; }
         [field: SerializeField] public MoveProperty Move { get; private set; }
         [field: SerializeField] public DashProperty Dash { get; private set; }
         [field: SerializeField] public AttackProperty Attack { get; private set; }

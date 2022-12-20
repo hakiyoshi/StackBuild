@@ -1351,6 +1351,9 @@ MonoBehaviour:
   gameOverScreen: {fileID: 163842834}
   gameTime: 10
   playerInputProperty: {fileID: 11400000, guid: 0dd4cc4c4954c3942815643f00138d40, type: 2}
+  players:
+  - {fileID: 11400000, guid: 94434b52069cc2f4ba70d07e78b196cd, type: 2}
+  - {fileID: 11400000, guid: 8487fa649341de547a8fae4f65449f75, type: 2}
 --- !u!4 &1075649766
 Transform:
   m_ObjectHideFlags: 0

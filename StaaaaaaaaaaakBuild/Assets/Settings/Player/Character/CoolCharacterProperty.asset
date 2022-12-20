@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: CoolCharacterProperty
   m_EditorClassIdentifier: 
   <Model>k__BackingField: {fileID: 11400000, guid: cf7c02f91244cc9499d7c0613c1633cf, type: 2}
+  <Sprite>k__BackingField: {fileID: 21300000, guid: 8350e99e49dcdf148b7f0b050c41b731, type: 3}
   <Move>k__BackingField: {fileID: 11400000, guid: 929c566f937b50743bec5275181da7d6, type: 2}
   <Dash>k__BackingField: {fileID: 11400000, guid: 63fecd0bbc6e3964a8dc5b5c49eea461, type: 2}
   <Attack>k__BackingField: {fileID: 11400000, guid: bea00ad1dd34a3c4aaed44518272cc50, type: 2}

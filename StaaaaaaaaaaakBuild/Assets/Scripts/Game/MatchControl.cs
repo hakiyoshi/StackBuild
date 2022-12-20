@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using StackBuild.UI;
@@ -31,6 +32,7 @@ namespace StackBuild.Game
         [SerializeField] private float gameTime;
         [Header("System")]
         [SerializeField] private PlayerInputProperty playerInputProperty;
+        [SerializeField] private PlayerProperty[] players;
 
         private float timeRemaining;
         private readonly ReactiveProperty<MatchState> state = new();
@@ -85,7 +87,7 @@ namespace StackBuild.Game
 
             await UniTask.Delay(TimeSpan.FromSeconds(resultsDelay));
             await resultsDisplay.DisplayAsync();
-            gameOverScreen.ShowAsync().Forget();
+            gameOverScreen.ShowAsync(players.Select(p => p.characterProperty).ToArray()).Forget();
         }
 
         private void Update()
