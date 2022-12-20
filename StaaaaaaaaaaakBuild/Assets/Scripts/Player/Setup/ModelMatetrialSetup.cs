@@ -31,7 +31,7 @@ namespace StackBuild
 #endif
 
         [System.Serializable]
-        struct SetupMaterial
+        class SetupMaterial
         {
             public SetupType type;
 #if UNITY_EDITOR
@@ -39,10 +39,7 @@ namespace StackBuild
 #endif
             public string colorName;
             [ColorUsage(true, true)]public Color[] setColors;
-
             public List<GameObject> setupObjects;
-
-
 
             public SetupMaterial(int n = 0)
             {
@@ -66,9 +63,8 @@ namespace StackBuild
         {
             for (var i = 0; i < setupMaterials.Count; i++)
             {
-                var material = setupMaterials[i];
-                material.colorName =ShaderColorName[(int) material.shaderColorNameShortcut];
-                setupMaterials[i] = material;
+                //マテリアルプロパティ名
+                setupMaterials[i].colorName = ShaderColorName[(int) setupMaterials[i].shaderColorNameShortcut];
             }
         }
 #endif
