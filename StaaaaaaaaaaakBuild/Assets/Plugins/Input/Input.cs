@@ -48,15 +48,15 @@ public class Input : MonoBehaviour
 
     private void OnEnable()
     {
-        inputSender.Catch.isPause = true;
-        inputSender.Dash.isPause = true;
-        inputSender.Move.isPause = true;
+        inputSender.Catch.isPause = false;
+        inputSender.Dash.isPause = false;
+        inputSender.Move.isPause = false;
     }
 
     private void OnDisable()
     {
-        inputSender.Catch.isPause = false;
-        inputSender.Dash.isPause = false;
-        inputSender.Move.isPause = false;
+        inputSender.Catch.isPause = true;
+        inputSender.Dash.isPause = true;
+        inputSender.Move.isPause = true;
     }
 }
