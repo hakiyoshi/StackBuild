@@ -103,10 +103,32 @@ namespace StackBuild
 
             obj.transform.localPosition = new Vector3(
                 x: (Row - floorPartsCount / Column) * (WidthSize / Row) + (WidthSize / Row) - (WidthSize / 2),
-                y: totalHeight + height + 20,
+                y: totalHeight + 20,
                 z: (floorPartsCount % Column) * (WidthSize / Column) + (WidthSize / Column) - (WidthSize / 2));
-            obj.transform.localRotation = Quaternion.Euler(0f, Random.Range(0, 3) * 90f, 0f);
             obj.transform.localScale = new Vector3(WidthSize / Row, HeightSize, WidthSize / Column);
+
+            var row = (floorPartsCount / Column);
+            var col = (floorPartsCount % Column);
+            var euler = new Vector3(-90, 0, 0);
+
+            obj.name = $"{row} {col}";
+            if (col == Column - 1 && row != Row - 1)
+            {
+                euler.z = 0;
+            }
+            else if (row == 0 && col != Column - 1)
+            {
+                euler.z = 90;
+            }
+            else if (col == 0 && col != Column - 1)
+            {
+                euler.z = 180;
+            }
+            else if (row == Row - 1 && col != 0)
+            {
+                euler.z = 270;
+            }
+            obj.transform.localRotation = Quaternion.Euler(euler);
 
             if (obj.TryGetComponent(out MeshFilter meshFilter))
             {
@@ -124,6 +146,7 @@ namespace StackBuild
             if (floorPartsCount >= Row * Column)
             {
                 height += HeightSize;
+                totalHeight += HeightSize;
                 floorPartsCount = 0;
             }
 
@@ -139,7 +162,6 @@ namespace StackBuild
 
             if (height <= MaxHeight) return;
 
-            totalHeight += MaxHeight;
             height -= MaxHeight;
 
             if (isFinished) return;
