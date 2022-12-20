@@ -1329,7 +1329,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   introDisplay: {fileID: 441296948}
-  introDisplayDuration: 1
+  introDisplayDuration: 3.5
   fade: {fileID: 1955006234}
   fadeIn: 0.3
   fadeSustain: 0.3
@@ -1344,10 +1344,10 @@ MonoBehaviour:
   startDisplay: {fileID: 1439057432}
   startDelay: 1
   timeDisplay: {fileID: 108745041}
-  flashTimeBelow: 0
+  flashTimeBelow: 59
   finishDisplay: {fileID: 97984236}
   resultsDisplay: {fileID: 1812256305}
-  resultsDelay: 2
+  resultsDelay: 3
   gameOverScreen: {fileID: 163842834}
   gameTime: 10
   playerInputProperty: {fileID: 11400000, guid: 0dd4cc4c4954c3942815643f00138d40, type: 2}
