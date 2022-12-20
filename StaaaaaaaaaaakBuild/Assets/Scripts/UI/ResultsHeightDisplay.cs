@@ -52,7 +52,7 @@ namespace StackBuild.UI
             return DOTween.Sequence()
                 .Join(heightText.rectTransform.DOScale(0.3f, 0.25f).SetEase(Ease.InCubic))
                 .Append(winLoseText.DOFade(0, 0).From())
-                .Append(heightText.rectTransform.DOLocalMoveY(120, 0.375f).From(0).SetEase(Ease.OutCubic))
+                .Append(heightText.rectTransform.DOLocalMoveY(110, 0.375f).From(0).SetEase(Ease.OutCubic))
                 .Join(DOTween.To(() => winLoseText.characterSpacing, v => winLoseText.characterSpacing = v, 50, 0.5f).From().SetEase(Ease.OutQuart));
         }
 

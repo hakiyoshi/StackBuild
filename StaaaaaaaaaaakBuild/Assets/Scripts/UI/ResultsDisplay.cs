@@ -63,7 +63,7 @@ namespace StackBuild.UI
             await UniTask.Delay(TimeSpan.FromSeconds(moveDelay));
             await players.Aggregate(DOTween.Sequence(),
                 (seq, player) =>
-                    seq.Join(player.heightDisplay.transform.DOLocalMoveY(300, 0.5f).SetEase(Ease.InOutQuart)));
+                    seq.Join(player.heightDisplay.transform.DOLocalMoveY(300, 0.65f).SetEase(Ease.InOutQuart)));
         }
 
     }
