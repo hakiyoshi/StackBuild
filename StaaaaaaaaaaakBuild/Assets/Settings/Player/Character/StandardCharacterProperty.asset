@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7096bc16d85b492f915fd4ee0e23ed88, type: 3}
   m_Name: StandardCharacterProperty
   m_EditorClassIdentifier: 
+  <CompanyName>k__BackingField: "\u7A4D\u4E0A\u5DE5\u696D"
   <Model>k__BackingField: {fileID: 11400000, guid: 6dac7527316a25b4fa5d73cb0fefdf53, type: 2}
   <Move>k__BackingField: {fileID: 11400000, guid: 929c566f937b50743bec5275181da7d6, type: 2}
   <Dash>k__BackingField: {fileID: 11400000, guid: 63fecd0bbc6e3964a8dc5b5c49eea461, type: 2}
