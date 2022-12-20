@@ -178,7 +178,7 @@ namespace StackBuild
 
         private void FinishedImpl()
         {
-            buildingBase.transform.DOLocalMoveY(0, settings.FinishedUpTime).SetEase(Ease.OutElastic);
+            buildingBase.transform.DOLocalMoveY(0, settings.FinishedUpTime).SetEase(settings.FinishedUpEase);
         }
     }
 }
