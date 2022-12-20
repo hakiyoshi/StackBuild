@@ -638,7 +638,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   introDisplay: {fileID: 1791098911}
-  introDisplayDuration: 1
+  introDisplayDuration: 3.5
   fade: {fileID: 2097086387}
   fadeIn: 0.3
   fadeSustain: 0.3
