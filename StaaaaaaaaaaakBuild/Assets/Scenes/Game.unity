@@ -655,7 +655,7 @@ MonoBehaviour:
   timeDisplay: {fileID: 1687397716}
   flashTimeBelow: 0
   finishDisplay: {fileID: 701645681}
-  gameTime: 180
+  gameTime: 60
   playerInputProperty: {fileID: 11400000, guid: 0dd4cc4c4954c3942815643f00138d40, type: 2}
 --- !u!4 &736238925
 Transform:
@@ -726,6 +726,14 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 1770700641
       objectReference: {fileID: 0}
+    - target: {fileID: 7233628905526096602, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
+      propertyPath: pool
+      value: 
+      objectReference: {fileID: 830618465}
+    - target: {fileID: 7233628906358044454, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
+      propertyPath: pool
+      value: 
+      objectReference: {fileID: 830618465}
     - target: {fileID: 7714621389661941214, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -1719,7 +1727,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2913186578456960509, guid: 39d2a04ae13226d4dabd49dd02da5678, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 2409.84
       objectReference: {fileID: 0}
     - target: {fileID: 2913186578456960509, guid: 39d2a04ae13226d4dabd49dd02da5678, type: 3}
       propertyPath: m_LocalRotation.w
