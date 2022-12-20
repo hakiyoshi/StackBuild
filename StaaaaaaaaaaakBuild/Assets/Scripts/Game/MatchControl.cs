@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using StackBuild.UI;
@@ -24,10 +25,14 @@ namespace StackBuild.Game
         [SerializeField] private TimeDisplay timeDisplay;
         [SerializeField] private int flashTimeBelow;
         [SerializeField] private FinishDisplay finishDisplay;
+        [SerializeField] private ResultsDisplay resultsDisplay;
+        [SerializeField] private float resultsDelay;
+        [SerializeField] private GameOverScreen gameOverScreen;
         [Header("Game Parameters")]
         [SerializeField] private float gameTime;
         [Header("System")]
         [SerializeField] private PlayerInputProperty playerInputProperty;
+        [SerializeField] private PlayerProperty[] players;
 
         private float timeRemaining;
         private readonly ReactiveProperty<MatchState> state = new();
@@ -70,7 +75,7 @@ namespace StackBuild.Game
             startDisplay.Display();
         }
 
-        private void FinishMatch()
+        private async UniTaskVoid FinishMatch()
         {
             state.Value = MatchState.Finished;
             DisablePlayerMovement();
@@ -78,8 +83,11 @@ namespace StackBuild.Game
             {
                 hud.SlideOutAsync().Forget();
             }
-            finishDisplay.gameObject.SetActive(true);
             finishDisplay.Display();
+
+            await UniTask.Delay(TimeSpan.FromSeconds(resultsDelay));
+            await resultsDisplay.DisplayAsync();
+            gameOverScreen.ShowAsync(players.Select(p => p.characterProperty).ToArray()).Forget();
         }
 
         private void Update()
@@ -96,7 +104,7 @@ namespace StackBuild.Game
 
             if (timeRemaining == 0)
             {
-                FinishMatch();
+                FinishMatch().Forget();
             }
         }
 
