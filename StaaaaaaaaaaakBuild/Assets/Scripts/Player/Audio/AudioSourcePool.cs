@@ -12,11 +12,14 @@ namespace StackBuild
         [SerializeField] private Transform parentObject;
         [SerializeField] private int poolMaxSize = 5;
 
+        private int audioCounter = 0;
+
         public AudioSourceWatching Rent(AudioCue cue)
         {
-            if (!audioPool.TryDequeue(out AudioSourceWatching audio) || !audio.isUse)
+            if (!audioPool.TryDequeue(out AudioSourceWatching audio))
             {
-                if (poolMaxSize >= 0 && audioPool.Count >= poolMaxSize)
+                //新規作成前サイズチェック
+                if (poolMaxSize >= 0 && audioCounter >= poolMaxSize)
                 {
                     Debug.LogError("Number of objects in AudioSourcePool has reached the limit.");
                     return null;
@@ -26,15 +29,20 @@ namespace StackBuild
                 audio = CreateAudioInstance();
             }
 
-            audioPool.Enqueue(audio);
-            audio.StartOfUse(cue);
+            audio.StartOfUse(cue, this);
             return audio;
         }
 
         AudioSourceWatching CreateAudioInstance()
         {
+            audioCounter++;
             var obj = Instantiate(AudioPrefab, parentObject);
             return obj.GetComponent<AudioSourceWatching>();
+        }
+
+        public void ReturnAudio(AudioSourceWatching audio)
+        {
+            audioPool.Enqueue(audio);
         }
     }
 }

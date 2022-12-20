@@ -1,5 +1,6 @@
 ﻿using System;
 using DG.Tweening;
+using StackBuild.Audio;
 using UniRx;
 using Unity.Netcode;
 using UnityEngine;
@@ -11,6 +12,11 @@ namespace StackBuild
         [SerializeField] private InputSender inputSender;
         [SerializeField] private PlayerProperty playerProperty;
         [SerializeField] private Transform CatchEffectObject;
+
+        [SerializeField] private AudioCue catchCue;
+        [SerializeField] private AudioCue catchCancelCue;
+        [SerializeField] private AudioSourcePool pool;
+        private AudioSourceWatching catchAudio;
 
         private CharacterProperty property
         {
@@ -47,8 +53,9 @@ namespace StackBuild
         {
             //初期化
             startScale = CatchEffectObject.localScale;
+            catchAudio = pool.Rent(catchCue);
 
-            inputSender.Catch.sender.Subscribe(x =>
+            inputSender.Catch.sender.Skip(1).Subscribe(x =>
             {
                 if (x)
                 {
@@ -56,11 +63,18 @@ namespace StackBuild
                     CatchEffectObject
                         .DOScale(startScale + property.Catch.CatchEffectMaxSizeOffset,
                             property.Catch.CatchEffectAppearanceTime);
+
+                    //サウンド再生
+                    catchAudio.audioSource.Play();
                 }
                 else
                 {
                     //ボタン離した場合
                     CatchEffectObject.DOScale(startScale, property.Catch.CatchEffectDisappearingTime);
+
+                    //サウンド再生
+                    pool.Rent(catchCancelCue).PlayAndReturnWhenStopped();
+                    catchAudio.audioSource.Stop();
                 }
 
                 if(IsSpawned && IsOwner)
