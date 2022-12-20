@@ -2427,6 +2427,14 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2777040919795742131, guid: 684fadf1f9d623f4398ab92188450902, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3597231262
+      objectReference: {fileID: 0}
+    - target: {fileID: 3777623954182322793, guid: 684fadf1f9d623f4398ab92188450902, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3246571149
+      objectReference: {fileID: 0}
     - target: {fileID: 3839218417667818570, guid: 684fadf1f9d623f4398ab92188450902, type: 3}
       propertyPath: m_Name
       value: stage
@@ -2503,7 +2511,9 @@ PrefabInstance:
       propertyPath: matchControl
       value: 
       objectReference: {fileID: 343101298}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7284564430920582908, guid: 684fadf1f9d623f4398ab92188450902, type: 3}
+    - {fileID: 5863748648458721930, guid: 684fadf1f9d623f4398ab92188450902, type: 3}
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 684fadf1f9d623f4398ab92188450902, type: 3}
 --- !u!114 &943612921 stripped
