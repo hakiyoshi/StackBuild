@@ -1,14 +1,16 @@
 using System;
 using System.Linq;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using StackBuild.UI;
 using UniRx;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace StackBuild.Game
 {
-    public class MatchControl : MonoBehaviour
+    public class MatchControl : NetworkBehaviour
     {
 
         [Header("Appearance")]
@@ -40,34 +42,39 @@ namespace StackBuild.Game
 
         private void Start()
         {
-            RunMatch().Forget();
+            RunMatch(this.GetCancellationTokenOnDestroy()).Forget();
             state.AddTo(this);
         }
 
-        private async UniTaskVoid RunMatch()
+        private async UniTaskVoid RunMatch(CancellationToken token)
         {
             state.Value = MatchState.Starting;
 
+            //最初のStackBuildが画面に映る
             DisablePlayerMovement();
             AnimateCamera();
             introDisplay.Display();
             timeDisplay.Display(Mathf.RoundToInt(gameTime));
-            await UniTask.Delay(TimeSpan.FromSeconds(introDisplayDuration));
+            await UniTask.Delay(TimeSpan.FromSeconds(introDisplayDuration), cancellationToken: token);
 
-            await fade.DOFade(1, fadeIn).From(0).SetEase(Ease.InQuad);
+            //ホワイトアウト
+            await fade.DOFade(1, fadeIn).From(0).SetEase(Ease.InQuad)
+                .ToUniTask(cancellationToken: fade.gameObject.GetCancellationTokenOnDestroy());
 
             introDisplay.gameObject.SetActive(false);
 
-            await UniTask.Delay(TimeSpan.FromSeconds(fadeSustain));
-            await fade.DOFade(0, fadeOut);
+            await UniTask.Delay(TimeSpan.FromSeconds(fadeSustain), cancellationToken: token);
+            await fade.DOFade(0, fadeOut).ToUniTask(cancellationToken: fade.gameObject.GetCancellationTokenOnDestroy());
 
-            await UniTask.Delay(TimeSpan.FromSeconds(hudDelay));
+            //HUD表示
+            await UniTask.Delay(TimeSpan.FromSeconds(hudDelay), cancellationToken: token);
             foreach (var hud in huds)
             {
                 hud.SlideInAsync().Forget();
             }
 
-            await UniTask.Delay(TimeSpan.FromSeconds(startDelay));
+            //ゲームスタート
+            await UniTask.Delay(TimeSpan.FromSeconds(startDelay), cancellationToken: token);
             timeRemaining = gameTime;
             state.Value = MatchState.Ingame;
             EnablePlayerMovement();
@@ -75,18 +82,19 @@ namespace StackBuild.Game
             startDisplay.Display();
         }
 
-        private async UniTaskVoid FinishMatch()
+        private async UniTaskVoid FinishMatch(CancellationToken token)
         {
             state.Value = MatchState.Finished;
             DisablePlayerMovement();
             foreach (var hud in huds)
             {
+                token.ThrowIfCancellationRequested();
                 hud.SlideOutAsync().Forget();
             }
             finishDisplay.Display();
 
-            await UniTask.Delay(TimeSpan.FromSeconds(resultsDelay));
-            await resultsDisplay.DisplayAsync();
+            await UniTask.Delay(TimeSpan.FromSeconds(resultsDelay), cancellationToken: token);
+            await resultsDisplay.DisplayAsync(resultsDisplay.gameObject.GetCancellationTokenOnDestroy());
             gameOverScreen.ShowAsync(players.Select(p => p.characterProperty).ToArray()).Forget();
         }
 
@@ -104,7 +112,7 @@ namespace StackBuild.Game
 
             if (timeRemaining == 0)
             {
-                FinishMatch().Forget();
+                FinishMatch(this.GetCancellationTokenOnDestroy()).Forget();
             }
         }
 
