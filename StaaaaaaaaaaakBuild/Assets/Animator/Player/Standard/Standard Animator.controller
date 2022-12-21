@@ -44,9 +44,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
+  m_TransitionDuration: 0.43479657
   m_TransitionOffset: 0
-  m_ExitTime: 0.84924626
+  m_ExitTime: 0.7349721
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -66,13 +66,13 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Dash
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -110,9 +110,9 @@ AnimatorState:
   m_Motion: {fileID: 7400000, guid: 5b13b2e9fbcd76247afbf9b43fc4cb35, type: 2}
   m_Tag: 
   m_SpeedParameter: 
-  m_MirrorParameter: 
-  m_CycleOffsetParameter: 
-  m_TimeParameter: 
+  m_MirrorParameter: Dash
+  m_CycleOffsetParameter: Blend
+  m_TimeParameter: Blend
 --- !u!206 &6910643092214666636
 BlendTree:
   m_ObjectHideFlags: 1
@@ -162,8 +162,8 @@ AnimatorStateTransition:
   m_IsExit: 0
   serializedVersion: 3
   m_TransitionDuration: 0.25
-  m_TransitionOffset: 0
-  m_ExitTime: 0.423077
+  m_TransitionOffset: 0.025606459
+  m_ExitTime: 0.42307696
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
