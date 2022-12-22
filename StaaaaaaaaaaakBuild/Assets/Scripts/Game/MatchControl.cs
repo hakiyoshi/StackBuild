@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
@@ -40,10 +41,29 @@ namespace StackBuild.Game
         private readonly ReactiveProperty<MatchState> state = new();
         public IReadOnlyReactiveProperty<MatchState> State => state;
 
+        private Dictionary<ulong, bool> playerWaitingToStart = new ();
+
+        //サーバーにゲーム開始待ち通知をする
+        [ServerRpc(RequireOwnership = true)]
+        void SendWaitingToStartServerRpc(ulong playerIndex)
+        {
+            playerWaitingToStart.Add(playerIndex, true);
+        }
+
         private void Start()
         {
             RunMatch(this.GetCancellationTokenOnDestroy()).Forget();
             state.AddTo(this);
+        }
+
+        public override void OnNetworkSpawn()
+        {
+            //ロビーに入ってる人のIDを受け取って登録
+            var ids = NetworkManager.Singleton.ConnectedClientsIds;
+            foreach (var id in ids)
+            {
+                playerWaitingToStart.Add(id, false);
+            }
         }
 
         private async UniTaskVoid RunMatch(CancellationToken token)
@@ -52,11 +72,25 @@ namespace StackBuild.Game
 
             //最初のStackBuildが画面に映る
             DisablePlayerMovement();
-            AnimateCamera();
             introDisplay.Display();
             timeDisplay.Display(Mathf.RoundToInt(gameTime));
             await UniTask.Delay(TimeSpan.FromSeconds(introDisplayDuration), cancellationToken: token);
 
+            //オンライン時全員が同期するまで待ち
+            if (IsSpawned)
+            {
+                await UniTask.WaitUntil(() =>
+                {
+                    foreach (var (_, flag) in playerWaitingToStart)
+                    {
+                        if (!flag)
+                            return false;
+                    }
+                    return true;
+                }, cancellationToken: token);
+            }
+
+            Debug.Log("ゲーム開始");
             //ホワイトアウト
             await fade.DOFade(1, fadeIn).From(0).SetEase(Ease.InQuad)
                 .ToUniTask(cancellationToken: fade.gameObject.GetCancellationTokenOnDestroy());
@@ -133,11 +167,6 @@ namespace StackBuild.Game
                 if (input == null || input.gameObject == null) continue;
                 input.gameObject.SetActive(playerInputProperty.DeviceIds[i] != PlayerInputProperty.UNSETID);
             }
-        }
-
-        private void AnimateCamera()
-        {
-            // TODO
         }
 
     }
