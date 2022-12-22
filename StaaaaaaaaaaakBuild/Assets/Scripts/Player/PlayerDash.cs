@@ -75,10 +75,10 @@ namespace StackBuild
             TryGetComponent(out characterController);
 
                 //エフェクトオブジェクトを自動生成
-            dashParticle = Instantiate(property.Dash.DashEffectPrefab, transform).GetComponent<ParticleSystem>();
+            dashParticle = Instantiate(property.Model.DashEffectPrefab, transform).GetComponent<ParticleSystem>();
 
             //座標
-            dashParticle.transform.localScale = property.Dash.DashEffectMaxScale;
+            dashParticle.transform.localScale = property.Model.DashEffectMaxScale;
 
             //ParticleSystemを動的に書き換え
             ParticleSystemSetting();
@@ -184,14 +184,14 @@ namespace StackBuild
             sequence.Append(DOVirtual.DelayedCall(property.Dash.DashAccelerationTime, () => { }));
 
             //エフェクト出現
-            sequence.Join(EffectSizeAnimation(property.Dash.DashEffectAppearanceTime, property.Dash.DashEffectMaxScale,
+            sequence.Join(EffectSizeAnimation(property.Model.DashEffectAppearanceTime, property.Model.DashEffectMaxScale,
                 property.Dash.DashEaseOfAcceleration));
 
             //加速度を0に戻す
             sequence.Append(DOVirtual.DelayedCall(property.Dash.DashDeceleratingTime, () => { }));
 
             //エフェクト消滅
-            sequence.Join(EffectSizeAnimation(property.Dash.DashEffectExitTime, property.Dash.DashEffectMinScale,
+            sequence.Join(EffectSizeAnimation(property.Model.DashEffectExitTime, property.Model.DashEffectMinScale,
                 property.Dash.DashEaseOfDeceleration));
 
             //イベント追加
@@ -232,7 +232,7 @@ namespace StackBuild
             }, new GradientAlphaKey[]
             {
                 new(1.0f, 0.0f),
-                new(1.0f, property.Dash.DashEffectAppearanceTime / fullTime),
+                new(1.0f, property.Model.DashEffectAppearanceTime / fullTime),
                 new(0.0f, 1.0f)
             });
             colorOverLifetime.color = grad;
