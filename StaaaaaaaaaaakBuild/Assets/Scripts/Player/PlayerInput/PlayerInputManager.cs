@@ -1,8 +1,11 @@
 using System;
 using System.Linq;
+using UniRx;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Users;
 using UnityEngine.InputSystem.Utilities;
+using Observable = UniRx.Observable;
 
 namespace StackBuild
 {
@@ -14,108 +17,109 @@ namespace StackBuild
 
         private void Awake()
         {
-            SettingPlayerInput();
+            playerInputProperty.playerInputManager = this;
+
+            TryGetComponent(out UnityEngine.InputSystem.PlayerInputManager playerInputManager);
+
+            // InputManagerのイベント追加
+            var onPlayerJoined = Observable.FromEvent<PlayerInput>(
+                x => playerInputManager.onPlayerJoined += x,
+                x => playerInputManager.onPlayerJoined -= x);
+
+            onPlayerJoined.Subscribe(x =>
+            {
+                if (!x.user.valid)
+                    return;
+
+                var deviceid = playerInputProperty.DeviceIds[x.playerIndex];
+                x.user.UnpairDevices();
+
+                // デバイスを設定品場合何もしない
+                if (deviceid == PlayerInputProperty.UNSETID)
+                {
+                    return;
+                }
+
+                //デバイスの選定
+                var devices = InputSystem.devices;
+                InputDevice inputDevice = null;
+                if (deviceid == PlayerInputProperty.AUTOSETID)
+                {
+                    inputDevice = AutoSearchInputDevice(x.playerIndex, devices);
+                }
+                else if (deviceid != PlayerInputProperty.UNSETID)
+                {
+                    inputDevice = SelectSearchInputDevice(deviceid, devices);
+                }
+                else
+                {
+                    return;
+                }
+
+                //デバイスセット
+                SettingDevice(x, inputDevice);
+
+                //デバイスIDを変更
+                playerInputProperty.SettingPlayerDevice(x.playerIndex, inputDevice, false, false);
+                playerInputProperty.PlayerInputs[x.playerIndex] = x;
+            }).AddTo(this);
+
+            //Input生成
+            CreatePlayerInput();
         }
 
-        void SettingPlayerInput()
+        void CreatePlayerInput()
         {
             var playerObjects = playerManager.PlayerObjects;
-            var devices = InputSystem.devices;
-            var parent = transform.parent;
-            for (var i = 0; i < playerObjects.Length; i++)
+            for (int i = 0; i < playerObjects.Length; i++)
             {
-                var deviceid = playerInputProperty.DeviceIds[i];
+                var deviceId = playerInputProperty.DeviceIds[i];
+                var playerInput = PlayerInput.Instantiate(inputPrefab, playerIndex: i,
+                    pairWithDevice: Keyboard.current);
+                playerInput.user.UnpairDevices();
 
-                //デバイス設定しない場合
-                if(deviceid == PlayerInputProperty.UNSETID)
-                {
-                    SettingPlayerInput(i, parent, null);
-                    continue;
-                }
-
-                //デバイス設定する場合
-                if(SelectSetDevice(i, parent, devices))
-                    continue;
-
-                AutoSetDevice(i, parent, devices);
+                StartInputObjectSetting(playerInput, transform.parent, i);
             }
         }
 
-        bool SelectSetDevice(int playerIndex, Transform parent, in ReadOnlyArray<InputDevice> devices)
+        static InputDevice SelectSearchInputDevice(int deviceId, in ReadOnlyArray<InputDevice> devices)
         {
-            var deviceid = playerInputProperty.DeviceIds[playerIndex];
-
-            //Autoの場合何もせず抜ける
-            if (deviceid == PlayerInputProperty.AUTOSETID)
-                return false;
-
-            foreach (var device in devices)
-            {
-                if (device.deviceId != deviceid)
-                    continue;
-
-                SettingPlayerInput(playerIndex, parent, device);
-                return true;
-            }
-
-            return false;
+            return devices.FirstOrDefault(device => device.deviceId == deviceId);
         }
 
-        void AutoSetDevice(int playerIndex, Transform parent, in ReadOnlyArray<InputDevice> devices)
+        private InputDevice AutoSearchInputDevice(int playerIndex, in ReadOnlyArray<InputDevice> devices)
         {
-            int deviceFlag = playerIndex;
             foreach (var device in devices)
             {
-                if(Mouse.current == null || Mouse.current.deviceId == device.deviceId)
+                if(Mouse.current != null && Mouse.current.deviceId == device.deviceId)
                     continue;
 
-                //デバイスフラグが1以上の場合はスルー
-                if(deviceFlag >= 1)
+                if (playerInputProperty.DeviceIds.Where((t, i) =>
+                        i != playerIndex && device != null && t == device.deviceId).Any())
                 {
-                    deviceFlag--;
                     continue;
                 }
 
-                //キーボードかそれ以外で分岐
-                SettingPlayerInput(playerIndex, parent, device);
+                return device;
+            }
+
+            return null;
+        }
+
+        void SettingDevice(PlayerInput playerInput, InputDevice device)
+        {
+            if (device == null)
                 return;
-            }
 
-            //デバイス未設定のPlayerInput生成
-            SettingPlayerInput(playerIndex, parent, null);
-        }
-
-        void SettingPlayerInput(int playerIndex, Transform parent, InputDevice device)
-        {
-            PlayerInput playerInput = null;
-            if (device != null && ((Keyboard.current != null && Keyboard.current.deviceId == device.deviceId) ||
-                                   (Mouse.current != null && Mouse.current.deviceId == device.deviceId)))
+            if ((Keyboard.current != null && Keyboard.current.deviceId == device.deviceId) ||
+                Mouse.current != null && Mouse.current.deviceId == device.deviceId)
             {
-                //キーボード、マウス
-                playerInput = PlayerInput.Instantiate(inputPrefab, playerIndex: playerIndex,
-                    controlScheme: "keyboard&Mouse",
-                    pairWithDevices: new InputDevice[] {Keyboard.current, Mouse.current});
-                device = Keyboard.current;
-            }
-            else if(device != null && Gamepad.all.Any(gamepad => gamepad.deviceId == device.deviceId))
+                playerInput.SwitchCurrentControlScheme("keyboard&Mouse",
+                    new InputDevice[] {Keyboard.current, Mouse.current});
+            }else if (Gamepad.all.Any(gamepad => gamepad.deviceId == device.deviceId))
             {
-                //ゲームパッド
-                playerInput = PlayerInput.Instantiate(inputPrefab, playerIndex: playerIndex,
-                    controlScheme: "Gamepad", pairWithDevice: device);
+                playerInput.SwitchCurrentControlScheme("Gamepad", device);
             }
-            else
-            {
-                //デバイス未設定(適当にキーボードマウス指定してActiveをfalseにする)
-                playerInput = PlayerInput.Instantiate(inputPrefab, playerIndex: playerIndex,
-                    controlScheme: "keyboard&Mouse",
-                    pairWithDevices: new InputDevice[] {Keyboard.current, Mouse.current});
-                playerInput.gameObject.SetActive(false);
-                device = null;
-            }
-
-            //デバイスの種類をセットしておく
-            playerInputProperty.SettingPlayerDevice(playerIndex, device, false, false);
-            StartInputObjectSetting(playerInput, parent, playerIndex);
         }
 
         void StartInputObjectSetting(PlayerInput playerInput, Transform parent, int playerIndex)
@@ -131,6 +135,8 @@ namespace StackBuild
             {
                 playerInputProperty.SettingPlayerDevice(i, null, false);
             }
+
+            playerInputProperty.playerInputManager = null;
         }
     }
 }
