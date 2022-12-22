@@ -79,19 +79,14 @@ namespace StackBuild
 
         private void ToggleCoverOpen()
         {
-            if (IsSpawned && IsServer)
+            if (IsSpawned && !IsOwner)
             {
                 CoverSyncedServerRpc(NetworkManager.LocalTime.Time);
             }
             else
             {
-                ToggleCoverOpenImpl();
+                isOpen.Value = !isOpen.Value;
             }
-        }
-
-        private void ToggleCoverOpenImpl()
-        {
-            isOpen.Value = !isOpen.Value;
         }
 
         private async UniTaskVoid WaitAndToggleCover(float timeToWait, CancellationToken token)
@@ -101,7 +96,7 @@ namespace StackBuild
                 await UniTask.Delay(TimeSpan.FromSeconds(timeToWait), cancellationToken: token);
             }
 
-            ToggleCoverOpenImpl();
+            isOpen.Value = !isOpen.Value;
             //Debug.LogError("Cover: " + (meshRenderer.enabled ? "閉じてる" : "空いてる") + $"\nTime: {NetworkManager.LocalTime.Time - timeToWait}");
         }
 
