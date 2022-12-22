@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using UniRx;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Users;
@@ -15,10 +16,22 @@ namespace StackBuild
         [SerializeField] private PlayerInputProperty playerInputProperty;
         [SerializeField] private PlayerManager playerManager;
 
+        [field: SerializeField] public int[] CurrentPlayerDevice { get; private set; } =
+            new int[PlayerInputProperty.MAX_DEVICEID];
+
         private void Awake()
         {
             playerInputProperty.playerInputManager = this;
 
+            //デバイスIDコピー
+            for (var i = 0; i < playerInputProperty.DeviceIds.Length; i++)
+            {
+                CurrentPlayerDevice[i] = playerInputProperty.DeviceIds[i];
+            }
+        }
+
+        private void Start()
+        {
             TryGetComponent(out UnityEngine.InputSystem.PlayerInputManager playerInputManager);
 
             // InputManagerのイベント追加
@@ -31,7 +44,7 @@ namespace StackBuild
                 if (!x.user.valid)
                     return;
 
-                var deviceid = playerInputProperty.DeviceIds[x.playerIndex];
+                var deviceid = CurrentPlayerDevice[x.playerIndex];
                 x.user.UnpairDevices();
 
                 // デバイスを設定品場合何もしない
@@ -51,16 +64,12 @@ namespace StackBuild
                 {
                     inputDevice = SelectSearchInputDevice(deviceid, devices);
                 }
-                else
-                {
-                    return;
-                }
 
                 //デバイスセット
                 SettingDevice(x, inputDevice);
 
                 //デバイスIDを変更
-                playerInputProperty.SettingPlayerDevice(x.playerIndex, inputDevice, false, false);
+                SettingPlayerDevice(x.playerIndex, inputDevice);
                 playerInputProperty.PlayerInputs[x.playerIndex] = x;
             }).AddTo(this);
 
@@ -73,7 +82,6 @@ namespace StackBuild
             var playerObjects = playerManager.PlayerObjects;
             for (int i = 0; i < playerObjects.Length; i++)
             {
-                var deviceId = playerInputProperty.DeviceIds[i];
                 var playerInput = PlayerInput.Instantiate(inputPrefab, playerIndex: i,
                     pairWithDevice: Keyboard.current);
                 playerInput.user.UnpairDevices();
@@ -94,7 +102,7 @@ namespace StackBuild
                 if(Mouse.current != null && Mouse.current.deviceId == device.deviceId)
                     continue;
 
-                if (playerInputProperty.DeviceIds.Where((t, i) =>
+                if (CurrentPlayerDevice.Where((t, i) =>
                         i != playerIndex && device != null && t == device.deviceId).Any())
                 {
                     continue;
@@ -129,13 +137,21 @@ namespace StackBuild
             playerInputProperty.PlayerInputs[playerIndex] = playerInput;
         }
 
+        public void SettingPlayerDevice(int playerIndex, InputDevice inputDevice)
+        {
+            if(inputDevice == null)
+                SettingPlayerDevice(playerIndex, PlayerInputProperty.UNSETID);
+            else
+                SettingPlayerDevice(playerIndex, inputDevice.deviceId);
+        }
+
+        public void SettingPlayerDevice(int playerIndex, int deviceId)
+        {
+            CurrentPlayerDevice[playerIndex] = deviceId;
+        }
+
         private void OnDestroy()
         {
-            for (int i = 0; i < PlayerInputProperty.MAX_DEVICEID; i++)
-            {
-                playerInputProperty.SettingPlayerDevice(i, null, false);
-            }
-
             playerInputProperty.playerInputManager = null;
         }
     }

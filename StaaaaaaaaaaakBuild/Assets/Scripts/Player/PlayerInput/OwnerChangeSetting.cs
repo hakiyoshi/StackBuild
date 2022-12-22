@@ -1,4 +1,5 @@
 ﻿using System;
+using StackBuild.Game;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -8,8 +9,8 @@ namespace StackBuild
 {
     public class OwnerChangeSetting : NetworkBehaviour
     {
-        public PlayerInputProperty playerInputProperty;
-        public PlayerManager playerManager;
+        [SerializeField] private PlayerInputProperty playerInputProperty;
+        [SerializeField] private PlayerManager playerManager;
 
         private int playerIndex
         {
@@ -24,25 +25,15 @@ namespace StackBuild
             return playerInputProperty.PlayerInputs[playerIndex];
         }
 
-        public override void OnNetworkSpawn()
-        {
-            var playerInput = GetInputSet();
-            if (!IsOwner)
-            {
-                LostInput(playerInput);
-            }
-            else
-            {
-                playerInput.enabled = true;
-                SwitchDevice(playerInput);
-            }
-        }
-
         public override void OnNetworkDespawn()
         {
             var playerInput = GetInputSet();
+            if(playerInput == null)
+                return;
+
             playerInput.gameObject.SetActive(true);
-            playerInputProperty.SettingPlayerDevice(playerIndex, null, false);
+            playerInputProperty.playerInputManager.SettingPlayerDevice(playerIndex,
+                playerInputProperty.DeviceIds[playerIndex]);
         }
 
         public override void OnGainedOwnership()
@@ -51,17 +42,24 @@ namespace StackBuild
                 return;
 
             var playerInput = GetInputSet();
+            if(playerInput == null)
+                return;
+
             GainedInput(playerInput);
         }
 
         public override void OnLostOwnership()
         {
             var playerInput = GetInputSet();
+            if(playerInput == null)
+                return;
+
             LostInput(playerInput);
         }
 
         void LostInput(PlayerInput playerInput)
         {
+            playerInputProperty.playerInputManager.SettingPlayerDevice(playerIndex, PlayerInputProperty.UNSETID);
             playerInput.gameObject.SetActive(false);
         }
 
@@ -74,10 +72,8 @@ namespace StackBuild
         void SwitchDevice(PlayerInput playerInput)
         {
             //１Pの設定を持ってくる
-            playerInputProperty.SettingPlayerDevice(
-                playerIndex,
-                playerInputProperty.DeviceIds[playerIndex],
-                false, false);
+            var playerInputManager = playerInputProperty.playerInputManager;
+            playerInputManager.SettingPlayerDevice(playerIndex, playerInputProperty.DeviceIds[0]);
         }
     }
 }
