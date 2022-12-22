@@ -15,3 +15,8 @@ MonoBehaviour:
   <CharacterModelPrefab>k__BackingField: {fileID: 701396614914776042, guid: 9dc9dd4ef957f0a43af37a1b466fcb8c, type: 3}
   <SphereColliderRadius>k__BackingField: 3.5
   <HitEffect>k__BackingField: {fileID: 5789713385372004132, guid: 0da34b7741ec15b4abe110219528bd9d, type: 3}
+  DashEffectPrefab: {fileID: 3931804214971157241, guid: f10922822f7271a458f7cb832eedf325, type: 3}
+  <DashEffectMaxScale>k__BackingField: {x: 4, y: 4, z: 4}
+  <DashEffectMinScale>k__BackingField: {x: 0, y: 3, z: 0}
+  <DashEffectAppearanceTime>k__BackingField: 0.05
+  <DashEffectExitTime>k__BackingField: 0.6
