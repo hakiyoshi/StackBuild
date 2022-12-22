@@ -33,6 +33,7 @@ namespace StackBuild.Game
         [Header("System")]
         [SerializeField] private PlayerInputProperty playerInputProperty;
         [SerializeField] private PlayerProperty[] players;
+        [SerializeField] private MatchControlState matchControlState;
 
         private float timeRemaining;
         private readonly ReactiveProperty<MatchState> state = new();
@@ -47,6 +48,7 @@ namespace StackBuild.Game
         private async UniTaskVoid RunMatch()
         {
             state.Value = MatchState.Starting;
+            matchControlState.SendState(MatchState.Starting);
 
             DisablePlayerMovement();
             AnimateCamera();
@@ -70,6 +72,7 @@ namespace StackBuild.Game
             await UniTask.Delay(TimeSpan.FromSeconds(startDelay));
             timeRemaining = gameTime;
             state.Value = MatchState.Ingame;
+            matchControlState.SendState(MatchState.Ingame);
             EnablePlayerMovement();
             startDisplay.gameObject.SetActive(true);
             startDisplay.Display();
@@ -78,6 +81,7 @@ namespace StackBuild.Game
         private async UniTaskVoid FinishMatch()
         {
             state.Value = MatchState.Finished;
+            matchControlState.SendState(MatchState.Finished);
             DisablePlayerMovement();
             foreach (var hud in huds)
             {
