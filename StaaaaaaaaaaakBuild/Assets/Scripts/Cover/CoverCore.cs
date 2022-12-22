@@ -16,10 +16,10 @@ namespace StackBuild
         private MeshRenderer meshRenderer = null;
         private MeshCollider meshCollider = null;
 
-        private ReactiveProperty<bool> isOpen = new();
-        public IReadOnlyReactiveProperty<bool> IsOpen => isOpen;
+        private ReactiveProperty<bool> isOpened = new();
+        public IReadOnlyReactiveProperty<bool> IsOpened => isOpened;
 
-        private CancellationTokenSource cts = new();
+        private CancellationTokenSource cts = null;
 
         private void Awake()
         {
@@ -31,7 +31,7 @@ namespace StackBuild
         {
             if (meshRenderer == null || meshCollider == null) return;
 
-            isOpen.Subscribe(value =>
+            isOpened.Subscribe(value =>
             {
                 meshRenderer.enabled = !value;
                 meshCollider.enabled = !value;
@@ -52,6 +52,22 @@ namespace StackBuild
             SetCoverOpen(false);
         }
 
+        public override void OnNetworkSpawn()
+        {
+            SetCoverOpen(false);
+            StopCoverLoop();
+
+            if (IsOwner)
+            {
+                StartCoverLoop();
+            }
+        }
+
+        public override void OnNetworkDespawn()
+        {
+
+        }
+
         public void StartCoverLoop()
         {
             if (meshRenderer == null || meshCollider == null) return;
@@ -60,7 +76,7 @@ namespace StackBuild
             cts = new();
             cts.AddTo(this);
 
-            ClientSyncedCoverCloseOpen(cts.Token).Forget();
+            ClientSyncedCover(cts.Token).Forget();
         }
 
         public void StopCoverLoop()
@@ -72,63 +88,62 @@ namespace StackBuild
             cts = null;
         }
 
-        private void SetCoverOpen(bool value)
+        private void SetCoverOpen(bool isOpen)
         {
-            isOpen.Value = value;
-        }
-
-        private void ToggleCoverOpen()
-        {
-            if (IsSpawned && !IsOwner)
+            if (IsSpawned && IsOwner)
             {
-                CoverSyncedServerRpc(NetworkManager.LocalTime.Time);
+                CoverSyncedServerRpc(NetworkManager.LocalTime.Time, isOpen);
             }
             else
             {
-                isOpen.Value = !isOpen.Value;
+                SetCoverOpenCore(isOpen);
             }
         }
 
-        private async UniTaskVoid WaitAndToggleCover(float timeToWait, CancellationToken token)
+        private void SetCoverOpenCore(bool isOpen)
+        {
+            isOpened.Value = isOpen;
+        }
+
+        private async UniTask ClientSyncedCover(CancellationToken token)
+        {
+            while (true)
+            {
+                SetCoverOpen(false);
+                await UniTask.Delay(TimeSpan.FromSeconds(settings.AppearanceTime), cancellationToken: token);
+                SetCoverOpen(true);
+                await UniTask.Delay(TimeSpan.FromSeconds(settings.IntervalTime), cancellationToken: token);
+            }
+        }
+
+        [ServerRpc]
+        private void CoverSyncedServerRpc(double time, bool isOpen)
+        {
+            if (!IsServer) return;
+
+            CoverSyncedClientRpc(time, isOpen);
+            var timeToWait = time - NetworkManager.ServerTime.Time;
+            WaitAndSetCoverOpen((float)timeToWait, isOpen, this.GetCancellationTokenOnDestroy()).Forget();
+        }
+
+        [ClientRpc]
+        private void CoverSyncedClientRpc(double time, bool isOpen)
+        {
+            if (IsOwner) return;
+
+            var timeToWait = time - NetworkManager.ServerTime.Time;
+            WaitAndSetCoverOpen((float)timeToWait, isOpen, this.GetCancellationTokenOnDestroy()).Forget();
+        }
+
+        private async UniTaskVoid WaitAndSetCoverOpen(float timeToWait, bool isOpen, CancellationToken token)
         {
             if (timeToWait > 0)
             {
                 await UniTask.Delay(TimeSpan.FromSeconds(timeToWait), cancellationToken: token);
             }
 
-            isOpen.Value = !isOpen.Value;
+            SetCoverOpenCore(isOpen);
             //Debug.LogError("Cover: " + (meshRenderer.enabled ? "閉じてる" : "空いてる") + $"\nTime: {NetworkManager.LocalTime.Time - timeToWait}");
-        }
-
-        private async UniTask ClientSyncedCoverCloseOpen(CancellationToken token)
-        {
-            SetCoverOpen(false);
-            while (true)
-            {
-                await UniTask.Delay(TimeSpan.FromSeconds(settings.AppearanceTime), cancellationToken: token);
-                ToggleCoverOpen();
-                await UniTask.Delay(TimeSpan.FromSeconds(settings.IntervalTime), cancellationToken: token);
-                ToggleCoverOpen();
-            }
-        }
-
-        [ServerRpc]
-        private void CoverSyncedServerRpc(double time)
-        {
-            if (!IsServer) return;
-
-            CoverSyncedClientRpc(time);
-            var timeToWait = time - NetworkManager.ServerTime.Time;
-            WaitAndToggleCover((float) timeToWait, this.GetCancellationTokenOnDestroy()).Forget();
-        }
-
-        [ClientRpc]
-        private void CoverSyncedClientRpc(double time)
-        {
-            if (IsOwner) return;
-
-            var timeToWait = time - NetworkManager.ServerTime.Time;
-            WaitAndToggleCover((float)timeToWait, this.GetCancellationTokenOnDestroy()).Forget();
         }
     }
 }
