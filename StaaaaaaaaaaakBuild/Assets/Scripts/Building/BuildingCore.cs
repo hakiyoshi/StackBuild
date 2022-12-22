@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using StackBuild.Game;
+using UniRx;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.Rendering;
 using Random = UnityEngine.Random;
 
 namespace StackBuild
@@ -13,6 +14,7 @@ namespace StackBuild
     public class BuildingCore : NetworkBehaviour
     {
         [SerializeField] private BuildSettings settings;
+        [SerializeField] private MatchControl matchControl;
         [SerializeField] private Transform stackPos;
 
         private Queue<BuildCubeId> stackQueue = new();
@@ -20,6 +22,8 @@ namespace StackBuild
         private float height = 0;
         private float totalHeight = 0;
         private int floorPartsCount = 0;
+        private bool isFinished = false;
+        private CancellationTokenSource cts;
 
         private float WidthSize => settings.WidthSize;
         private float HeightSize => settings.HeightSize;
@@ -40,10 +44,41 @@ namespace StackBuild
         {
             buildingBase = Instantiate(settings.StackPrefab, stackPos);
 
-            StackLoopAsync(this.GetCancellationTokenOnDestroy()).Forget();
+            matchControl.State.Subscribe(state =>
+            {
+                if (state == MatchState.Starting)
+                {
+                    isFinished = false;
+                    StopStackTimer();
+                    StartStackTimer();
+                }
+                else if (state == MatchState.Finished)
+                {
+                    isFinished = true;
+                    Finished();
+                }
+            }).AddTo(this);
         }
 
-        private async UniTask StackLoopAsync(CancellationToken token)
+        private void StartStackTimer()
+        {
+            StopStackTimer();
+
+            cts = new();
+            cts.AddTo(this);
+            StackTimerAsync(cts.Token).Forget();
+        }
+
+        private void StopStackTimer()
+        {
+            if (cts == null) return;
+
+            cts.Cancel();
+            cts.Dispose();
+            cts = null;
+        }
+
+        private async UniTask StackTimerAsync(CancellationToken token)
         {
             token.ThrowIfCancellationRequested();
 
@@ -53,6 +88,7 @@ namespace StackBuild
                 {
                     StackAsync(settings.BuildingDataDictionary[buildingId], token).Forget();
                     await BaseDownAsync(token);
+                    if (isFinished) continue;
                     await UniTask.Delay(TimeSpan.FromSeconds(LoopTime), cancellationToken: token);
                 }
                 await UniTask.Yield(PlayerLoopTiming.Update, cancellationToken: token);
@@ -67,10 +103,32 @@ namespace StackBuild
 
             obj.transform.localPosition = new Vector3(
                 x: (Row - floorPartsCount / Column) * (WidthSize / Row) + (WidthSize / Row) - (WidthSize / 2),
-                y: totalHeight + height + 20,
+                y: totalHeight + 20,
                 z: (floorPartsCount % Column) * (WidthSize / Column) + (WidthSize / Column) - (WidthSize / 2));
-            obj.transform.localRotation = Quaternion.Euler(0f, Random.Range(0, 3) * 90f, 0f);
             obj.transform.localScale = new Vector3(WidthSize / Row, HeightSize, WidthSize / Column);
+
+            var row = (floorPartsCount / Column);
+            var col = (floorPartsCount % Column);
+            var euler = new Vector3(-90, 0, 0);
+
+            obj.name = $"{row} {col}";
+            if (col == Column - 1 && row != Row - 1)
+            {
+                euler.z = 0;
+            }
+            else if (row == 0 && col != Column - 1)
+            {
+                euler.z = 90;
+            }
+            else if (col == 0 && col != Column - 1)
+            {
+                euler.z = 180;
+            }
+            else if (row == Row - 1 && col != 0)
+            {
+                euler.z = 270;
+            }
+            obj.transform.localRotation = Quaternion.Euler(euler);
 
             if (obj.TryGetComponent(out MeshFilter meshFilter))
             {
@@ -88,6 +146,7 @@ namespace StackBuild
             if (floorPartsCount >= Row * Column)
             {
                 height += HeightSize;
+                totalHeight += HeightSize;
                 floorPartsCount = 0;
             }
 
@@ -103,8 +162,9 @@ namespace StackBuild
 
             if (height <= MaxHeight) return;
 
-            totalHeight += MaxHeight;
             height -= MaxHeight;
+
+            if (isFinished) return;
 
             await buildingBase.transform.DOLocalMoveY(-MaxHeight, BaseFallTime)
                 .SetEase(Ease.OutBack)
@@ -124,12 +184,26 @@ namespace StackBuild
         [ClientRpc]
         private void FinishedClientRpc()
         {
-            Finished();
+            if (IsOwner) return;
+
+            FinishedImpl();
         }
 
-        public void Finished()
+        private void Finished()
         {
-            buildingBase.transform.DOLocalMoveY(0, 1f);
+            if (IsSpawned && !IsOwner)
+            {
+                FinishedServerRpc();
+            }
+            else
+            {
+                FinishedImpl();
+            }
+        }
+
+        private void FinishedImpl()
+        {
+            buildingBase.transform.DOLocalMoveY(0, settings.FinishedUpTime).SetEase(settings.FinishedUpEase);
         }
     }
 }

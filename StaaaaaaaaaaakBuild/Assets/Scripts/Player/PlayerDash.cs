@@ -1,5 +1,6 @@
 ﻿using System;
 using DG.Tweening;
+using StackBuild.Audio;
 using UniRx;
 using Unity.Netcode;
 using UnityEngine;
@@ -11,6 +12,11 @@ namespace StackBuild
     {
         [SerializeField] private InputSender inputSender;
         [SerializeField] private PlayerProperty playerProperty;
+
+        [SerializeField] private AudioCue attackHitAudioCue;
+        [SerializeField] private AudioCue dashAudioCue;
+        [SerializeField] private AudioSourcePool pool;
+
         private ParticleSystem dashParticle;
         private CharacterController characterController;
 
@@ -69,17 +75,17 @@ namespace StackBuild
             TryGetComponent(out characterController);
 
                 //エフェクトオブジェクトを自動生成
-            dashParticle = Instantiate(property.Dash.DashEffectPrefab, transform).GetComponent<ParticleSystem>();
+            dashParticle = Instantiate(property.Model.DashEffectPrefab, transform).GetComponent<ParticleSystem>();
 
             //座標
-            dashParticle.transform.localScale = property.Dash.DashEffectMaxScale;
+            dashParticle.transform.localScale = property.Model.DashEffectMaxScale;
 
             //ParticleSystemを動的に書き換え
             ParticleSystemSetting();
 
             dashParticle.Stop(true);
 
-            inputSender.Dash.sender.Where(x => x).ThrottleFirst(TimeSpan.FromSeconds(property.Dash.DashCoolTime)).Subscribe(_ =>
+            inputSender.Dash.sender.Skip(1).Where(x => x).ThrottleFirst(TimeSpan.FromSeconds(property.Dash.DashCoolTime)).Subscribe(_ =>
             {
                 if (IsSpawned && !IsOwner)
                     return;
@@ -88,8 +94,10 @@ namespace StackBuild
                     DashMove();
 
                 DashEffect();
-
                 DashServerRpc();
+
+                //ヒット時の処理
+                pool.Rent(dashAudioCue).PlayAndReturnWhenStopped();
             }).AddTo(this);
 
             playerProperty.HitDashAttack.Subscribe(x =>
@@ -103,6 +111,9 @@ namespace StackBuild
                 {
                     inputSender.Dash.isPause = false;
                 }).AddTo(this);
+
+                //ヒット音
+                pool.Rent(attackHitAudioCue).PlayAndReturnWhenStopped();
             }).AddTo(this);
         }
 
@@ -173,14 +184,14 @@ namespace StackBuild
             sequence.Append(DOVirtual.DelayedCall(property.Dash.DashAccelerationTime, () => { }));
 
             //エフェクト出現
-            sequence.Join(EffectSizeAnimation(property.Dash.DashEffectAppearanceTime, property.Dash.DashEffectMaxScale,
+            sequence.Join(EffectSizeAnimation(property.Model.DashEffectAppearanceTime, property.Model.DashEffectMaxScale,
                 property.Dash.DashEaseOfAcceleration));
 
             //加速度を0に戻す
             sequence.Append(DOVirtual.DelayedCall(property.Dash.DashDeceleratingTime, () => { }));
 
             //エフェクト消滅
-            sequence.Join(EffectSizeAnimation(property.Dash.DashEffectExitTime, property.Dash.DashEffectMinScale,
+            sequence.Join(EffectSizeAnimation(property.Model.DashEffectExitTime, property.Model.DashEffectMinScale,
                 property.Dash.DashEaseOfDeceleration));
 
             //イベント追加
@@ -221,7 +232,7 @@ namespace StackBuild
             }, new GradientAlphaKey[]
             {
                 new(1.0f, 0.0f),
-                new(1.0f, property.Dash.DashEffectAppearanceTime / fullTime),
+                new(1.0f, property.Model.DashEffectAppearanceTime / fullTime),
                 new(0.0f, 1.0f)
             });
             colorOverLifetime.color = grad;

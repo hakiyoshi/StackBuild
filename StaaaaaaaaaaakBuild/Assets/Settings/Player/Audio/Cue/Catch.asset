@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Catch
   m_EditorClassIdentifier: 
   <Loop>k__BackingField: 1
-  <Clip>k__BackingField: {fileID: 0}
+  <Clip>k__BackingField: {fileID: 8300000, guid: cc094217dda76c74b95e370329040aa5, type: 3}

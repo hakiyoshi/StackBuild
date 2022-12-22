@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using DG.Tweening;
+using UnityEngine;
 
 namespace StackBuild
 {
@@ -35,6 +36,8 @@ namespace StackBuild
         [field: SerializeField] public float PartsFallTime { get; private set; } = 0.8f;
         [field: SerializeField] public float BaseFallTime { get; private set; } = 1.0f;
         [field: SerializeField] public float LoopTime { get; private set; } = 0.05f;
+        [field: SerializeField] public float FinishedUpTime { get; private set; } = 1.0f;
+        [field: SerializeField] public Ease FinishedUpEase { get; private set; } = Ease.Linear;
         [field: SerializeField] public GameObject StackPrefab { get; private set; } = null;
         [field: SerializeField] public SDictionary<BuildCubeId, BuildCubeData> BuildingDataDictionary { get; private set; } = new();
     }

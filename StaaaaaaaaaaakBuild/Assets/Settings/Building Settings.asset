@@ -20,6 +20,8 @@ MonoBehaviour:
   <PartsFallTime>k__BackingField: 0.6
   <BaseFallTime>k__BackingField: 1
   <LoopTime>k__BackingField: 0.03
+  <FinishedUpTime>k__BackingField: 3
+  <FinishedUpEase>k__BackingField: 13
   <StackPrefab>k__BackingField: {fileID: 7779452958479151147, guid: c781c16edb51ead44ae894d2a29933a5, type: 3}
   <BuildingDataDictionary>k__BackingField:
     dictToList:
