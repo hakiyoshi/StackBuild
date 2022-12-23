@@ -252,6 +252,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerInputProperty: {fileID: 11400000, guid: 0dd4cc4c4954c3942815643f00138d40, type: 2}
   playerManager: {fileID: 0}
+  matchControlState: {fileID: 11400000, guid: c4e15217affc4c74a9f69eb55eb8f6da, type: 2}
 --- !u!114 &868031780191804150
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,9 +1,8 @@
-﻿using System;
-using StackBuild.Game;
+﻿using StackBuild.Game;
+using UniRx;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Utilities;
 
 namespace StackBuild
 {
@@ -11,6 +10,7 @@ namespace StackBuild
     {
         [SerializeField] private PlayerInputProperty playerInputProperty;
         [SerializeField] private PlayerManager playerManager;
+        [SerializeField] private MatchControlState matchControlState;
 
         private int playerIndex
         {
@@ -20,28 +20,52 @@ namespace StackBuild
             }
         }
 
-        PlayerInput GetInputSet()
+        PlayerInput GetInput()
         {
             return playerInputProperty.PlayerInputs[playerIndex];
         }
 
+        private void Start()
+        {
+            matchControlState.State.Skip(1).Subscribe(x =>
+            {
+                if (x != MatchState.Ingame)
+                    return;
+
+                var input = GetInput();
+
+                if (IsSpawned)
+                {
+                    if (IsOwner)
+                    {
+                        GainedInput(input);
+                    }
+                    else
+                    {
+                        LostInput(input);
+                    }
+                    return;
+                }
+
+                input.gameObject.SetActive(playerInputProperty.playerInputManager.CurrentPlayerDevice[playerIndex] !=
+                                           PlayerInputProperty.UNSETID);
+            }).AddTo(this);
+        }
+
         public override void OnNetworkDespawn()
         {
-            var playerInput = GetInputSet();
-            if(playerInput == null)
+            var playerInput = GetInput();
+            if(playerInput == null || playerInputProperty.playerInputManager == null)
                 return;
 
-            playerInput.gameObject.SetActive(true);
             playerInputProperty.playerInputManager.SettingPlayerDevice(playerIndex,
                 playerInputProperty.DeviceIds[playerIndex]);
+            playerInput.gameObject.SetActive(true);
         }
 
         public override void OnGainedOwnership()
         {
-            if (!IsOwner)
-                return;
-
-            var playerInput = GetInputSet();
+            var playerInput = GetInput();
             if(playerInput == null)
                 return;
 
@@ -50,7 +74,7 @@ namespace StackBuild
 
         public override void OnLostOwnership()
         {
-            var playerInput = GetInputSet();
+            var playerInput = GetInput();
             if(playerInput == null)
                 return;
 
@@ -59,7 +83,6 @@ namespace StackBuild
 
         void LostInput(PlayerInput playerInput)
         {
-            playerInputProperty.playerInputManager.SettingPlayerDevice(playerIndex, PlayerInputProperty.UNSETID);
             playerInput.gameObject.SetActive(false);
         }
 
@@ -73,7 +96,7 @@ namespace StackBuild
         {
             //１Pの設定を持ってくる
             var playerInputManager = playerInputProperty.playerInputManager;
-            playerInputManager.SettingPlayerDevice(playerIndex, playerInputProperty.DeviceIds[0]);
+            playerInputManager.SettingPlayerDevice(playerIndex, playerInputProperty.playerInputManager.CurrentPlayerDevice[0]);
         }
     }
 }

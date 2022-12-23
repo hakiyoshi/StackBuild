@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using StackBuild.Game;
 using UniRx;
 using Unity.Netcode;
 using UnityEngine;
@@ -28,13 +29,9 @@ namespace StackBuild
             {
                 CurrentPlayerDevice[i] = playerInputProperty.DeviceIds[i];
             }
-        }
-
-        private void Start()
-        {
-            TryGetComponent(out UnityEngine.InputSystem.PlayerInputManager playerInputManager);
 
             // InputManagerのイベント追加
+            TryGetComponent(out UnityEngine.InputSystem.PlayerInputManager playerInputManager);
             var onPlayerJoined = Observable.FromEvent<PlayerInput>(
                 x => playerInputManager.onPlayerJoined += x,
                 x => playerInputManager.onPlayerJoined -= x);
@@ -85,6 +82,7 @@ namespace StackBuild
                 var playerInput = PlayerInput.Instantiate(inputPrefab, playerIndex: i,
                     pairWithDevice: Keyboard.current);
                 playerInput.user.UnpairDevices();
+                playerInput.gameObject.SetActive(false);
 
                 StartInputObjectSetting(playerInput, transform.parent, i);
             }
