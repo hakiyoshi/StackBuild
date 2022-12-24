@@ -156,21 +156,21 @@ namespace StackBuild.Game
 
         private void DisablePlayerMovement()
         {
-            foreach (var input in playerInputProperty.PlayerInputs)
-            {
-                if (input == null || input.gameObject == null) continue;
-                input.gameObject.SetActive(false);
-            }
+            // foreach (var input in playerInputProperty.PlayerInputs)
+            // {
+            //     if (input == null || input.gameObject == null) continue;
+            //     input.gameObject.SetActive(false);
+            // }
         }
 
         private void EnablePlayerMovement()
         {
-            for (int i = 0; i < PlayerInputProperty.MAX_DEVICEID; i++)
-            {
-                var input = playerInputProperty.PlayerInputs[i];
-                if (input == null || input.gameObject == null) continue;
-                input.gameObject.SetActive(playerInputProperty.DeviceIds[i] != PlayerInputProperty.UNSETID);
-            }
+            // for (int i = 0; i < PlayerInputProperty.MAX_DEVICEID; i++)
+            // {
+            //     var input = playerInputProperty.PlayerInputs[i];
+            //     if (input == null || input.gameObject == null) continue;
+            //     input.gameObject.SetActive(playerInputProperty.DeviceIds[i] != PlayerInputProperty.UNSETID);
+            // }
         }
 
     }

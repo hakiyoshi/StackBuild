@@ -1,15 +1,16 @@
-﻿using System;
+﻿using StackBuild.Game;
+using UniRx;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Utilities;
 
 namespace StackBuild
 {
     public class OwnerChangeSetting : NetworkBehaviour
     {
-        public PlayerInputProperty playerInputProperty;
-        public PlayerManager playerManager;
+        [SerializeField] private PlayerInputProperty playerInputProperty;
+        [SerializeField] private PlayerManager playerManager;
+        [SerializeField] private MatchControlState matchControlState;
 
         private int playerIndex
         {
@@ -19,48 +20,64 @@ namespace StackBuild
             }
         }
 
-        (PlayerInput, InputSender) GetInputSet()
+        PlayerInput GetInput()
         {
-            var playerInput = playerInputProperty.PlayerInputs[playerIndex];
-            var inputSender = playerInputProperty.inputSenders[playerIndex];
-            return (playerInput, inputSender);
+            return playerInputProperty.PlayerInputs[playerIndex];
         }
 
-        public override void OnNetworkSpawn()
+        private void Start()
         {
-            var (playerInput, inputSender) = GetInputSet();
-            if (!IsOwner)
+            matchControlState.State.Skip(1).Subscribe(x =>
             {
-                LostInput(playerInput);
-            }
-            else
-            {
-                playerInput.enabled = true;
-                SwitchDevice(playerInput);
-            }
+                if (x != MatchState.Ingame)
+                    return;
+
+                var input = GetInput();
+
+                if (IsSpawned)
+                {
+                    if (IsOwner)
+                    {
+                        GainedInput(input);
+                    }
+                    else
+                    {
+                        LostInput(input);
+                    }
+                    return;
+                }
+
+                input.gameObject.SetActive(playerInputProperty.playerInputManager.CurrentPlayerDevice[playerIndex] !=
+                                           PlayerInputProperty.UNSETID);
+            }).AddTo(this);
         }
 
         public override void OnNetworkDespawn()
         {
-            var (playerInput, _) = GetInputSet();
+            var playerInput = GetInput();
+            if(playerInput == null || playerInputProperty.playerInputManager == null)
+                return;
 
-            var devices = InputSystem.devices;
+            playerInputProperty.playerInputManager.SettingPlayerDevice(playerIndex,
+                playerInputProperty.DeviceIds[playerIndex]);
             playerInput.gameObject.SetActive(true);
-            SelectSwitchDevice(devices, playerInput, playerIndex);
         }
 
         public override void OnGainedOwnership()
         {
-            if (!IsOwner)
+            var playerInput = GetInput();
+            if(playerInput == null)
                 return;
 
-            var (playerInput, inputSender) = GetInputSet();
             GainedInput(playerInput);
         }
 
         public override void OnLostOwnership()
         {
-            var (playerInput, inputSender) = GetInputSet();
+            var playerInput = GetInput();
+            if(playerInput == null)
+                return;
+
             LostInput(playerInput);
         }
 
@@ -71,67 +88,15 @@ namespace StackBuild
 
         void GainedInput(PlayerInput playerInput)
         {
-            playerInput.gameObject.SetActive(true);
             SwitchDevice(playerInput);
+            playerInput.gameObject.SetActive(true);
         }
 
         void SwitchDevice(PlayerInput playerInput)
         {
-            var devices = InputSystem.devices;
-            if (SelectSwitchDevice(devices, playerInput, 0))//オンラインの場合１Pのデバイスを参照する
-                return;
-
-            //指定されていない場合は適当なやつ
-            AutoSwitchDevice(devices[0], playerInput);
-        }
-
-        bool SelectSwitchDevice(in ReadOnlyArray<InputDevice> devices, PlayerInput playerInput, int deviceIndex)
-        {
-            var deviceid = playerInputProperty.DeviceIds[deviceIndex];
-            if (deviceid == PlayerInputProperty.UNSETID)
-            {
-                return false;
-            }
-
-            foreach (var device in devices)
-            {
-                if (device.deviceId != deviceid)
-                    continue;
-
-                if ((Keyboard.current != null && Keyboard.current.device.deviceId == deviceid) ||
-                    (Mouse.current != null && Mouse.current.device.deviceId == deviceid))
-                {
-                    playerInput.SwitchCurrentControlScheme("Keyboard&Mouse", Keyboard.current, Mouse.current);
-                    playerInputProperty.SettingPlayerDevice(playerIndex, Keyboard.current, false, false);
-                }
-                else
-                {
-                    playerInput.SwitchCurrentControlScheme("Gamepad", device);
-                    playerInputProperty.SettingPlayerDevice(playerIndex, device, false, false);
-                }
-
-                return true;
-            }
-
-            return false;
-        }
-
-        void AutoSwitchDevice(InputDevice device, PlayerInput playerInput)
-        {
-            if (!playerInput.user.valid)
-                return;
-
-            if ((Keyboard.current != null && Keyboard.current.device.deviceId == device.deviceId) ||
-                    (Mouse.current != null && Mouse.current.device.deviceId == device.deviceId))
-            {
-                playerInput.SwitchCurrentControlScheme("Keyboard&Mouse", Keyboard.current, Mouse.current);
-                playerInputProperty.SettingPlayerDevice(playerIndex, Keyboard.current, false, false);
-            }
-            else
-            {
-                playerInput.SwitchCurrentControlScheme("Gamepad", device);
-                playerInputProperty.SettingPlayerDevice(playerIndex, device, false, false);
-            }
+            //１Pの設定を持ってくる
+            var playerInputManager = playerInputProperty.playerInputManager;
+            playerInputManager.SettingPlayerDevice(playerIndex, playerInputProperty.playerInputManager.CurrentPlayerDevice[0]);
         }
     }
 }

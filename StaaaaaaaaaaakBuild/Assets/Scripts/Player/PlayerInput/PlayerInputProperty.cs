@@ -21,8 +21,19 @@ namespace StackBuild
 
         [field: SerializeField] public InputSender[] inputSenders { get; private set; } = new InputSender[MAX_DEVICEID];
 
+        public PlayerInputManager playerInputManager = null;
+
         //自動割り当てを使う場合はautoSetをtrueにしてdeviceをnullにする
         public void SettingPlayerDevice(int playerId, InputDevice device, bool isOnline, bool autoSet = true)
+        {
+            if(device == null)
+                SettingPlayerDevice(playerId, -1, isOnline, autoSet);
+            else
+                SettingPlayerDevice(playerId, device.deviceId, isOnline, autoSet);
+        }
+
+        // deviceを指定しない場合は-1
+        public void SettingPlayerDevice(int playerId, int deviceId, bool isOnline, bool autoSet = true)
         {
             var id = 0;
             if (!isOnline)
@@ -31,7 +42,7 @@ namespace StackBuild
             if (id >= MAX_DEVICEID)
                 return;
 
-            if (device == null)
+            if (deviceId < 0)
             {
                 if (!autoSet)
                     deviceIds[id] = UNSETID;
@@ -40,7 +51,7 @@ namespace StackBuild
             }
             else
             {
-                deviceIds[id] = device.deviceId;
+                deviceIds[id] = deviceId;
             }
         }
     }
