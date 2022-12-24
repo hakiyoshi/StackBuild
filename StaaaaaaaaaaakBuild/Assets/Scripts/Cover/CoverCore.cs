@@ -14,7 +14,7 @@ namespace StackBuild
         [SerializeField] private MatchControl matchControl;
 
         private MeshRenderer meshRenderer = null;
-        private MeshCollider meshCollider = null;
+        private Collider meshCollider = null;
 
         private ReactiveProperty<bool> isOpened = new();
         public IReadOnlyReactiveProperty<bool> IsOpened => isOpened;
