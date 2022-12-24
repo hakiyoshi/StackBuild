@@ -1964,6 +1964,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Building R
       objectReference: {fileID: 0}
+    - target: {fileID: 5637207992343150935, guid: ae91d53d228a5a94bb8a7d55c2a2c920, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 34
+      objectReference: {fileID: 0}
     - target: {fileID: 8739208146717400083, guid: ae91d53d228a5a94bb8a7d55c2a2c920, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 664975064
@@ -3151,6 +3155,10 @@ PrefabInstance:
     - target: {fileID: 1251658806330010963, guid: 75e32094395b79c469c4c763bf3388a1, type: 3}
       propertyPath: m_Name
       value: Building L
+      objectReference: {fileID: 0}
+    - target: {fileID: 1251658807513176271, guid: 75e32094395b79c469c4c763bf3388a1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -51
       objectReference: {fileID: 0}
     - target: {fileID: 5573490636084260822, guid: 75e32094395b79c469c4c763bf3388a1, type: 3}
       propertyPath: GlobalObjectIdHash
