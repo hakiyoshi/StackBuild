@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using NetworkSystem;
 using StackBuild.UI;
 using UniRx;
 using Unity.Netcode;
@@ -33,23 +34,23 @@ namespace StackBuild.Game
         [SerializeField] private GameOverScreen gameOverScreen;
         [Header("Game Parameters")]
         [SerializeField] private float gameTime;
+
         [Header("System")]
+        [SerializeField] private int TimeoutSeconds = 600;
         [SerializeField] private PlayerInputProperty playerInputProperty;
         [SerializeField] private PlayerProperty[] players;
         [SerializeField] private MatchControlState matchControlState;
+
+        [Header("Network")]
+        [SerializeField] private LobbyManager lobbyManager;
+        [SerializeField] private RelayManager relayManager;
 
         private float timeRemaining;
         private readonly ReactiveProperty<MatchState> state = new();
         public IReadOnlyReactiveProperty<MatchState> State => state;
 
-        private Dictionary<ulong, bool> playerWaitingToStart = new ();
-
-        //サーバーにゲーム開始待ち通知をする
-        [ServerRpc(RequireOwnership = true)]
-        void SendWaitingToStartServerRpc(ulong playerIndex)
-        {
-            playerWaitingToStart.Add(playerIndex, true);
-        }
+        private const int GameStartSignalIndex = -1;
+        private int numPlayerWaitingToStart = 0;//ゲーム開始待ちのプレイヤー人数(-1だと開始の合図)
 
         private void Start()
         {
@@ -59,12 +60,7 @@ namespace StackBuild.Game
 
         public override void OnNetworkSpawn()
         {
-            //ロビーに入ってる人のIDを受け取って登録
-            var ids = NetworkManager.Singleton.ConnectedClientsIds;
-            foreach (var id in ids)
-            {
-                playerWaitingToStart.Add(id, false);
-            }
+            numPlayerWaitingToStart = 0;
         }
 
         private async UniTaskVoid RunMatch(CancellationToken token)
@@ -81,18 +77,23 @@ namespace StackBuild.Game
             //オンライン時全員が同期するまで待ち
             if (IsSpawned)
             {
-                await UniTask.WaitUntil(() =>
+                //開始待ちを送信して待つ
+                SendWaitingToStartServerRpc(NetworkManager.Singleton.LocalClientId);
+                try
                 {
-                    foreach (var (_, flag) in playerWaitingToStart)
-                    {
-                        if (!flag)
-                            return false;
-                    }
-                    return true;
-                }, cancellationToken: token);
+                    await UniTask.WaitUntil(() => numPlayerWaitingToStart == GameStartSignalIndex, cancellationToken: token)
+                        .Timeout(TimeSpan.FromSeconds(TimeoutSeconds));
+                }
+                catch (TimeoutException)
+                {
+                    //Stateをタイムアウトにする
+                    state.Value = MatchState.Timeout;
+                    matchControlState.SendState(MatchState.Timeout);
+                    NetworkSystemManager.NetworkExit(lobbyManager, relayManager).Forget();
+                    throw;
+                }
             }
 
-            Debug.Log("ゲーム開始");
             //ホワイトアウト
             await fade.DOFade(1, fadeIn).From(0).SetEase(Ease.InQuad)
                 .ToUniTask(cancellationToken: fade.gameObject.GetCancellationTokenOnDestroy());
@@ -152,6 +153,54 @@ namespace StackBuild.Game
             {
                 FinishMatch(this.GetCancellationTokenOnDestroy()).Forget();
             }
+        }
+
+        //サーバーにゲーム開始待ち通知をする
+        [ServerRpc(RequireOwnership = false)]
+        void SendWaitingToStartServerRpc(ulong playerIndex)
+        {
+            if (!IsServer)
+                return;
+
+            numPlayerWaitingToStart++;
+
+            //プレイヤー全員が待機になったら開始の合図
+            if (numPlayerWaitingToStart >= NetworkManager.Singleton.ConnectedClientsIds.Count)
+            {
+                GameStartSignalServerRpc(NetworkManager.LocalTime.Time);
+            }
+        }
+
+        //ゲームスタートの狼煙
+        [ServerRpc]
+        private void GameStartSignalServerRpc(double time)
+        {
+            if (!IsServer)
+                return;
+
+            GameStartSignalClientRpc(time);
+            var timeToWait = time - NetworkManager.ServerTime.Time;
+            WaitAndGameStart((float)timeToWait, this.GetCancellationTokenOnDestroy()).Forget();
+        }
+
+        [ClientRpc]
+        private void GameStartSignalClientRpc(double time)
+        {
+            if (IsOwner)
+                return;
+
+            var timeToWait = time - NetworkManager.ServerTime.Time;
+            WaitAndGameStart((float)timeToWait, this.GetCancellationTokenOnDestroy()).Forget();
+        }
+
+        private async UniTaskVoid WaitAndGameStart(float timeToWait, CancellationToken token)
+        {
+            if (timeToWait > 0)
+            {
+                await UniTask.Delay(TimeSpan.FromSeconds(timeToWait), cancellationToken: token);
+            }
+
+            numPlayerWaitingToStart = GameStartSignalIndex;
         }
 
         private void DisablePlayerMovement()

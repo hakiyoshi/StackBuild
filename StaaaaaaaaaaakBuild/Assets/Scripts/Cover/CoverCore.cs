@@ -63,9 +63,9 @@ namespace StackBuild
             }
         }
 
-        public override void OnNetworkDespawn()
+        public override void OnDestroy()
         {
-
+            StopCoverLoop();
         }
 
         public void StartCoverLoop()
@@ -74,7 +74,6 @@ namespace StackBuild
 
             StopCoverLoop();
             cts = new();
-            cts.AddTo(this);
 
             ClientSyncedCover(cts.Token).Forget();
         }
@@ -109,8 +108,10 @@ namespace StackBuild
         {
             while (true)
             {
+                token.ThrowIfCancellationRequested();
                 SetCoverOpen(false);
                 await UniTask.Delay(TimeSpan.FromSeconds(settings.AppearanceTime), cancellationToken: token);
+                token.ThrowIfCancellationRequested();
                 SetCoverOpen(true);
                 await UniTask.Delay(TimeSpan.FromSeconds(settings.IntervalTime), cancellationToken: token);
             }

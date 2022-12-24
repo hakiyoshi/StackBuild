@@ -29,26 +29,30 @@ namespace StackBuild
         {
             matchControlState.State.Skip(1).Subscribe(x =>
             {
-                if (x != MatchState.Ingame)
-                    return;
-
-                var input = GetInput();
-
-                if (IsSpawned)
+                if (x == MatchState.Ingame)
                 {
-                    if (IsOwner)
-                    {
-                        GainedInput(input);
-                    }
-                    else
-                    {
-                        LostInput(input);
-                    }
-                    return;
-                }
+                    var input = GetInput();
 
-                input.gameObject.SetActive(playerInputProperty.playerInputManager.CurrentPlayerDevice[playerIndex] !=
-                                           PlayerInputProperty.UNSETID);
+                    if (IsSpawned)
+                    {
+                        if (IsOwner)
+                        {
+                            GainedInput(input);
+                        }
+                        else
+                        {
+                            LostInput(input);
+                        }
+                        return;
+                    }
+
+                    input.gameObject.SetActive(playerInputProperty.playerInputManager.CurrentPlayerDevice[playerIndex] !=
+                                               PlayerInputProperty.UNSETID);
+                } else if (x == MatchState.Finished)
+                {
+                    var input = GetInput();
+                    LostInput(input);
+                }
             }).AddTo(this);
         }
 
