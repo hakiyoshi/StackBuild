@@ -69,7 +69,6 @@ namespace StackBuild.Game
             matchControlState.SendState(MatchState.Starting);
 
             //最初のStackBuildが画面に映る
-            DisablePlayerMovement();
             introDisplay.Display();
             timeDisplay.Display(Mathf.RoundToInt(gameTime));
             await UniTask.Delay(TimeSpan.FromSeconds(introDisplayDuration), cancellationToken: token);
@@ -115,7 +114,6 @@ namespace StackBuild.Game
             timeRemaining = gameTime;
             state.Value = MatchState.Ingame;
             matchControlState.SendState(MatchState.Ingame);
-            EnablePlayerMovement();
             startDisplay.gameObject.SetActive(true);
             startDisplay.Display();
         }
@@ -124,7 +122,6 @@ namespace StackBuild.Game
         {
             state.Value = MatchState.Finished;
             matchControlState.SendState(MatchState.Finished);
-            DisablePlayerMovement();
             foreach (var hud in huds)
             {
                 token.ThrowIfCancellationRequested();
@@ -202,25 +199,5 @@ namespace StackBuild.Game
 
             numPlayerWaitingToStart = GameStartSignalIndex;
         }
-
-        private void DisablePlayerMovement()
-        {
-            // foreach (var input in playerInputProperty.PlayerInputs)
-            // {
-            //     if (input == null || input.gameObject == null) continue;
-            //     input.gameObject.SetActive(false);
-            // }
-        }
-
-        private void EnablePlayerMovement()
-        {
-            // for (int i = 0; i < PlayerInputProperty.MAX_DEVICEID; i++)
-            // {
-            //     var input = playerInputProperty.PlayerInputs[i];
-            //     if (input == null || input.gameObject == null) continue;
-            //     input.gameObject.SetActive(playerInputProperty.DeviceIds[i] != PlayerInputProperty.UNSETID);
-            // }
-        }
-
     }
 }
