@@ -1315,15 +1315,15 @@ MonoBehaviour:
   flashTimeBelow: 0
   finishDisplay: {fileID: 701645681}
   resultsDisplay: {fileID: 439746646}
-  resultsDelay: 0
+  resultsDelay: 1
   gameOverScreen: {fileID: 71828187}
-  gameTime: 15
-  TimeoutSeconds: 1200
+  gameTime: 10
   playerInputProperty: {fileID: 11400000, guid: 0dd4cc4c4954c3942815643f00138d40, type: 2}
   players:
   - {fileID: 11400000, guid: 94434b52069cc2f4ba70d07e78b196cd, type: 2}
   - {fileID: 11400000, guid: 8487fa649341de547a8fae4f65449f75, type: 2}
   matchControlState: {fileID: 11400000, guid: c4e15217affc4c74a9f69eb55eb8f6da, type: 2}
+  TimeoutSeconds: 1200
   lobbyManager: {fileID: 11400000, guid: e24ed35b67c6f614e882e1972bd8b5b6, type: 2}
   relayManager: {fileID: 11400000, guid: c83824a8840dc0644a32557b15677068, type: 2}
 --- !u!4 &736238925
