@@ -1317,7 +1317,7 @@ MonoBehaviour:
   resultsDisplay: {fileID: 439746646}
   resultsDelay: 0
   gameOverScreen: {fileID: 71828187}
-  gameTime: 15
+  gameTime: 10
   TimeoutSeconds: 1200
   playerInputProperty: {fileID: 11400000, guid: 0dd4cc4c4954c3942815643f00138d40, type: 2}
   players:
