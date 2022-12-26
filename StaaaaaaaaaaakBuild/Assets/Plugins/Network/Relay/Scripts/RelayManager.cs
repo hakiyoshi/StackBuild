@@ -142,6 +142,7 @@ namespace NetworkSystem
             }
             catch (Exception e)
             {
+                RelayExit();
                 Debug.LogException(e);
                 throw;
             }
@@ -192,6 +193,7 @@ namespace NetworkSystem
             }
             catch (Exception e)
             {
+                RelayExit();
                 Debug.LogError("Relay join request failed" + e.Message);
                 throw;
             }

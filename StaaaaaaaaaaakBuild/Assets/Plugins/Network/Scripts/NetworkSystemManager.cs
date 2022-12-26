@@ -31,11 +31,18 @@ namespace NetworkSystem
                 Debug.Log($"プレイヤーID: {AuthenticationService.Instance.PlayerId}");
 
                 // ロビーマネージャーオブジェクトを作成
-                NetworkManagerObject = Instantiate(Resources.Load("NetworkManager") as GameObject);
-                SceneManagerObject = Instantiate(Resources.Load("NetworkSceneManager") as GameObject).
-                        GetComponent<NetworkSystemSceneManager>();
-                DontDestroyOnLoad(NetworkManagerObject);
-                DontDestroyOnLoad(SceneManagerObject);
+                if (NetworkManagerObject == null)
+                {
+                    NetworkManagerObject = Instantiate(Resources.Load("NetworkManager") as GameObject);
+                    DontDestroyOnLoad(NetworkManagerObject);
+                }
+
+                if (SceneManagerObject == null)
+                {
+                    SceneManagerObject = Instantiate(Resources.Load("NetworkSceneManager") as GameObject)
+                        .GetComponent<NetworkSystemSceneManager>();
+                    DontDestroyOnLoad(SceneManagerObject);
+                }
             }
             catch (AuthenticationException ex)
             {
@@ -100,21 +107,14 @@ namespace NetworkSystem
 
         public static async UniTask JoinAllocationAsync(string lobbyId, RelayManager relayManager, CancellationToken token)
         {
-            //たまに失敗するので失敗時もう一回やるようにする
-            for (int i = 0; i < 2; i++)
+            try
             {
-                try
-                {
-                    await relayManager.JoinAllocationAsync(lobbyId);
-
-                    break;
-                }
-                catch (Exception e)
-                {
-                    Debug.LogException(e);
-                }
-
-                await UniTask.Delay(TimeSpan.FromSeconds(1), cancellationToken: token);
+                await relayManager.JoinAllocationAsync(lobbyId);
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+                throw;
             }
         }
     }
