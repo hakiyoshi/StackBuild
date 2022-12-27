@@ -9,9 +9,8 @@ namespace StackBuild.MenuNetwork
         [field: SerializeField] public CharacterProperty[] characterProperties { get; private set; }
 
         private const int INVALID = -1;
-        [SerializeField] private int clientIndex = INVALID;
-
-        [SerializeField] private int useIndex = 0;
+        private int clientIndex = INVALID;
+        private int useIndex = 0;
 
         public override void OnNetworkSpawn()
         {
@@ -88,6 +87,7 @@ namespace StackBuild.MenuNetwork
         }
 
         //選択したキャラを送信する
+        //characterTypeはcharacterPropertiesのインデックス
         public void ChangeSelectedCharacter(int playerIndex, int characterType)
         {
             if (IsSpawned)
