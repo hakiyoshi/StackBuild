@@ -19,12 +19,22 @@ namespace NetworkSystem
 
         private void Start()
         {
-            NetworkManager.Singleton.OnClientDisconnectCallback += x =>
+            Observable.FromEvent<ulong>(
+                x => NetworkManager.Singleton.OnClientDisconnectCallback += x,
+                x => NetworkManager.Singleton.OnClientDisconnectCallback -= x).Subscribe(x =>
             {
                 //Relayから自分が落ちた場合ロビーからも抜ける
-                if(x == NetworkManager.Singleton.LocalClientId)
+                if (x == NetworkManager.Singleton.LocalClientId)
                     NetworkSystemManager.NetworkExit(lobby, relay).Forget();
-            };
+            }).AddTo(this);
+
+            Observable.FromEvent(
+                x => NetworkManager.Singleton.OnTransportFailure += x,
+                x => NetworkManager.Singleton.OnTransportFailure -= x).Subscribe(_ =>
+            {
+                //Transportに失敗したら呼ばれるらしい
+                NetworkSystemManager.NetworkExit(lobby, relay).Forget();
+            }).AddTo(this);
 
             relay.OnRelaySetting.Where(x => x == RelayManager.SettingEvent.Join).
                 Delay(TimeSpan.FromSeconds(5)).

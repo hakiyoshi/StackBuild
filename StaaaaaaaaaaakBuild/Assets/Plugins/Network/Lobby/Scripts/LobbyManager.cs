@@ -29,7 +29,7 @@ namespace NetworkSystem
             {
                 return lobby;
             }
-            
+
             set
             {
                 if (value == null)
@@ -59,9 +59,9 @@ namespace NetworkSystem
         }
         public LobbyStatus Status { get; private set; } = LobbyStatus.NonPerticipation;
 
-        private CancellationTokenSource cts = null;
-
-        private void CreateCancellationToken()
+        private CancellationTokenSource heartbeatCts = null;
+        private CancellationTokenSource latestLobbyAcquisitionCts = null;
+        private void CreateCancellationTokenSource(ref CancellationTokenSource cts)
         {
             if (cts != null)
             {
@@ -72,6 +72,17 @@ namespace NetworkSystem
             cts = new CancellationTokenSource();
         }
 
+        private void CancelCancellationTokenSource(ref CancellationTokenSource cts)
+        {
+            if(cts != null)
+            {
+                cts.Cancel();
+                cts.Dispose();
+            }
+
+            cts = null;
+        }
+
         //---------------------------------------------------------------------------
         // ロビー作成
 
@@ -79,7 +90,7 @@ namespace NetworkSystem
         {
             if (lobby != null)
                 return;
-            
+
             try
             {
                 var options = new CreateLobbyOptions
@@ -94,10 +105,13 @@ namespace NetworkSystem
 
                 lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayer, options);
 
-                //常時更新系
-                CreateCancellationToken();
-                LatestLobbyAcquisitionLoopAsync(cts.Token).Forget();
-                HeartbeatAsync(cts.Token).Forget();
+                //ロビー更新系
+                CreateCancellationTokenSource(ref latestLobbyAcquisitionCts);
+                LatestLobbyAcquisitionLoopAsync(latestLobbyAcquisitionCts.Token).Forget();
+
+                //ハートビート
+                CreateCancellationTokenSource(ref heartbeatCts);
+                HeartbeatAsync(heartbeatCts.Token).Forget();
 
                 Status = LobbyStatus.Host;
                 onLobbySetting.OnNext(SettingEvent.Create);
@@ -114,10 +128,10 @@ namespace NetworkSystem
         // ロビー情報更新
 
         public async UniTask UpdateLobbyDataAsync(
-            bool isLocked, 
-            string lobbyName, 
-            int maxPlayer, 
-            bool isPrivate, 
+            bool isLocked,
+            string lobbyName,
+            int maxPlayer,
+            bool isPrivate,
             LobbyOption lobbyOption)
         {
             var options = new UpdateLobbyOptions
@@ -131,8 +145,8 @@ namespace NetworkSystem
 
             await UpdateLobbyDataAsync(options);
         }
-        
-        
+
+
         //基本設定のみそのままでOptionのみ変更
         public async UniTask UpdateLobbyDataAsync(LobbyOption lobbyOption)
         {
@@ -144,7 +158,7 @@ namespace NetworkSystem
                 IsLocked = lobby.IsLocked,
                 Data = lobbyOption.GetPlayerOptions()
             };
-            
+
             await UpdateLobbyDataAsync(options);
         }
 
@@ -152,7 +166,7 @@ namespace NetworkSystem
         {
             if (lobby == null)
                 return;
-            
+
             try
             {
                 lobby = await LobbyService.Instance.UpdateLobbyAsync(lobby.Id, options);
@@ -166,7 +180,7 @@ namespace NetworkSystem
                 throw;
             }
         }
-        
+
         //---------------------------------------------------------------------------
         // クイック入室
 
@@ -174,7 +188,7 @@ namespace NetworkSystem
         {
             if(lobby != null)
                 return;
-            
+
             try
             {
                 var options = new QuickJoinLobbyOptions()
@@ -182,16 +196,17 @@ namespace NetworkSystem
                     Filter = new List<QueryFilter>()
                     {
                         new QueryFilter(//プレイヤー数がvalue未満のロビーを探す
-                            field: QueryFilter.FieldOptions.MaxPlayers, 
+                            field: QueryFilter.FieldOptions.MaxPlayers,
                             op: QueryFilter.OpOptions.GE,
                             value: maxPlayer.ToString())
                     }
                 };
 
                 lobby = await LobbyService.Instance.QuickJoinLobbyAsync(options);
-                
-                CreateCancellationToken();
-                LatestLobbyAcquisitionLoopAsync(cts.Token).Forget();
+
+                //更新系
+                CreateCancellationTokenSource(ref latestLobbyAcquisitionCts);
+                LatestLobbyAcquisitionLoopAsync(latestLobbyAcquisitionCts.Token).Forget();
 
                 Status = LobbyStatus.Client;
                 onLobbySetting.OnNext(SettingEvent.Join);
@@ -203,7 +218,7 @@ namespace NetworkSystem
                 throw;
             }
         }
-        
+
         //---------------------------------------------------------------------------
         //ロビーIDから入室
 
@@ -211,13 +226,13 @@ namespace NetworkSystem
         {
             if(lobby != null)
                 return;
-            
+
             try
             {
                 lobby = await LobbyService.Instance.JoinLobbyByCodeAsync(lobbyCode);
 
-                CreateCancellationToken();
-                LatestLobbyAcquisitionLoopAsync(cts.Token).Forget();
+                CreateCancellationTokenSource(ref latestLobbyAcquisitionCts);
+                LatestLobbyAcquisitionLoopAsync(latestLobbyAcquisitionCts.Token).Forget();
 
                 Status = LobbyStatus.Client;
                 onLobbySetting.OnNext(SettingEvent.Join);
@@ -229,15 +244,15 @@ namespace NetworkSystem
                 throw;
             }
         }
-        
+
         //---------------------------------------------------------------------------
         // 条件指定してロビーリストを取得
 
         // public async UniTask QueryLobbiesAsync(LobbyOption option)
         // {
-        //     
+        //
         // }
-        
+
 
         //---------------------------------------------------------------------------
         //プレイヤーデータを更新
@@ -254,7 +269,7 @@ namespace NetworkSystem
                 var playerId = AuthenticationService.Instance.PlayerId;
 
                 lobby = await LobbyService.Instance.UpdatePlayerAsync(lobby.Id, playerId, options);
-                
+
                 onLobbySetting.OnNext(SettingEvent.PlayerUpdate);
                 Debug.Log("プレイヤーデータを更新しました");
             }
@@ -264,7 +279,7 @@ namespace NetworkSystem
                 throw;
             }
         }
-        
+
         //---------------------------------------------------------------------------
         //ロビー情報常時更新
 
@@ -278,22 +293,31 @@ namespace NetworkSystem
                     await UniTask.Delay(TimeSpan.FromSeconds(CoolTimeForUpdatingLobby), cancellationToken: token);
                     lobby = await LobbyService.Instance.GetLobbyAsync(lobby.Id);
                 }
-                catch (ArgumentException)
+                catch (ArgumentException e)
                 {
+                    Debug.LogException(e);
                     break;
                 }
-                catch (LobbyServiceException)
+                catch (LobbyServiceException e)
                 {
+                    Debug.LogException(e);
                     break;
                 }
-                catch (OperationCanceledException)
+                catch (OperationCanceledException e)
                 {
+                    Debug.LogException(e);
                     break;
                 }
             }
             Debug.Log("手持ちのロビー情報更新終了");
         }
-        
+
+        // ロビー情報更新処理を止める
+        public void StopLatestLobbyAcquisitionLoop()
+        {
+            CancelCancellationTokenSource(ref latestLobbyAcquisitionCts);
+        }
+
         //---------------------------------------------------------------------------
         //ハートビート
 
@@ -307,36 +331,42 @@ namespace NetworkSystem
                     await UniTask.Delay(TimeSpan.FromSeconds(HeartbeatTransmissionTime), cancellationToken: token);
                     await LobbyService.Instance.SendHeartbeatPingAsync(lobby.Id);
                 }
-                catch (LobbyServiceException)
+                catch (LobbyServiceException e)
                 {
+                    Debug.LogException(e);
                     break;
                 }
-                catch (OperationCanceledException)
+                catch (OperationCanceledException e)
                 {
+                    Debug.LogException(e);
                     break;
                 }
             }
             Debug.Log("ハートビート終了");
         }
-        
+
+        //ハートビートを止める
+        public void StopHeartbeat()
+        {
+            CancelCancellationTokenSource(ref heartbeatCts);
+        }
+
         //---------------------------------------------------------------------------
         //ロビー退出
-        
+
         public async UniTask LobbyExit()
         {
             if (lobby == null)
                 return;
-            
+
             try
             {
                 //更新系を終わらせる
-                cts.Cancel();
-                cts.Dispose();
-                cts = null;
-                
+                CancelCancellationTokenSource(ref heartbeatCts);
+                CancelCancellationTokenSource(ref latestLobbyAcquisitionCts);
+
                 await LobbyService.Instance.RemovePlayerAsync(lobby.Id, AuthenticationService.Instance.PlayerId);
-                lobby = null;
-                
+
                 Status = LobbyStatus.NonPerticipation;
                 onLobbySetting.OnNext(SettingEvent.Exit);
                 Debug.Log("ロビーから退出");
@@ -346,13 +376,17 @@ namespace NetworkSystem
                 Debug.LogException(e);
                 throw;
             }
-            catch(LobbyServiceException e)
+            catch (LobbyServiceException e)
             {
                 Debug.LogException(e);
                 throw;
             }
+            finally
+            {
+                lobby = null;
+            }
         }
-        
+
         //---------------------------------------------------------------------------
     }
 
