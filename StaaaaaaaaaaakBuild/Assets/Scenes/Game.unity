@@ -1317,13 +1317,13 @@ MonoBehaviour:
   resultsDisplay: {fileID: 439746646}
   resultsDelay: 0
   gameOverScreen: {fileID: 71828187}
-  gameTime: 10
-  TimeoutSeconds: 1200
+  gameTime: 600
   playerInputProperty: {fileID: 11400000, guid: 0dd4cc4c4954c3942815643f00138d40, type: 2}
   players:
   - {fileID: 11400000, guid: 94434b52069cc2f4ba70d07e78b196cd, type: 2}
   - {fileID: 11400000, guid: 8487fa649341de547a8fae4f65449f75, type: 2}
   matchControlState: {fileID: 11400000, guid: c4e15217affc4c74a9f69eb55eb8f6da, type: 2}
+  TimeoutSeconds: 1200
   lobbyManager: {fileID: 11400000, guid: e24ed35b67c6f614e882e1972bd8b5b6, type: 2}
   relayManager: {fileID: 11400000, guid: c83824a8840dc0644a32557b15677068, type: 2}
 --- !u!4 &736238925
@@ -1691,6 +1691,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3508669851173041179, guid: 9e82430e1b4de8a46883be2bd34e2689, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4334470801316489797, guid: 9e82430e1b4de8a46883be2bd34e2689, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1812,6 +1816,10 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1944601774670025219, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
+      propertyPath: pool
+      value: 
+      objectReference: {fileID: 830618465}
     - target: {fileID: 1944601774897469439, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
       propertyPath: pool
       value: 

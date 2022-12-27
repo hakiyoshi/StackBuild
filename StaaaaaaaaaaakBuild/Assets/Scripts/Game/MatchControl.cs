@@ -67,6 +67,17 @@ namespace StackBuild.Game
         public override void OnNetworkSpawn()
         {
             playerWaitingToSignal = (int) MatchStateSignal.Default;
+            NetworkManager.Singleton.OnTransportFailure += TransportFailure;
+        }
+
+        public override void OnNetworkDespawn()
+        {
+            NetworkManager.Singleton.OnTransportFailure -= TransportFailure;
+        }
+
+        void TransportFailure()
+        {
+            Debug.Log("落ちた");
         }
 
         private async UniTaskVoid RunMatch(CancellationToken token)
