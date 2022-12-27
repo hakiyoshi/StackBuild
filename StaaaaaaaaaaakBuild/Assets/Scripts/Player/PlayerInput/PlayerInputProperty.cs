@@ -16,8 +16,8 @@ namespace StackBuild
         private int[] deviceIds = new int[]{ AUTOSETID, AUTOSETID };
         public int[] DeviceIds => deviceIds;
 
-        private PlayerInput[] playerInputs = new PlayerInput[MAX_DEVICEID];
-        public PlayerInput[] PlayerInputs => playerInputs;
+        private GameObject[] playerInputs = new GameObject[MAX_DEVICEID];
+        public GameObject[] PlayerInputs => playerInputs;
 
         [field: SerializeField] public InputSender[] inputSenders { get; private set; } = new InputSender[MAX_DEVICEID];
 

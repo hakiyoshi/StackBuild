@@ -20,7 +20,7 @@ namespace StackBuild
             }
         }
 
-        PlayerInput GetInput()
+        GameObject GetInput()
         {
             return playerInputProperty.PlayerInputs[playerIndex];
         }
@@ -85,18 +85,18 @@ namespace StackBuild
             LostInput(playerInput);
         }
 
-        void LostInput(PlayerInput playerInput)
+        void LostInput(GameObject inputObject)
         {
-            playerInput.gameObject.SetActive(false);
+            inputObject.SetActive(false);
         }
 
-        void GainedInput(PlayerInput playerInput)
+        void GainedInput(GameObject inputObject)
         {
-            SwitchDevice(playerInput);
-            playerInput.gameObject.SetActive(true);
+            SwitchDevice();
+            inputObject.gameObject.SetActive(true);
         }
 
-        void SwitchDevice(PlayerInput playerInput)
+        void SwitchDevice()
         {
             //１Pの設定を持ってくる
             var playerInputManager = playerInputProperty.playerInputManager;
