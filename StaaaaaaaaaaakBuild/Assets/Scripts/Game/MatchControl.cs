@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace StackBuild.Game
 {
-    public class MatchControl : NetworkBehaviour
+    public class MatchControl : SyncWaitingSystem
     {
 
         [Header("Appearance")]
@@ -52,36 +52,24 @@ namespace StackBuild.Game
         enum MatchStateSignal : int
         {
             Default = 0,
-            GameStart = -1,
-            GameFinish = -2,
+            GameStart = 1,
+            GameFinish = 2,
         }
-        // 0以上は待ち処理の人数
-        // -1以下は合図のフラグ
-        private int playerWaitingToSignal = 0;
+
+        private MatchStateSignal matchStateSignalServer = MatchStateSignal.Default;
+        private MatchStateSignal matchStateSignal = MatchStateSignal.Default;
 
         private void Start()
         {
             RunMatch(this.GetCancellationTokenOnDestroy()).Forget();
         }
 
-        public override void OnNetworkSpawn()
-        {
-            playerWaitingToSignal = (int) MatchStateSignal.Default;
-            NetworkManager.Singleton.OnTransportFailure += TransportFailure;
-        }
-
-        public override void OnNetworkDespawn()
-        {
-            NetworkManager.Singleton.OnTransportFailure -= TransportFailure;
-        }
-
-        void TransportFailure()
-        {
-            Debug.Log("落ちた");
-        }
-
         private async UniTaskVoid RunMatch(CancellationToken token)
         {
+            //ネットワーク接続時サーバー限定でSignalを変えておく
+            if (IsSpawned && IsServer)
+                matchStateSignalServer = MatchStateSignal.GameStart;
+
             state.Value = MatchState.Starting;
             matchControlState.SendState(MatchState.Starting);
 
@@ -94,8 +82,8 @@ namespace StackBuild.Game
             if (IsSpawned)
             {
                 //開始待ちを送信して待つ
-                SendStandbyStateServerRpc((int) MatchStateSignal.GameStart);
-                await WaitForAllToSync((int) MatchStateSignal.GameStart, token);
+                SendStandbyServerRpc();
+                await WaitForAllToSync(MatchStateSignal.GameStart, token);
             }
 
             //ホワイトアウト
@@ -125,9 +113,15 @@ namespace StackBuild.Game
 
         private async UniTaskVoid FinishMatch(CancellationToken token)
         {
+            //ネットワーク接続中かつサーバーの場合
+            if (IsSpawned && IsServer)
+                matchStateSignalServer = MatchStateSignal.GameFinish;
+
+            //状態変更
             state.Value = MatchState.Finished;
             matchControlState.SendState(MatchState.Finished);
 
+            //HUD表示
             foreach (var hud in huds)
             {
                 token.ThrowIfCancellationRequested();
@@ -139,10 +133,11 @@ namespace StackBuild.Game
             if (IsSpawned)
             {
                 //開始待ちを送信して待つ
-                SendStandbyStateServerRpc((int) MatchStateSignal.GameFinish);
-                await WaitForAllToSync((int) MatchStateSignal.GameFinish, token);
+                SendStandbyServerRpc();
+                await WaitForAllToSync(MatchStateSignal.GameFinish, token);
             }
 
+            //リザルト表示
             await UniTask.Delay(TimeSpan.FromSeconds(resultsDelay), cancellationToken: token);
             await resultsDisplay.DisplayAsync(resultsDisplay.gameObject.GetCancellationTokenOnDestroy());
             gameOverScreen.ShowAsync(players.Select(p => p.characterProperty).ToArray()).Forget();
@@ -167,11 +162,11 @@ namespace StackBuild.Game
         }
 
         // 指定の状態になるまで待ち
-        async UniTask WaitForAllToSync(int signalState, CancellationToken token)
+        async UniTask WaitForAllToSync(MatchStateSignal signalState, CancellationToken token)
         {
             try
             {
-                await UniTask.WaitUntil(() => playerWaitingToSignal == signalState,
+                await UniTask.WaitUntil(() => matchStateSignal == signalState,
                         cancellationToken: token)
                     .Timeout(TimeSpan.FromSeconds(TimeoutSeconds));
             }
@@ -185,41 +180,32 @@ namespace StackBuild.Game
             }
             finally
             {
-                playerWaitingToSignal = (int)MatchStateSignal.Default;
+                matchStateSignal = (int)MatchStateSignal.Default;
             }
         }
 
-
-
-        //サーバーにゲーム開始待ち通知をする
-        [ServerRpc(RequireOwnership = false)]
-        void SendStandbyStateServerRpc(int signalState)
+        protected override void OnSendStandby(int numWaitingToSignal)
         {
-            if (!IsServer)
-                return;
-
-            playerWaitingToSignal++;
-
-            if (playerWaitingToSignal >= NetworkManager.Singleton.ConnectedClientsIds.Count)
+            if (numWaitingToSignal >= NetworkManager.ConnectedClientsIds.Count)
             {
-                SendMatchStateSignalServerRpc(NetworkManager.LocalTime.Time, signalState);
+                SendMatchStateSignalServerRpc(NetworkManager.LocalTime.Time, matchStateSignalServer);
             }
         }
 
         // 待ち処理
-        async UniTaskVoid WaitAndChangeGameState(int signalState, float timeToWait, CancellationToken token)
+        async UniTaskVoid WaitAndChangeGameState(MatchStateSignal signalState, float timeToWait, CancellationToken token)
         {
             if (timeToWait > 0)
             {
                 await UniTask.Delay(TimeSpan.FromSeconds(timeToWait), cancellationToken: token);
             }
 
-            playerWaitingToSignal = signalState;
+            matchStateSignal = signalState;
         }
 
         //ゲーム状態変更通知
         [ServerRpc(RequireOwnership = false)]
-        private void SendMatchStateSignalServerRpc(double time, int signalState)
+        private void SendMatchStateSignalServerRpc(double time, MatchStateSignal signalState)
         {
             if (!IsServer)
                 return;
@@ -231,7 +217,7 @@ namespace StackBuild.Game
         }
 
         [ClientRpc]
-        private void SendMatchStateSignalClientRpc(double time, int signalState)
+        private void SendMatchStateSignalClientRpc(double time, MatchStateSignal signalState)
         {
             if (IsOwner)
                 return;
