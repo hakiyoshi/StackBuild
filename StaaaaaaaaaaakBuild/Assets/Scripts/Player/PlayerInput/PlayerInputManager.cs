@@ -38,10 +38,6 @@ namespace StackBuild
 
             onPlayerJoined.Subscribe(x =>
             {
-                //Player以外のPlayerInputをはじく
-                if(x.defaultActionMap != "Player")
-                    return;
-
                 //invalidをはじく
                 if (!x.user.valid)
                     return;

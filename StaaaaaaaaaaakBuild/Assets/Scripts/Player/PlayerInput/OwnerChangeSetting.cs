@@ -1,6 +1,7 @@
 ﻿using StackBuild.Game;
 using UniRx;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -51,7 +52,16 @@ namespace StackBuild
                 } else if (x == MatchState.Finished)
                 {
                     var input = GetInput();
-                    LostInput(input);
+                    if ((IsSpawned && !IsOwner) || playerIndex != 0)
+                    {
+                        LostInput(input);
+                        return;
+                    }
+
+                    var playerInput = input.GetComponent<PlayerInput>();
+                    playerInput.SwitchCurrentActionMap("UI");
+                    playerInput.SwitchCurrentControlScheme(InputSystem.devices.ToArray());
+                    playerInput.actions.bindingMask = InputBinding.MaskByGroups("keyboard&Mouse", "Gamepad");
                 }
             }).AddTo(this);
         }
