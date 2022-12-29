@@ -38,9 +38,15 @@ namespace StackBuild
 
             onPlayerJoined.Subscribe(x =>
             {
+                //Player以外のPlayerInputをはじく
+                if(x.defaultActionMap != "Player")
+                    return;
+
+                //invalidをはじく
                 if (!x.user.valid)
                     return;
 
+                //取得＆デバイス連結解除
                 var deviceid = CurrentPlayerDevice[x.playerIndex];
                 x.user.UnpairDevices();
 
