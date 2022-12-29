@@ -209,6 +209,7 @@ GameObject:
   - component: {fileID: 7139460434811058989}
   - component: {fileID: 7139460434811058990}
   - component: {fileID: 7139460434811058991}
+  - component: {fileID: 4141762973761055241}
   m_Layer: 5
   m_Name: Stackbuild Button
   m_TagString: Untagged
@@ -383,6 +384,22 @@ MonoBehaviour:
   background: {fileID: 7139460434811058979}
   border: {fileID: 7139460434523672738}
   icon: {fileID: 7139460434809759744}
+--- !u!114 &4141762973761055241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7139460434811058985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54afe5ecb45a4276ba8eef74898d3938, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneAsset: {fileID: 0}
+  sceneName: 
+  uiInputSender: {fileID: 11400000, guid: 3a74e2605d620a84b813eb43e7a4bef4, type: 2}
+  clickCooltime: 0.1
 --- !u!1 &7139460434856899495
 GameObject:
   m_ObjectHideFlags: 0
