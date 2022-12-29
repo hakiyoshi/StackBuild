@@ -15,35 +15,14 @@ public class Input : MonoBehaviour
         TryGetComponent(out input);
 
         var player = input.actions.FindActionMap("Player");
-        ActionMapFromEventPerformed(player, "Move").Subscribe(x => inputSender.Move.Send(x.ReadValue<Vector2>())).AddTo(this);
-        ActionMapFromEventCanceled(player, "Move").Subscribe(_ => inputSender.Move.Send(Vector2.zero)).AddTo(this);
+        InputFromEvent.ActionMapFromEventPerformed(player, "Move").Subscribe(x => inputSender.Move.Send(x.ReadValue<Vector2>())).AddTo(this);
+        InputFromEvent.ActionMapFromEventCanceled(player, "Move").Subscribe(_ => inputSender.Move.Send(Vector2.zero)).AddTo(this);
 
-        ActionMapFromEventStarted(player, "Catch").Subscribe(_ => inputSender.Catch.Send(true)).AddTo(this);
-        ActionMapFromEventCanceled(player, "Catch").Subscribe(_ => inputSender.Catch.Send(false)).AddTo(this);
+        InputFromEvent.ActionMapFromEventStarted(player, "Catch").Subscribe(_ => inputSender.Catch.Send(true)).AddTo(this);
+        InputFromEvent.ActionMapFromEventCanceled(player, "Catch").Subscribe(_ => inputSender.Catch.Send(false)).AddTo(this);
 
-        ActionMapFromEventStarted(player, "Dash").Subscribe(_ => inputSender.Dash.Send(true)).AddTo(this);
-        ActionMapFromEventCanceled(player, "Dash").Subscribe(_ => inputSender.Dash.Send(false)).AddTo(this);
-    }
-
-    private IObservable<InputAction.CallbackContext> ActionMapFromEventStarted(InputActionMap actionMap, string actionName)
-    {
-        return Observable.FromEvent<InputAction.CallbackContext>(
-            x => actionMap[actionName].started += x,
-            x => actionMap[actionName].started -= x);
-    }
-
-    private IObservable<InputAction.CallbackContext> ActionMapFromEventPerformed(InputActionMap actionMap, string actionName)
-    {
-        return Observable.FromEvent<InputAction.CallbackContext>(
-            x => actionMap[actionName].performed += x,
-            x => actionMap[actionName].performed -= x);
-    }
-
-    private IObservable<InputAction.CallbackContext> ActionMapFromEventCanceled(InputActionMap actionMap, string actionName)
-    {
-        return Observable.FromEvent<InputAction.CallbackContext>(
-            x => actionMap[actionName].canceled += x,
-            x => actionMap[actionName].canceled -= x);
+        InputFromEvent.ActionMapFromEventStarted(player, "Dash").Subscribe(_ => inputSender.Dash.Send(true)).AddTo(this);
+        InputFromEvent.ActionMapFromEventCanceled(player, "Dash").Subscribe(_ => inputSender.Dash.Send(false)).AddTo(this);
     }
 
     private void OnEnable()
