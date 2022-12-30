@@ -1266,6 +1266,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad791cfc18b539247858a5f2161c0797, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &726951958 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1986494725027733401, guid: 9e82430e1b4de8a46883be2bd34e2689, type: 3}
+  m_PrefabInstance: {fileID: 798455623}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &726951959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 726951958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54afe5ecb45a4276ba8eef74898d3938, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneAsset: {fileID: 102900000, guid: 81d8e93ff07610b4cbccba08863fd008, type: 3}
+  sceneName: Game
+  uiInputSender: {fileID: 11400000, guid: 3a74e2605d620a84b813eb43e7a4bef4, type: 2}
+  clickCooltime: 0.1
 --- !u!1 &736238923
 GameObject:
   m_ObjectHideFlags: 0
@@ -1535,6 +1556,10 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 741816564}
     m_Modifications:
+    - target: {fileID: 789002588465717927, guid: 9e82430e1b4de8a46883be2bd34e2689, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 1457011444
+      objectReference: {fileID: 0}
     - target: {fileID: 1322519425318911131, guid: 9e82430e1b4de8a46883be2bd34e2689, type: 3}
       propertyPath: m_Layer
       value: 5
@@ -1739,6 +1764,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 3262094849178752890, guid: 9e82430e1b4de8a46883be2bd34e2689, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 2695274834
+      objectReference: {fileID: 0}
     - target: {fileID: 3400713613392227605, guid: 9e82430e1b4de8a46883be2bd34e2689, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 2605727407
@@ -1887,6 +1916,10 @@ PrefabInstance:
       propertyPath: sceneAsset
       value: 
       objectReference: {fileID: 102900000, guid: 81d8e93ff07610b4cbccba08863fd008, type: 3}
+    - target: {fileID: 8513751276258933151, guid: 9e82430e1b4de8a46883be2bd34e2689, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 760051838
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 9e82430e1b4de8a46883be2bd34e2689, type: 3}
@@ -3161,6 +3194,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3546f3f87fb82c149afc194ec7127c91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1615849568 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4334470801316489796, guid: 9e82430e1b4de8a46883be2bd34e2689, type: 3}
+  m_PrefabInstance: {fileID: 798455623}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1615849570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1615849568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54afe5ecb45a4276ba8eef74898d3938, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneAsset: {fileID: 102900000, guid: 81d8e93ff07610b4cbccba08863fd008, type: 3}
+  sceneName: Game
+  uiInputSender: {fileID: 11400000, guid: 3a74e2605d620a84b813eb43e7a4bef4, type: 2}
+  clickCooltime: 0.1
 --- !u!224 &1656786055 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3200900250134465430, guid: 0e52c22b365ea8444b929e38032c7f03, type: 3}
@@ -3236,6 +3290,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1764070389 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4680031917211939196, guid: 9e82430e1b4de8a46883be2bd34e2689, type: 3}
+  m_PrefabInstance: {fileID: 798455623}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1764070391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1764070389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54afe5ecb45a4276ba8eef74898d3938, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneAsset: {fileID: 102900000, guid: 81d8e93ff07610b4cbccba08863fd008, type: 3}
+  sceneName: Game
+  uiInputSender: {fileID: 11400000, guid: 3a74e2605d620a84b813eb43e7a4bef4, type: 2}
+  clickCooltime: 0.1
 --- !u!4 &1764722864 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 558933221254924069, guid: 53797dc918dcf4c4f84d58997990ede9, type: 3}
