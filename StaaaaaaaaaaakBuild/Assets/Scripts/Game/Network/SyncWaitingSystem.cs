@@ -22,7 +22,7 @@ namespace StackBuild.Game
             if (!IsServer)
                 return;
 
-            numWaitingToSignal++;
+            numWaitingToSignal--;
             OnSendStandbyRelease(numWaitingToSignal);
         }
 
