@@ -52,10 +52,21 @@ namespace StackBuild
                 } else if (x == MatchState.Finished)
                 {
                     var input = GetInput();
-                    if ((IsSpawned && !IsOwner) || playerIndex != 0)
+                    if (IsSpawned)
                     {
-                        LostInput(input);
-                        return;
+                        if(!IsOwner)
+                        {
+                            LostInput(input);
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        if (playerIndex != 0)
+                        {
+                            LostInput(input);
+                            return;
+                        }
                     }
 
                     var playerInput = input.GetComponent<PlayerInput>();
