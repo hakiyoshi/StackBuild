@@ -25,23 +25,25 @@ namespace StackBuild.UI.Network
         [SerializeField] private UIInputSender uiInputSender;
         [SerializeField] private float clickCooltime = 0.1f;//連打対策
 
-        private bool standby = false;
+        private bool isPressed = false;
         private bool isSelected = false;
 
         private void Start()
         {
             uiInputSender.Select.sender.Skip(1).ThrottleFirst(TimeSpan.FromSeconds(clickCooltime)).Where(x => x).Subscribe(x =>
             {
-                if (!isSelected)
-                    return;
-
-                //現在の状態で変える
-                if (!standby)
+                //選択されてたらボタン押す
+                if (isSelected && !isPressed)
                     ButtonDown();
-                else
+
+            }).AddTo(this);
+
+            uiInputSender.Cancel.sender.Skip(1).ThrottleFirst(TimeSpan.FromSeconds(clickCooltime)).Where(x => x).Subscribe(x =>
+            {
+                //選択されてたらボタン放す
+                if(isSelected && isPressed)
                     ButtonUp();
 
-                standby = !standby;
             }).AddTo(this);
         }
 
@@ -50,9 +52,10 @@ namespace StackBuild.UI.Network
             if (IsSpawned && !IsServer)
                 return;
 
+            //待機人数が参加人数の場合シーン変更
             if (numWaitingToSignal >= NetworkManager.ConnectedClientsIds.Count)
             {
-                NetworkSystemSceneManager.LoadScene(sceneName);
+                SceneLoad(sceneName);
             }
         }
 
@@ -76,17 +79,33 @@ namespace StackBuild.UI.Network
             else
             {
                 //シーンロード処理
-                if (sceneName == "")
-                    return;
-
-                SceneManager.LoadScene(sceneName);
+                SceneLoad(sceneName);
             }
+
+            isPressed = true;
         }
 
         void ButtonUp()
         {
             if (IsSpawned)
                 SendStandbyReleaseServerRpc();
+
+            isPressed = false;
+        }
+
+        void SceneLoad(string name)
+        {
+            if (name == "")
+                return;
+
+            if (IsSpawned)
+            {
+                NetworkSystemSceneManager.LoadScene(sceneName);
+            }
+            else
+            {
+                SceneManager.LoadScene(sceneName);
+            }
         }
     }
 }
