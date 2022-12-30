@@ -305,7 +305,7 @@ namespace NetworkSystem
                 }
                 catch (OperationCanceledException e)
                 {
-                    Debug.LogException(e);
+                    //Debug.LogException(e);
                     break;
                 }
             }
@@ -338,7 +338,7 @@ namespace NetworkSystem
                 }
                 catch (OperationCanceledException e)
                 {
-                    Debug.LogException(e);
+                    //Debug.LogException(e);
                     break;
                 }
             }
