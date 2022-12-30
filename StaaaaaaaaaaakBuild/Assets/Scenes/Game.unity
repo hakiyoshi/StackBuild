@@ -1428,7 +1428,7 @@ MonoBehaviour:
   resultsDisplay: {fileID: 439746646}
   resultsDelay: 1.35
   gameOverScreen: {fileID: 71828187}
-  gameTime: 2
+  gameTime: 60
   playerInputProperty: {fileID: 11400000, guid: 0dd4cc4c4954c3942815643f00138d40, type: 2}
   players:
   - {fileID: 11400000, guid: 94434b52069cc2f4ba70d07e78b196cd, type: 2}
@@ -2484,7 +2484,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7281664132443530306, guid: 40025d20904d01249868cf55bb4c50cb, type: 3}
       propertyPath: DrawGui
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7281664132443530306, guid: 40025d20904d01249868cf55bb4c50cb, type: 3}
       propertyPath: LoadScene
