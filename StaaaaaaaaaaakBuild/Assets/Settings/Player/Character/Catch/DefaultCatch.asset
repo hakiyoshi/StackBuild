@@ -18,4 +18,4 @@ MonoBehaviour:
   <CatchupOffsetPosition>k__BackingField: {x: 0, y: -5, z: 0}
   <CatchEffectAppearanceTime>k__BackingField: 0.2
   <CatchEffectDisappearingTime>k__BackingField: 0.2
-  <CatchEffectMaxSizeOffset>k__BackingField: {x: 3.5, y: 2.8, z: 3.5}
+  <CatchEffectMaxSizeOffset>k__BackingField: {x: 3.5, y: 3, z: 3.5}

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7409125117165052335}
   - component: {fileID: 6385061976780630917}
   - component: {fileID: 2377033224681273334}
+  - component: {fileID: 5304388148716308625}
   m_Layer: 0
   m_Name: Input
   m_TagString: Untagged
@@ -58,7 +59,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_ActionEvents: []
-  m_NeverAutoSwitchControlSchemes: 1
+  m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
@@ -76,3 +77,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputSender: {fileID: 11400000, guid: 257012153c897ec40bf522400ed78a05, type: 2}
+--- !u!114 &5304388148716308625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5777875112543760121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd77dec1bc394bff903637f60b7e29a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiInputSender: {fileID: 11400000, guid: 3a74e2605d620a84b813eb43e7a4bef4, type: 2}

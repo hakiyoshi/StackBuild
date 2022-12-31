@@ -38,9 +38,11 @@ namespace StackBuild
 
             onPlayerJoined.Subscribe(x =>
             {
+                //invalidをはじく
                 if (!x.user.valid)
                     return;
 
+                //取得＆デバイス連結解除
                 var deviceid = CurrentPlayerDevice[x.playerIndex];
                 x.user.UnpairDevices();
 
@@ -67,7 +69,6 @@ namespace StackBuild
 
                 //デバイスIDを変更
                 SettingPlayerDevice(x.playerIndex, inputDevice);
-                playerInputProperty.PlayerInputs[x.playerIndex] = x;
             }).AddTo(this);
 
             //Input生成
@@ -81,6 +82,7 @@ namespace StackBuild
             {
                 var playerInput = PlayerInput.Instantiate(inputPrefab, playerIndex: i,
                     pairWithDevice: Keyboard.current);
+                playerInputProperty.PlayerInputs[i] = playerInput.gameObject;
                 playerInput.user.UnpairDevices();
                 playerInput.gameObject.SetActive(false);
 
@@ -95,9 +97,12 @@ namespace StackBuild
 
         private InputDevice AutoSearchInputDevice(int playerIndex, in ReadOnlyArray<InputDevice> devices)
         {
+            var gamepads = Gamepad.all;
             foreach (var device in devices)
             {
-                if(Mouse.current != null && Mouse.current.deviceId == device.deviceId)
+                //マウス
+                if((Mouse.current != null && Mouse.current.deviceId == device.deviceId) &&
+                   gamepads.All(x => x.deviceId != device.deviceId))
                     continue;
 
                 if (CurrentPlayerDevice.Where((t, i) =>
@@ -132,7 +137,7 @@ namespace StackBuild
         {
             playerInput.transform.parent = parent;
             playerInput.gameObject.GetComponent<Input>().inputSender = playerInputProperty.inputSenders[playerIndex];
-            playerInputProperty.PlayerInputs[playerIndex] = playerInput;
+            playerInputProperty.PlayerInputs[playerIndex] = playerInput.gameObject;
         }
 
         public void SettingPlayerDevice(int playerIndex, InputDevice inputDevice)

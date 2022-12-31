@@ -1,6 +1,7 @@
 ﻿using StackBuild.Game;
 using UniRx;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -20,7 +21,7 @@ namespace StackBuild
             }
         }
 
-        PlayerInput GetInput()
+        GameObject GetInput()
         {
             return playerInputProperty.PlayerInputs[playerIndex];
         }
@@ -29,26 +30,50 @@ namespace StackBuild
         {
             matchControlState.State.Skip(1).Subscribe(x =>
             {
-                if (x != MatchState.Ingame)
-                    return;
-
-                var input = GetInput();
-
-                if (IsSpawned)
+                if (x == MatchState.Ingame)
                 {
-                    if (IsOwner)
+                    var input = GetInput();
+
+                    if (IsSpawned)
                     {
-                        GainedInput(input);
+                        if (IsOwner)
+                        {
+                            GainedInput(input);
+                        }
+                        else
+                        {
+                            LostInput(input);
+                        }
+                        return;
+                    }
+
+                    input.gameObject.SetActive(playerInputProperty.playerInputManager.CurrentPlayerDevice[playerIndex] !=
+                                               PlayerInputProperty.UNSETID);
+                } else if (x == MatchState.Finished)
+                {
+                    var input = GetInput();
+                    if (IsSpawned)
+                    {
+                        if(!IsOwner)
+                        {
+                            LostInput(input);
+                            return;
+                        }
                     }
                     else
                     {
-                        LostInput(input);
+                        if (playerIndex != 0)
+                        {
+                            LostInput(input);
+                            return;
+                        }
                     }
-                    return;
-                }
 
-                input.gameObject.SetActive(playerInputProperty.playerInputManager.CurrentPlayerDevice[playerIndex] !=
-                                           PlayerInputProperty.UNSETID);
+                    var playerInput = input.GetComponent<PlayerInput>();
+                    playerInput.SwitchCurrentActionMap("UI");
+                    playerInput.SwitchCurrentControlScheme(InputSystem.devices.ToArray());
+                    playerInput.actions.bindingMask = InputBinding.MaskByGroups("keyboard&Mouse", "Gamepad");
+                }
             }).AddTo(this);
         }
 
@@ -81,18 +106,18 @@ namespace StackBuild
             LostInput(playerInput);
         }
 
-        void LostInput(PlayerInput playerInput)
+        void LostInput(GameObject inputObject)
         {
-            playerInput.gameObject.SetActive(false);
+            inputObject.SetActive(false);
         }
 
-        void GainedInput(PlayerInput playerInput)
+        void GainedInput(GameObject inputObject)
         {
-            SwitchDevice(playerInput);
-            playerInput.gameObject.SetActive(true);
+            SwitchDevice();
+            inputObject.gameObject.SetActive(true);
         }
 
-        void SwitchDevice(PlayerInput playerInput)
+        void SwitchDevice()
         {
             //１Pの設定を持ってくる
             var playerInputManager = playerInputProperty.playerInputManager;

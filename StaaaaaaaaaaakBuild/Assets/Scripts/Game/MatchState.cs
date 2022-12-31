@@ -6,6 +6,6 @@
         Starting,
         Ingame,
         Finished,
-
+        Timeout,
     }
 }

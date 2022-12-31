@@ -1,14 +1,18 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using NetworkSystem;
 using StackBuild.UI;
 using UniRx;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace StackBuild.Game
 {
-    public class MatchControl : MonoBehaviour
+    public class MatchControl : SyncWaitingSystem
     {
 
         [Header("Appearance")]
@@ -30,67 +34,112 @@ namespace StackBuild.Game
         [SerializeField] private GameOverScreen gameOverScreen;
         [Header("Game Parameters")]
         [SerializeField] private float gameTime;
+
         [Header("System")]
         [SerializeField] private PlayerInputProperty playerInputProperty;
         [SerializeField] private PlayerProperty[] players;
         [SerializeField] private MatchControlState matchControlState;
 
+        [Header("Network")]
+        [SerializeField] private int TimeoutSeconds = 600;
+        [SerializeField] private LobbyManager lobbyManager;
+        [SerializeField] private RelayManager relayManager;
+
         private float timeRemaining;
         private readonly ReactiveProperty<MatchState> state = new();
         public IReadOnlyReactiveProperty<MatchState> State => state;
 
-        private void Start()
+        enum MatchStateSignal : int
         {
-            RunMatch().Forget();
-            state.AddTo(this);
+            Default = 0,
+            GameStart = 1,
+            GameFinish = 2,
         }
 
-        private async UniTaskVoid RunMatch()
+        private MatchStateSignal matchStateSignalServer = MatchStateSignal.Default;
+        private MatchStateSignal matchStateSignal = MatchStateSignal.Default;
+
+        private void Start()
         {
+            RunMatch(this.GetCancellationTokenOnDestroy()).Forget();
+        }
+
+        private async UniTaskVoid RunMatch(CancellationToken token)
+        {
+            //ネットワーク接続時サーバー限定でSignalを変えておく
+            if (IsSpawned && IsServer)
+                matchStateSignalServer = MatchStateSignal.GameStart;
+
             state.Value = MatchState.Starting;
             matchControlState.SendState(MatchState.Starting);
 
-            DisablePlayerMovement();
-            AnimateCamera();
+            //最初のStackBuildが画面に映る
             introDisplay.Display();
             timeDisplay.Display(Mathf.RoundToInt(gameTime));
-            await UniTask.Delay(TimeSpan.FromSeconds(introDisplayDuration));
+            await UniTask.Delay(TimeSpan.FromSeconds(introDisplayDuration), cancellationToken: token);
 
-            await fade.DOFade(1, fadeIn).From(0).SetEase(Ease.InQuad);
+            //オンライン時全員が同期するまで待ち
+            if (IsSpawned)
+            {
+                //開始待ちを送信して待つ
+                SendStandbyServerRpc();
+                await WaitForAllToSync(MatchStateSignal.GameStart, token);
+            }
+
+            //ホワイトアウト
+            await fade.DOFade(1, fadeIn).From(0).SetEase(Ease.InQuad)
+                .ToUniTask(cancellationToken: fade.gameObject.GetCancellationTokenOnDestroy());
 
             introDisplay.gameObject.SetActive(false);
 
-            await UniTask.Delay(TimeSpan.FromSeconds(fadeSustain));
-            await fade.DOFade(0, fadeOut);
+            await UniTask.Delay(TimeSpan.FromSeconds(fadeSustain), cancellationToken: token);
+            await fade.DOFade(0, fadeOut).ToUniTask(cancellationToken: fade.gameObject.GetCancellationTokenOnDestroy());
 
-            await UniTask.Delay(TimeSpan.FromSeconds(hudDelay));
+            //HUD表示
+            await UniTask.Delay(TimeSpan.FromSeconds(hudDelay), cancellationToken: token);
             foreach (var hud in huds)
             {
                 hud.SlideInAsync().Forget();
             }
 
-            await UniTask.Delay(TimeSpan.FromSeconds(startDelay));
+            //ゲームスタート
+            await UniTask.Delay(TimeSpan.FromSeconds(startDelay), cancellationToken: token);
             timeRemaining = gameTime;
             state.Value = MatchState.Ingame;
             matchControlState.SendState(MatchState.Ingame);
-            EnablePlayerMovement();
             startDisplay.gameObject.SetActive(true);
             startDisplay.Display();
         }
 
-        private async UniTaskVoid FinishMatch()
+        private async UniTaskVoid FinishMatch(CancellationToken token)
         {
+            //ネットワーク接続中かつサーバーの場合
+            if (IsSpawned && IsServer)
+                matchStateSignalServer = MatchStateSignal.GameFinish;
+
+            //状態変更
             state.Value = MatchState.Finished;
             matchControlState.SendState(MatchState.Finished);
-            DisablePlayerMovement();
+
+            //HUD表示
             foreach (var hud in huds)
             {
+                token.ThrowIfCancellationRequested();
                 hud.SlideOutAsync().Forget();
             }
             finishDisplay.Display();
 
-            await UniTask.Delay(TimeSpan.FromSeconds(resultsDelay));
-            await resultsDisplay.DisplayAsync();
+            //オンライン時全員が同期するまで待ち
+            if (IsSpawned)
+            {
+                //開始待ちを送信して待つ
+                SendStandbyServerRpc();
+                await WaitForAllToSync(MatchStateSignal.GameFinish, token);
+            }
+
+            //リザルト表示
+            await UniTask.Delay(TimeSpan.FromSeconds(resultsDelay), cancellationToken: token);
+            await resultsDisplay.DisplayAsync(resultsDisplay.gameObject.GetCancellationTokenOnDestroy());
             gameOverScreen.ShowAsync(players.Select(p => p.characterProperty).ToArray()).Forget();
         }
 
@@ -108,33 +157,74 @@ namespace StackBuild.Game
 
             if (timeRemaining == 0)
             {
-                FinishMatch().Forget();
+                FinishMatch(this.GetCancellationTokenOnDestroy()).Forget();
             }
         }
 
-        private void DisablePlayerMovement()
+        // 指定の状態になるまで待ち
+        async UniTask WaitForAllToSync(MatchStateSignal signalState, CancellationToken token)
         {
-            // foreach (var input in playerInputProperty.PlayerInputs)
-            // {
-            //     if (input == null || input.gameObject == null) continue;
-            //     input.gameObject.SetActive(false);
-            // }
+            try
+            {
+                await UniTask.WaitUntil(() => matchStateSignal == signalState,
+                        cancellationToken: token)
+                    .Timeout(TimeSpan.FromSeconds(TimeoutSeconds));
+            }
+            catch (TimeoutException)
+            {
+                //Stateをタイムアウトにする
+                state.Value = MatchState.Timeout;
+                matchControlState.SendState(MatchState.Timeout);
+                NetworkSystemManager.NetworkExit(lobbyManager, relayManager).Forget();
+                throw;
+            }
+            finally
+            {
+                matchStateSignal = (int)MatchStateSignal.Default;
+            }
         }
 
-        private void EnablePlayerMovement()
+        protected override void OnSendStandby(int numWaitingToSignal)
         {
-            // for (int i = 0; i < PlayerInputProperty.MAX_DEVICEID; i++)
-            // {
-            //     var input = playerInputProperty.PlayerInputs[i];
-            //     if (input == null || input.gameObject == null) continue;
-            //     input.gameObject.SetActive(playerInputProperty.DeviceIds[i] != PlayerInputProperty.UNSETID);
-            // }
+            if (numWaitingToSignal >= NetworkManager.ConnectedClientsIds.Count)
+            {
+                SendMatchStateSignalServerRpc(NetworkManager.LocalTime.Time, matchStateSignalServer);
+            }
         }
 
-        private void AnimateCamera()
+        // 待ち処理
+        async UniTaskVoid WaitAndChangeGameState(MatchStateSignal signalState, float timeToWait, CancellationToken token)
         {
-            // TODO
+            if (timeToWait > 0)
+            {
+                await UniTask.Delay(TimeSpan.FromSeconds(timeToWait), cancellationToken: token);
+            }
+
+            matchStateSignal = signalState;
         }
 
+        //ゲーム状態変更通知
+        [ServerRpc(RequireOwnership = false)]
+        private void SendMatchStateSignalServerRpc(double time, MatchStateSignal signalState)
+        {
+            if (!IsServer)
+                return;
+
+            SendMatchStateSignalClientRpc(time, signalState);
+            var timeToWait = time - NetworkManager.ServerTime.Time;
+            WaitAndChangeGameState(signalState, (float) timeToWait, this.GetCancellationTokenOnDestroy())
+                .Forget();
+        }
+
+        [ClientRpc]
+        private void SendMatchStateSignalClientRpc(double time, MatchStateSignal signalState)
+        {
+            if (IsOwner)
+                return;
+
+            var timeToWait = time - NetworkManager.ServerTime.Time;
+            WaitAndChangeGameState(signalState, (float) timeToWait, this.GetCancellationTokenOnDestroy())
+                .Forget();
+        }
     }
 }

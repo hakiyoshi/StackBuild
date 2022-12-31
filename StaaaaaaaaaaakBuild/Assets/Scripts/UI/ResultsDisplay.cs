@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using Cinemachine;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
@@ -28,11 +29,11 @@ namespace StackBuild.UI
         [SerializeField] private float winDisplayDelay;
         [SerializeField] private float moveDelay;
 
-        public async UniTask DisplayAsync()
+        public async UniTask DisplayAsync(CancellationToken token)
         {
             vcam.enabled = true;
 
-            await UniTask.Delay(TimeSpan.FromSeconds(heightDisplayDelay));
+            await UniTask.Delay(TimeSpan.FromSeconds(heightDisplayDelay), cancellationToken: token);
 
             var winner = players.Aggregate((a, b) => a.Height > b.Height ? a : b);
             foreach (var player in players)
@@ -49,9 +50,9 @@ namespace StackBuild.UI
                     lookTarget.localPosition = lookTarget.localPosition.WithY(playerY);
                     player.heightDisplay.DisplayHeight(playerY);
                 }
-            }).SetEase(Ease.InQuad);
+            }).SetEase(Ease.InQuad).ToUniTask(cancellationToken: token);
 
-            await UniTask.Delay(TimeSpan.FromSeconds(winDisplayDelay));
+            await UniTask.Delay(TimeSpan.FromSeconds(winDisplayDelay), cancellationToken: token);
 
             foreach (var player in players)
             {
@@ -60,10 +61,11 @@ namespace StackBuild.UI
                     : player.heightDisplay.DisplayLoseAsync()).Forget();
             }
 
-            await UniTask.Delay(TimeSpan.FromSeconds(moveDelay));
+            await UniTask.Delay(TimeSpan.FromSeconds(moveDelay), cancellationToken: token);
             await players.Aggregate(DOTween.Sequence(),
-                (seq, player) =>
-                    seq.Join(player.heightDisplay.transform.DOLocalMoveY(300, 0.65f).SetEase(Ease.InOutQuart)));
+                    (seq, player) =>
+                        seq.Join(player.heightDisplay.transform.DOLocalMoveY(300, 0.65f).SetEase(Ease.InOutQuart)))
+                .ToUniTask(cancellationToken: token);
         }
 
     }
