@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28ac473de36842d5a34b591ea3f244a7, type: 3}
   m_Name: Cute
   m_EditorClassIdentifier: 
-  <CharacterModelPrefab>k__BackingField: {fileID: 701396614914776042, guid: 9dc9dd4ef957f0a43af37a1b466fcb8c, type: 3}
+  <CharacterModelPrefab>k__BackingField: {fileID: 4505666834788729873, guid: 9dc9dd4ef957f0a43af37a1b466fcb8c, type: 3}
   <SphereColliderRadius>k__BackingField: 3.5
   <HitEffect>k__BackingField: {fileID: 5789713385372004132, guid: 0da34b7741ec15b4abe110219528bd9d, type: 3}
   DashEffectPrefab: {fileID: 3931804214971157241, guid: f10922822f7271a458f7cb832eedf325, type: 3}
