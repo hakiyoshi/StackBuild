@@ -366,9 +366,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73f8c09faa9c40ae94afb0363f913880, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firstPoint: {x: -21.47, y: 20, z: 4}
-  secondPoint: {x: 21.47, y: 20, z: 4}
-  radius: 18.74
+  firstPoint: {x: -21.47, y: 20, z: 0}
+  secondPoint: {x: 21.47, y: 20, z: 0}
+  radius: 16
 --- !u!1 &7282072317809821654
 GameObject:
   m_ObjectHideFlags: 0
