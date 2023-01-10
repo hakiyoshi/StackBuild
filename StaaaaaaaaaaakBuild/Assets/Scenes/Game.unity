@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.5784543, g: 0.6157293, b: 0.6087265, a: 1}
+  m_IndirectSpecularColor: {r: 0.5784543, g: 0.6157293, b: 0.60872656, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1431,8 +1431,12 @@ MonoBehaviour:
   gameTime: 60
   playerInputProperty: {fileID: 11400000, guid: 0dd4cc4c4954c3942815643f00138d40, type: 2}
   players:
-  - {fileID: 11400000, guid: 94434b52069cc2f4ba70d07e78b196cd, type: 2}
-  - {fileID: 11400000, guid: 8487fa649341de547a8fae4f65449f75, type: 2}
+  - player: {fileID: 11400000, guid: 94434b52069cc2f4ba70d07e78b196cd, type: 2}
+    buildingCore: {fileID: 1367161147}
+    heightMeter: {fileID: 1345198639}
+  - player: {fileID: 11400000, guid: 8487fa649341de547a8fae4f65449f75, type: 2}
+    buildingCore: {fileID: 1095907746}
+    heightMeter: {fileID: 1345198638}
   matchControlState: {fileID: 11400000, guid: c4e15217affc4c74a9f69eb55eb8f6da, type: 2}
   TimeoutSeconds: 1200
   lobbyManager: {fileID: 11400000, guid: e24ed35b67c6f614e882e1972bd8b5b6, type: 2}
@@ -3123,6 +3127,28 @@ PrefabInstance:
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 229c8e580215c8a43be1abe10691848d, type: 3}
+--- !u!114 &1345198638 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6693501306564467435, guid: 229c8e580215c8a43be1abe10691848d, type: 3}
+  m_PrefabInstance: {fileID: 1345198637}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b85d3373fd1a8b42addcadb9d58fc42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1345198639 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4233451368328585416, guid: 229c8e580215c8a43be1abe10691848d, type: 3}
+  m_PrefabInstance: {fileID: 1345198637}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b85d3373fd1a8b42addcadb9d58fc42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1367161147 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1251658806330010960, guid: 75e32094395b79c469c4c763bf3388a1, type: 3}

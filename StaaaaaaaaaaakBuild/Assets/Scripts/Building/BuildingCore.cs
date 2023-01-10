@@ -20,7 +20,7 @@ namespace StackBuild
         private Queue<BuildCubeId> stackQueue = new();
         private GameObject buildingBase;
         private float height = 0;
-        private float totalHeight = 0;
+        private readonly ReactiveProperty<float> totalHeight = new(0);
         private int floorPartsCount = 0;
         private bool isFinished = false;
         private CancellationTokenSource cts;
@@ -33,7 +33,7 @@ namespace StackBuild
         private float PartsFallTime => settings.PartsFallTime;
         private float BaseFallTime => settings.BaseFallTime;
         private float LoopTime => settings.LoopTime;
-        public float TotalHeight => totalHeight;
+        public IReadOnlyReactiveProperty<float> TotalHeight => totalHeight;
 
         public void Enqueue(BuildCubeId id)
         {
@@ -103,7 +103,7 @@ namespace StackBuild
 
             obj.transform.localPosition = new Vector3(
                 x: (Row - floorPartsCount / Column) * (WidthSize / Row) + (WidthSize / Row) - (WidthSize / 2),
-                y: totalHeight + 20,
+                y: totalHeight.Value + 20,
                 z: (floorPartsCount % Column) * (WidthSize / Column) + (WidthSize / Column) - (WidthSize / 2));
             obj.transform.localScale = new Vector3(WidthSize / Row, HeightSize, WidthSize / Column);
 
@@ -146,7 +146,7 @@ namespace StackBuild
             if (floorPartsCount >= Row * Column)
             {
                 height += HeightSize;
-                totalHeight += HeightSize;
+                totalHeight.Value += HeightSize;
                 floorPartsCount = 0;
             }
 

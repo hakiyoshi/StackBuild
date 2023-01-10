@@ -19,7 +19,7 @@ namespace StackBuild.UI
             [SerializeField] internal BuildingCore buildingCore;
             [SerializeField] internal Transform lookTarget;
             [SerializeField] internal ResultsHeightDisplay heightDisplay;
-            internal float Height => buildingCore.TotalHeight;
+            internal float Height => buildingCore.TotalHeight.Value;
         }
 
         [SerializeField] private CinemachineVirtualCamera vcam;

@@ -403,13 +403,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   value: 0
-  scale: 50
+  scale: 15
   interval: 20
   alignRight: 0
   bar: {fileID: 7963709435422164104}
   imageLines: {fileID: 7963709434681071795}
-  labelPrefab: {fileID: 6675839241130419128, guid: 6c9b0af26c9a864468848aaca23d1112,
-    type: 3}
+  labelPrefab: {fileID: 6675839241130419128, guid: 6c9b0af26c9a864468848aaca23d1112, type: 3}
   labelContainer: {fileID: 1732417350336393861}
 --- !u!114 &5081792304371034212
 MonoBehaviour:
