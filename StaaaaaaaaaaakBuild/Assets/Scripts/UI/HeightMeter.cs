@@ -75,7 +75,7 @@ namespace StackBuild.UI
             imageLines.rectTransform.anchoredPosition = gridPos;
 
             // ラベル
-            int startRow = Mathf.FloorToInt(scroll / interval) - Mathf.FloorToInt(height / 2 / scale / interval);
+            int startRow = Mathf.RoundToInt(scroll / interval) - Mathf.FloorToInt(height / 2 / scale / interval);
             for (int i = 0; i < labels.Length; i++)
             {
                 labels[i].text = ((i + startRow) * interval).ToString();
