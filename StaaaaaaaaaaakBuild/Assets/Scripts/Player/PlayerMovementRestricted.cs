@@ -34,14 +34,5 @@ namespace StackBuild
             }
             transform.position = posi;
         }
-
-        private void OnDrawGizmos()
-        {
-            // Gizmos.color = Color.green;
-            // Gizmos.DrawWireSphere(firstPoint, radius);
-            // Gizmos.DrawWireSphere(secondPoint, radius);
-            // Gizmos.DrawLine(firstPoint + new Vector3(0.0f, 0.0f, radius), secondPoint + new Vector3(0.0f, 0.0f, radius));
-            // Gizmos.DrawLine(firstPoint - new Vector3(0.0f, 0.0f, radius), secondPoint - new Vector3(0.0f, 0.0f, radius));
-        }
     }
 }
