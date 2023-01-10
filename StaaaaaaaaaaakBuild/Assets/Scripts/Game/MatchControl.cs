@@ -15,6 +15,14 @@ namespace StackBuild.Game
     public class MatchControl : SyncWaitingSystem
     {
 
+        [Serializable]
+        public struct PlayerInfo
+        {
+            [SerializeField] internal PlayerProperty player;
+            [SerializeField] internal BuildingCore buildingCore;
+            [SerializeField] internal HeightMeter heightMeter;
+        }
+
         [Header("Appearance")]
         [SerializeField] private IntroDisplay introDisplay;
         [SerializeField] private float introDisplayDuration;
@@ -37,7 +45,7 @@ namespace StackBuild.Game
 
         [Header("System")]
         [SerializeField] private PlayerInputProperty playerInputProperty;
-        [SerializeField] private PlayerProperty[] players;
+        [SerializeField] private PlayerInfo[] players;
         [SerializeField] private MatchControlState matchControlState;
 
         [Header("Network")]
@@ -61,6 +69,10 @@ namespace StackBuild.Game
 
         private void Start()
         {
+            foreach (var player in players)
+            {
+                player.buildingCore.TotalHeight.Subscribe(height => player.heightMeter.Set(height));
+            }
             RunMatch(this.GetCancellationTokenOnDestroy()).Forget();
         }
 
@@ -140,7 +152,7 @@ namespace StackBuild.Game
             //リザルト表示
             await UniTask.Delay(TimeSpan.FromSeconds(resultsDelay), cancellationToken: token);
             await resultsDisplay.DisplayAsync(resultsDisplay.gameObject.GetCancellationTokenOnDestroy());
-            gameOverScreen.ShowAsync(players.Select(p => p.characterProperty).ToArray()).Forget();
+            gameOverScreen.ShowAsync(players.Select(p => p.player.characterProperty).ToArray()).Forget();
         }
 
         private void Update()
