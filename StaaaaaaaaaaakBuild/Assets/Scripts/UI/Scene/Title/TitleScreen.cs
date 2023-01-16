@@ -15,6 +15,7 @@ namespace StackBuild.UI.Scene.Title
         [SerializeField] private RectTransform iconContainer;
         [SerializeField] private Image[] iconParts;
         [SerializeField] private RectTransform titleMask;
+        [SerializeField] private Image menuBackground;
         [SerializeField] private TMP_Text[] menuTexts;
         [FormerlySerializedAs("flashText")] [SerializeField] private TMP_Text playText;
         [SerializeField] private TMP_Text copyrightText;
@@ -75,7 +76,9 @@ namespace StackBuild.UI.Scene.Title
                 .Join(logoContainer.DOPivotX(0.5f, accelerationDuration).From().SetEase(accelerationEase))
                 .Join(logoContainer.DOAnchorPosX(0, accelerationDuration).From().SetEase(accelerationEase));
 
-            seq = seq.AppendInterval(0);
+            seq = seq
+                .Append(menuBackground.DOFade(0, decelerationDuration).From().SetEase(Ease.OutQuad))
+                .Join(menuBackground.rectTransform.DOAnchorMin(new Vector2(0, 0), decelerationDuration).From().SetEase(decelerationEase));
 
             int i = 0;
             foreach (var text in menuTexts)
