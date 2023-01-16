@@ -1,7 +1,9 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using UniRx;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace StackBuild.UI.Scene.Title
@@ -19,9 +21,16 @@ namespace StackBuild.UI.Scene.Title
         [SerializeField] private Image menuBackground;
         [SerializeField] private TitleLogo logo;
         [SerializeField] private TitleScreen titleScreen;
+        [SerializeField] private MainMenu mainMenu;
 
         private void Start()
         {
+            titleScreen.OnStartPressed.Subscribe(_ =>
+            {
+                titleScreen.Hide();
+                mainMenu.ShowAsync().Forget();
+            }).AddTo(this);
+
             ShowTitleAsync().Forget();
         }
 
