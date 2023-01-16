@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 25587959}
   - component: {fileID: 25587961}
+  - component: {fileID: 25587962}
   - component: {fileID: 25587960}
   m_Layer: 0
   m_Name: Title Screen
@@ -177,9 +178,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   container: {fileID: 25587961}
-  slideTexts:
-  - {fileID: 82240863}
-  - {fileID: 455144778}
+  staggerDisplay: {fileID: 25587962}
   playText: {fileID: 455144778}
   copyrightText: {fileID: 1581878499}
 --- !u!225 &25587961
@@ -194,6 +193,23 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &25587962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 25587958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42eda597a9e748aa9795328626f621b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hideOnAwake: 1
+  items:
+  - {fileID: 82240863}
+  - {fileID: 455144778}
+  - {fileID: 1581878499}
 --- !u!1 &82240860
 GameObject:
   m_ObjectHideFlags: 0
@@ -1720,9 +1736,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   container: {fileID: 0}
-  slideTexts:
-  - {fileID: 953217618}
-  - {fileID: 2130184678}
+  staggerDisplay: {fileID: 0}
   playText: {fileID: 2130184678}
   copyrightText: {fileID: 1863036959}
 --- !u!225 &1481866627
