@@ -12,6 +12,7 @@ namespace StackBuild.UI.Scene.Title
 
         [SerializeField] private bool hideOnAwake;
         [SerializeField] private Graphic[] items;
+        private Sequence seq;
 
         private void Awake()
         {
@@ -23,15 +24,14 @@ namespace StackBuild.UI.Scene.Title
 
         public Sequence Display()
         {
-
-            var seq = DOTween.Sequence();
+            seq = DOTween.Sequence();
 
             int i = 0;
             foreach (var item in items)
             {
                 seq
                     .Join(item.DOFade(1, 0).From(0).SetDelay(i > 0 ? DefaultStagger : 0))
-                    .Join(((RectTransform)item.transform).DOAnchorPosX(-200, TitleScene.SlideDecelerationDuration).From(true)
+                    .Join(((RectTransform)item.transform).DOAnchorPosX(0, TitleScene.SlideDecelerationDuration).From(new Vector2(-200, 0))
                         .SetEase(TitleScene.SlideDecelerationEasing));
                 i++;
             }
@@ -41,9 +41,9 @@ namespace StackBuild.UI.Scene.Title
 
         public void Hide()
         {
+            seq?.Kill();
             foreach (var item in items)
             {
-                item.DOKill();
                 var color = item.color;
                 color.a = 0;
                 item.color = color;

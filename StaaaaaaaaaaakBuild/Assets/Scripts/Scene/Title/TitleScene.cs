@@ -22,25 +22,20 @@ namespace StackBuild.UI.Scene.Title
         [SerializeField] private TitleScreen titleScreen;
         [SerializeField] private MainMenu mainMenu;
 
+        private TitleScreenBase currentScreen;
+
         private void Start()
         {
-            titleScreen.OnStartPressed.Subscribe(_ =>
-            {
-                titleScreen.Hide();
-                mainMenu.ShowAsync().Forget();
-            }).AddTo(this);
-
-            mainMenu.OnBackClick.AddListener(() =>
-            {
-                mainMenu.Hide();
-                titleScreen.ShowAsync().Forget();
-            });
+            titleScreen.OnStartPressed.Subscribe(_ => ChangeScreen(mainMenu).Forget()).AddTo(this);
+            mainMenu.OnBackClick.AddListener(() => ChangeScreen(titleScreen).Forget());
 
             ShowTitleAsync().Forget();
         }
 
         private async UniTaskVoid ShowTitleAsync()
         {
+            currentScreen = titleScreen;
+
             var logoTransform = (RectTransform)logo.transform;
             var seq = DOTween.Sequence()
                 .Append(logoTransform.DOAnchorMin(new Vector2(0.5f, 0.5f), SlideAccelerationDuration).From().SetEase(SlideAccelerationEasing))
@@ -60,6 +55,13 @@ namespace StackBuild.UI.Scene.Title
         {
             menuBackground.DOFade(MenuBackgroundAlpha, SlideDecelerationDuration).SetEase(Ease.OutQuad);
             menuBackground.rectTransform.DOAnchorMin(new Vector2(0, 0), SlideDecelerationDuration).From().SetEase(SlideDecelerationEasing);
+        }
+
+        private async UniTaskVoid ChangeScreen(TitleScreenBase screen)
+        {
+            await currentScreen.HideAsync();
+            currentScreen = screen;
+            await currentScreen.ShowAsync();
         }
 
     }

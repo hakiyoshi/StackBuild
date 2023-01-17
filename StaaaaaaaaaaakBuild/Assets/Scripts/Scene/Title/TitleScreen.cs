@@ -1,6 +1,8 @@
 using System;
+using System.Collections;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using DG.Tweening.Core;
 using TMPro;
 using UniRx;
 using UnityEngine;
@@ -9,7 +11,7 @@ using UnityEngine.InputSystem;
 namespace StackBuild.UI.Scene.Title
 {
     [RequireComponent(typeof(CanvasGroup))]
-    public class TitleScreen : MonoBehaviour
+    public class TitleScreen : TitleScreenBase
     {
 
         [SerializeField] private InputActionReference inputStart;
@@ -18,6 +20,7 @@ namespace StackBuild.UI.Scene.Title
         [SerializeField] private TMP_Text playText;
 
         private readonly Subject<Unit> onStartPressed = new();
+        private Tween playTextFlash;
 
         public IObservable<Unit> OnStartPressed => onStartPressed;
 
@@ -33,24 +36,27 @@ namespace StackBuild.UI.Scene.Title
             {
                 onStartPressed.OnNext(Unit.Default);
             }).AddTo(this);
+            playTextFlash = playText.DOFade(0, 1).From(1).SetEase(Ease.InQuad).SetLoops(-1, LoopType.Yoyo).Pause().SetAutoKill(false);
         }
 
-        public async UniTask ShowAsync()
+        public override async UniTask ShowAsync()
         {
             container.DOKill();
             container.interactable = true;
+            container.alpha = 1;
+            inputStart.action.Enable();
 
             await staggerDisplay.Display();
-            inputStart.action.Enable();
-            _ = playText.DOFade(0, 1).From(1).SetEase(Ease.InQuad).SetLoops(-1, LoopType.Yoyo);
+            playTextFlash.Restart();
         }
 
-        public void Hide()
+        public override async UniTask HideAsync()
         {
             inputStart.action.Disable();
             container.interactable = false;
+            await container.DOFade(0, 0.07f);
             staggerDisplay.Hide();
-            playText.DOKill();
+            _ = playTextFlash.Pause();
         }
 
     }

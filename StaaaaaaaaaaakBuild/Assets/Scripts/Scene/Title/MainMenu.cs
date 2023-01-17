@@ -1,4 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -6,7 +7,7 @@ using UnityEngine.UI;
 namespace StackBuild.UI.Scene.Title
 {
 
-    public class MainMenu : MonoBehaviour
+    public class MainMenu : TitleScreenBase
     {
 
         [SerializeField] private CanvasGroup container;
@@ -23,18 +24,21 @@ namespace StackBuild.UI.Scene.Title
         public Button.ButtonClickedEvent OnSettingsClick => buttonSettings.onClick;
         public Button.ButtonClickedEvent OnBackClick => buttonBack.onClick;
 
-        public async UniTask ShowAsync()
+        public override async UniTask ShowAsync()
         {
             container.interactable = true;
+            container.alpha = 1;
 
+            EventSystem.current.SetSelectedGameObject(null);
             EventSystem.current.SetSelectedGameObject(buttonOnlineMatch.gameObject);
 
             await staggerDisplay.Display();
         }
 
-        public void Hide()
+        public override async UniTask HideAsync()
         {
             container.interactable = false;
+            await container.DOFade(0, 0.07f);
             staggerDisplay.Hide();
         }
 
