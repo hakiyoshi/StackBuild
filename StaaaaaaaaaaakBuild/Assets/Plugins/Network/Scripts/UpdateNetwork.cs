@@ -47,15 +47,19 @@ namespace NetworkSystem
 
             relay.OnRelaySetting.Where(x => x == RelayManager.SettingEvent.Exit).Subscribe(_ =>
             {
-                if(lobby.Status == LobbyManager.LobbyStatus.Client)
-                    disposable.Dispose();
+                if (lobby.Status != LobbyManager.LobbyStatus.Client || disposable == null)
+                    return;
+                disposable.Dispose();
+                disposable = null;
             }).AddTo(this);
         }
 
         private void OnDestroy()
         {
-            if(lobby.Status == LobbyManager.LobbyStatus.Client)
-                disposable.Dispose();
+            if (lobby.Status != LobbyManager.LobbyStatus.Client || disposable == null)
+                return;
+            disposable.Dispose();
+            disposable = null;
         }
 
         private void OnApplicationQuit()
