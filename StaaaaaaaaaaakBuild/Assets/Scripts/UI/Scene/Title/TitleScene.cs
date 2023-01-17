@@ -3,7 +3,6 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UniRx;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace StackBuild.UI.Scene.Title
@@ -30,6 +29,12 @@ namespace StackBuild.UI.Scene.Title
                 titleScreen.Hide();
                 mainMenu.ShowAsync().Forget();
             }).AddTo(this);
+
+            mainMenu.OnBackClick.AddListener(() =>
+            {
+                mainMenu.Hide();
+                titleScreen.ShowAsync().Forget();
+            });
 
             ShowTitleAsync().Forget();
         }
