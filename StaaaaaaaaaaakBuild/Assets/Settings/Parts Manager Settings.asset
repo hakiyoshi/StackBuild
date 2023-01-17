@@ -27,6 +27,6 @@ MonoBehaviour:
     minSeconds: 3
     maxSeconds: 5
   - threshould: 30
-    count: 0
+    count: 1
     minSeconds: 0.1
     maxSeconds: 0.1

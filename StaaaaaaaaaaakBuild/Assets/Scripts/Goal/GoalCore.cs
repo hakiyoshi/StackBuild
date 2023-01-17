@@ -29,14 +29,17 @@ namespace StackBuild
             }
 
             collisionObject.OnTriggerEnterAsObservable()
-                .Where(_ => settings.IsLocalPlayTest || (NetworkManager.Singleton != null && NetworkManager.Singleton.IsServer))
                 .Where(x => x.gameObject.CompareTag("Parts"))
+                .Select(x => x.gameObject.GetComponent<PartsNetworkSync>())
+                .Where(x => !x.IsSpawned || NetworkManager.Singleton != null && NetworkManager.Singleton.IsServer)
                 .Select(x => x.gameObject.GetComponent<PartsCore>())
                 .Subscribe(Goal).AddTo(this);
         }
 
         private void Goal(PartsCore parts)
         {
+            PartsNetworkSync networkSync = parts.GetComponent<PartsNetworkSync>();
+
             foreach (var buildMaterial in parts.GetPartsData().containsMaterials)
             {
                 partsCount[buildMaterial.Key] += buildMaterial.Value;
@@ -62,13 +65,13 @@ namespace StackBuild
                     partsCount[need.Key] -= need.Value;
                 }
 
-                if (settings.IsLocalPlayTest)
+                if (networkSync.IsSpawned)
                 {
-                    Enqueue(i);
+                    EnqueueServerRpc(i);
                 }
                 else
                 {
-                    EnqueueServerRpc(i);
+                    Enqueue(i);
                 }
             }
         }

@@ -15,7 +15,6 @@ namespace StackBuild
     [CreateAssetMenu(menuName = "Scriptable Objects/Parts Manager Settings")]
     public class PartsManagerSettings : ScriptableObject
     {
-        [SerializeField] public bool isLocalPlayTest = false;
         [field: SerializeField] public List<PartsSpawnRule> SpawnRuleList { get; private set; } = new();
     }
 }
