@@ -21,13 +21,16 @@ namespace StackBuild.UI.Scene.Title
         [SerializeField] private TitleLogo logo;
         [SerializeField] private TitleScreen titleScreen;
         [SerializeField] private MainMenu mainMenu;
+        [SerializeField] private CharacterSelectScreen characterSelectScreen;
 
         private TitleScreenBase currentScreen;
 
         private void Start()
         {
             titleScreen.OnStartPressed.Subscribe(_ => ChangeScreen(mainMenu).Forget()).AddTo(this);
+            mainMenu.OnOnlineMatchClick.AddListener(() => ChangeScreen(characterSelectScreen).Forget());
             mainMenu.OnBackClick.AddListener(() => ChangeScreen(titleScreen).Forget());
+            characterSelectScreen.OnBackClick.AddListener(() => ChangeScreen(mainMenu).Forget());
 
             ShowTitleAsync().Forget();
         }
@@ -54,11 +57,31 @@ namespace StackBuild.UI.Scene.Title
         private void ShowBackground()
         {
             menuBackground.DOFade(MenuBackgroundAlpha, SlideDecelerationDuration).SetEase(Ease.OutQuad);
-            menuBackground.rectTransform.DOAnchorMin(new Vector2(0, 0), SlideDecelerationDuration).From().SetEase(SlideDecelerationEasing);
+            menuBackground.rectTransform.DOAnchorMin(new Vector2(0.5f, 0), SlideDecelerationDuration).From(new Vector2(0, 0)).SetEase(SlideDecelerationEasing);
+        }
+
+        private void HideBackground()
+        {
+            menuBackground.DOFade(0, SlideDecelerationDuration).SetEase(Ease.OutQuad);
+            menuBackground.rectTransform.DOAnchorMin(new Vector2(1, 0), SlideDecelerationDuration).SetEase(SlideDecelerationEasing);
         }
 
         private async UniTaskVoid ChangeScreen(TitleScreenBase screen)
         {
+            if (currentScreen.ShouldShowLogo != screen.ShouldShowLogo)
+            {
+                logo.gameObject.SetActive(screen.ShouldShowLogo);
+                if (screen.ShouldShowLogo)
+                {
+                    ShowBackground();
+                    var logoTransform = (RectTransform)logo.transform;
+                    _ = logoTransform.DOAnchorPosX(0, SlideDecelerationDuration).From(new Vector2(-200, 0)).SetEase(SlideDecelerationEasing);
+                }
+                else
+                {
+                    HideBackground();
+                }
+            }
             await currentScreen.HideAsync();
             currentScreen = screen;
             await currentScreen.ShowAsync();
