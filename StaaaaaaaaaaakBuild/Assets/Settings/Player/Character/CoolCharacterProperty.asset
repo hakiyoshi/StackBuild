@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Name>k__BackingField: KAKKO-II
   <CompanyName>k__BackingField: Stronger Building
+  <DashDescription>k__BackingField: "\u30C0\u30C3\u30B7\u30E5\u3067\u4F53\u5F53\u305F\u308A\u3059\u308B\u3053\u3068\u3067\u3001\u76F8\u624B\u304C\u6301\u3063\u3066\u3044\u308B\u30B4\u30DF\u3092\u843D\u3068\u3059\u3053\u3068\u304C\u3067\u304D\u308B\u3002"
   <Model>k__BackingField: {fileID: 11400000, guid: cf7c02f91244cc9499d7c0613c1633cf, type: 2}
   <Sprite>k__BackingField: {fileID: 21300000, guid: 8350e99e49dcdf148b7f0b050c41b731, type: 3}
   <Move>k__BackingField: {fileID: 11400000, guid: 929c566f937b50743bec5275181da7d6, type: 2}
