@@ -22,7 +22,6 @@ namespace StackBuild
     [CreateAssetMenu(menuName = "Scriptable Objects/Goal Settings")]
     public class GoalSettings : ScriptableObject
     {
-        [field: SerializeField] public bool IsLocalPlayTest { get; private set; } = false;
         [field: SerializeField] public List<FloorData> FloorDataList { get; private set; } = new();
     }
 }
