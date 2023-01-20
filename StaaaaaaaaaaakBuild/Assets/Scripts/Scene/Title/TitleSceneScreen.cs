@@ -2,10 +2,10 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace StackBuild.UI.Scene.Title
+namespace StackBuild.Scene.Title
 {
 
-    public class TitleScreenBase : MonoBehaviour
+    public class TitleSceneScreen : MonoBehaviour
     {
 
         [SerializeField] private bool shouldShowLogo;

@@ -1,14 +1,15 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using StackBuild.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UniRx;
 
-namespace StackBuild.UI.Scene.Title
+namespace StackBuild.Scene.Title
 {
-    public class CharacterSelectScreen : TitleScreenBase
+    public class CharacterSelectScreen : TitleSceneScreen
     {
 
         [SerializeField] private CanvasGroup container;

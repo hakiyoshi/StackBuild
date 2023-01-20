@@ -5,7 +5,7 @@ using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace StackBuild.UI.Scene.Title
+namespace StackBuild.Scene.Title
 {
     public class TitleScene : MonoBehaviour
     {
@@ -20,17 +20,17 @@ namespace StackBuild.UI.Scene.Title
         [SerializeField] private Image menuBackground;
         [SerializeField] private TitleLogo logo;
         [SerializeField] private TitleScreen titleScreen;
-        [SerializeField] private MainMenu mainMenu;
+        [SerializeField] private MainMenuScreen mainMenuScreen;
         [SerializeField] private CharacterSelectScreen characterSelectScreen;
 
-        private TitleScreenBase currentScreen;
+        private TitleSceneScreen currentScreen;
 
         private void Start()
         {
-            titleScreen.OnStartPressed.Subscribe(_ => ChangeScreen(mainMenu).Forget()).AddTo(this);
-            mainMenu.OnOnlineMatchClick.AddListener(() => ChangeScreen(characterSelectScreen).Forget());
-            mainMenu.OnBackClick.AddListener(() => ChangeScreen(titleScreen).Forget());
-            characterSelectScreen.OnBackClick.AddListener(() => ChangeScreen(mainMenu).Forget());
+            titleScreen.OnStartPressed.Subscribe(_ => ChangeScreen(mainMenuScreen).Forget()).AddTo(this);
+            mainMenuScreen.OnOnlineMatchClick.AddListener(() => ChangeScreen(characterSelectScreen).Forget());
+            mainMenuScreen.OnBackClick.AddListener(() => ChangeScreen(titleScreen).Forget());
+            characterSelectScreen.OnBackClick.AddListener(() => ChangeScreen(mainMenuScreen).Forget());
 
             ShowTitleAsync().Forget();
         }
@@ -66,7 +66,7 @@ namespace StackBuild.UI.Scene.Title
             menuBackground.rectTransform.DOAnchorMin(new Vector2(1, 0), SlideDecelerationDuration).SetEase(SlideDecelerationEasing);
         }
 
-        private async UniTaskVoid ChangeScreen(TitleScreenBase screen)
+        private async UniTaskVoid ChangeScreen(TitleSceneScreen screen)
         {
             if (currentScreen.ShouldShowLogo != screen.ShouldShowLogo)
             {

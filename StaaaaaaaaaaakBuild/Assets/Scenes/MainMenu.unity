@@ -2212,7 +2212,7 @@ MonoBehaviour:
   menuBackground: {fileID: 728515560}
   logo: {fileID: 1989321367}
   titleScreen: {fileID: 25587960}
-  mainMenu: {fileID: 1481866628}
+  mainMenuScreen: {fileID: 1481866628}
   characterSelectScreen: {fileID: 1847919295}
 --- !u!1 &679059072
 GameObject:

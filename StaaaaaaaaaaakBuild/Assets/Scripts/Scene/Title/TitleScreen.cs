@@ -8,10 +8,10 @@ using UniRx;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace StackBuild.UI.Scene.Title
+namespace StackBuild.Scene.Title
 {
     [RequireComponent(typeof(CanvasGroup))]
-    public class TitleScreen : TitleScreenBase
+    public class TitleScreen : TitleSceneScreen
     {
 
         [SerializeField] private InputActionReference inputStart;

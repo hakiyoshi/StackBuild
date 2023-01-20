@@ -3,7 +3,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace StackBuild.UI.Scene.Title
+namespace StackBuild.Scene.Title
 {
     public class TitleMenuStaggerDisplay : MonoBehaviour
     {

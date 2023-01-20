@@ -4,10 +4,10 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace StackBuild.UI.Scene.Title
+namespace StackBuild.Scene.Title
 {
 
-    public class MainMenu : TitleScreenBase
+    public class MainMenuScreen : TitleSceneScreen
     {
 
         [SerializeField] private CanvasGroup container;
