@@ -1161,6 +1161,10 @@ PrefabInstance:
       propertyPath: text
       value: READY
       objectReference: {fileID: 0}
+    - target: {fileID: 9147136604494914361, guid: dfa585924eca51446be566c3beb302c0, type: 3}
+      propertyPath: style
+      value: 
+      objectReference: {fileID: 11400000, guid: 08e3e7324432f1446ba2d37f4844c933, type: 2}
     - target: {fileID: 9147136604494914366, guid: dfa585924eca51446be566c3beb302c0, type: 3}
       propertyPath: m_Pivot.x
       value: 1
@@ -2847,15 +2851,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e92b80fe2817848489b858f3dc90b40b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &928159605 stripped
+--- !u!114 &928159606 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9147136604494914362, guid: dfa585924eca51446be566c3beb302c0, type: 3}
+  m_CorrespondingSourceObject: {fileID: 9147136604494914361, guid: dfa585924eca51446be566c3beb302c0, type: 3}
   m_PrefabInstance: {fileID: 268038399}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Script: {fileID: 11500000, guid: 8442ccc20e7bb36489d229cbf7fa2756, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &936282217
@@ -4893,15 +4897,15 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
---- !u!114 &1759027433 stripped
+--- !u!114 &1759027434 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9147136604494914362, guid: dfa585924eca51446be566c3beb302c0, type: 3}
+  m_CorrespondingSourceObject: {fileID: 9147136604494914361, guid: dfa585924eca51446be566c3beb302c0, type: 3}
   m_PrefabInstance: {fileID: 1294513172}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Script: {fileID: 11500000, guid: 8442ccc20e7bb36489d229cbf7fa2756, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1759058047
@@ -5458,8 +5462,8 @@ MonoBehaviour:
   - {fileID: 893190350}
   - {fileID: 1912153937}
   characterInfoDisplay: {fileID: 693571799}
-  backButton: {fileID: 1759027433}
-  readyButton: {fileID: 928159605}
+  backButton: {fileID: 1759027434}
+  readyButton: {fileID: 928159606}
 --- !u!1001 &1912153935
 PrefabInstance:
   m_ObjectHideFlags: 0

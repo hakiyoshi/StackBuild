@@ -15,13 +15,13 @@ namespace StackBuild.Scene.Title
         [SerializeField] private CanvasGroup container;
         [SerializeField] private CharacterSelectButton[] characterButtons;
         [SerializeField] private CharacterInfoDisplay characterInfoDisplay;
-        [SerializeField] private Button backButton;
-        [SerializeField] private Button readyButton;
+        [SerializeField] private StackbuildButton backButton;
+        [SerializeField] private StackbuildButton readyButton;
 
         private CharacterProperty characterSelected;
 
-        public Button.ButtonClickedEvent OnBackClick => backButton.onClick;
-        public Button.ButtonClickedEvent OnReadyClick => readyButton.onClick;
+        public Button.ButtonClickedEvent OnBackClick => backButton.OnClick;
+        public Button.ButtonClickedEvent OnReadyClick => readyButton.OnClick;
 
         private void Awake()
         {
@@ -51,7 +51,7 @@ namespace StackBuild.Scene.Title
             if (character != null && character == characterSelected) return;
             characterSelected = character;
             characterInfoDisplay.DisplayAsync(character).Forget();
-            readyButton.interactable = character != null;
+            readyButton.Disabled = character == null;
             foreach (var characterButton in characterButtons)
             {
                 characterButton.SetCharacterSelected(character == characterButton.Character);
