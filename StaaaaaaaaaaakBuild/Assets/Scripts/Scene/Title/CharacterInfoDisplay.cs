@@ -15,6 +15,7 @@ namespace StackBuild.Scene.Title
         [SerializeField] private CanvasGroup canvasGroup;
         [SerializeField] private LayoutGroup layoutGroup;
         [SerializeField] private TMP_Text nameText;
+        [SerializeField] private TMP_Text dashDescriptionText;
         [SerializeField] private Slider speedMeter;
         [SerializeField] private Slider powerMeter;
 
@@ -35,8 +36,12 @@ namespace StackBuild.Scene.Title
                 return;
             }
 
-            var size = new Vector2(rectTransform.sizeDelta.x, layoutGroup.preferredHeight);
             nameText.text = character.Name;
+            dashDescriptionText.text = character.DashDescription;
+
+            // 高さをアニメーションするのでレイアウトを再計算
+            LayoutRebuilder.ForceRebuildLayoutImmediate(rectTransform);
+            var size = new Vector2(rectTransform.sizeDelta.x, layoutGroup.preferredHeight);
 
             await DOTween.Sequence()
                 .Join(speedMeter.DOValue(character.Move.MaxSpeed, TitleScene.SlideDecelerationDuration)
