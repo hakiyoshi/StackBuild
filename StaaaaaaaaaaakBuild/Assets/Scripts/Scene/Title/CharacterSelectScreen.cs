@@ -14,8 +14,11 @@ namespace StackBuild.Scene.Title
 
         [SerializeField] private CanvasGroup container;
         [SerializeField] private CharacterSelectButton[] characterButtons;
+        [SerializeField] private CharacterInfoDisplay characterInfoDisplay;
         [SerializeField] private Button backButton;
         [SerializeField] private Button readyButton;
+
+        private CharacterProperty characterSelected;
 
         public Button.ButtonClickedEvent OnBackClick => backButton.onClick;
         public Button.ButtonClickedEvent OnReadyClick => readyButton.onClick;
@@ -45,6 +48,9 @@ namespace StackBuild.Scene.Title
 
         private void SelectCharacter(CharacterProperty character)
         {
+            if (character != null && character == characterSelected) return;
+            characterSelected = character;
+            characterInfoDisplay.DisplayAsync(character).Forget();
             readyButton.interactable = character != null;
             foreach (var characterButton in characterButtons)
             {

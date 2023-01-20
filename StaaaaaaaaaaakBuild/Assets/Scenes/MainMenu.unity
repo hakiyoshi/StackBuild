@@ -2264,7 +2264,9 @@ GameObject:
   - component: {fileID: 693571795}
   - component: {fileID: 693571797}
   - component: {fileID: 693571796}
+  - component: {fileID: 693571800}
   - component: {fileID: 693571798}
+  - component: {fileID: 693571799}
   m_Layer: 0
   m_Name: Character Info
   m_TagString: Untagged
@@ -2363,6 +2365,36 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 1
   m_ReverseArrangement: 0
+--- !u!114 &693571799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 693571794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97bb3338ba394dedb44d8704d4686a78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rectTransform: {fileID: 693571795}
+  canvasGroup: {fileID: 693571800}
+  layoutGroup: {fileID: 693571798}
+  nameText: {fileID: 936282219}
+  speedMeter: {fileID: 1388453829}
+  powerMeter: {fileID: 417933975}
+--- !u!225 &693571800
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 693571794}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &694857706
 GameObject:
   m_ObjectHideFlags: 0
@@ -4114,7 +4146,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 0}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 3
+  m_MaxValue: 30
   m_WholeNumbers: 0
   m_Value: 1.47
   m_OnValueChanged:
@@ -5387,7 +5419,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1847919292}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 0
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -5409,6 +5441,7 @@ MonoBehaviour:
   - {fileID: 577995016}
   - {fileID: 893190350}
   - {fileID: 1912153937}
+  characterInfoDisplay: {fileID: 693571799}
   backButton: {fileID: 1759027433}
   readyButton: {fileID: 928159605}
 --- !u!1001 &1912153935
