@@ -15,6 +15,7 @@ namespace StackBuild.UI
         [SerializeField] private RectTransform[] cornerIndicators;
         [SerializeField] private Image characterImage;
 
+        public CharacterProperty Character => character;
         public IObservable<Unit> OnClick => button.OnClickAsObservable();
 
         private void Reset()
