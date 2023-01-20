@@ -1,4 +1,5 @@
 ﻿using System;
+using Cinemachine;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using StackBuild.UI;
@@ -12,8 +13,17 @@ namespace StackBuild.Scene.Title
     public class CharacterSelectScreen : TitleSceneScreen
     {
 
+        [Serializable]
+        private struct CharacterInfo
+        {
+            [SerializeField] internal Transform cameraTarget;
+            [SerializeField] internal CharacterSelectButton button;
+        }
+
+        [SerializeField] private CinemachineVirtualCamera vcam;
+        [SerializeField] private Transform unselectedCameraTarget;
         [SerializeField] private CanvasGroup container;
-        [SerializeField] private CharacterSelectButton[] characterButtons;
+        [SerializeField] private CharacterInfo[] characters;
         [SerializeField] private CharacterInfoDisplay characterInfoDisplay;
         [SerializeField] private StackbuildButton backButton;
         [SerializeField] private StackbuildButton readyButton;
@@ -25,36 +35,46 @@ namespace StackBuild.Scene.Title
 
         private void Awake()
         {
-            foreach (var characterButton in characterButtons)
+            foreach (var character in characters)
             {
-                characterButton.OnClick.Subscribe(_ => SelectCharacter(characterButton.Character)).AddTo(this);
+                character.button.OnClick.Subscribe(_ => SelectCharacter(character.button.Character)).AddTo(this);
             }
         }
 
         public override async UniTask ShowAsync()
         {
+            vcam.enabled = true;
             container.interactable = true;
             container.alpha = 1;
 
             SelectCharacter(null);
-            EventSystem.current.SetSelectedGameObject(characterButtons[0].gameObject);
+            EventSystem.current.SetSelectedGameObject(characters[0].button.gameObject);
         }
 
         public override async UniTask HideAsync()
         {
+            vcam.enabled = false;
             container.interactable = false;
             await container.DOFade(0, 0.2f);
         }
 
-        private void SelectCharacter(CharacterProperty character)
+        private void SelectCharacter(CharacterProperty characterToSelect)
         {
-            if (character != null && character == characterSelected) return;
-            characterSelected = character;
-            characterInfoDisplay.DisplayAsync(character).Forget();
-            readyButton.Disabled = character == null;
-            foreach (var characterButton in characterButtons)
+            if (characterToSelect != null && characterToSelect == characterSelected) return;
+            characterSelected = characterToSelect;
+            if (characterToSelect == null)
             {
-                characterButton.SetCharacterSelected(character == characterButton.Character);
+                vcam.Follow = unselectedCameraTarget;
+            }
+            characterInfoDisplay.DisplayAsync(characterToSelect).Forget();
+            readyButton.Disabled = characterToSelect == null;
+            foreach (var character in characters)
+            {
+                character.button.SetCharacterSelected(characterToSelect == character.button.Character);
+                if (character.button.Character == characterSelected)
+                {
+                    vcam.Follow = character.cameraTarget;
+                }
             }
         }
 
