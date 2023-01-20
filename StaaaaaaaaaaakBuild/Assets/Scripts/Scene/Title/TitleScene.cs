@@ -22,6 +22,7 @@ namespace StackBuild.Scene.Title
         [SerializeField] private TitleScreen titleScreen;
         [SerializeField] private MainMenuScreen mainMenuScreen;
         [SerializeField] private CharacterSelectScreen characterSelectScreen;
+        [SerializeField] private MatchmakingScreen matchmakingScreen;
 
         private TitleSceneScreen currentScreen;
 
@@ -31,6 +32,7 @@ namespace StackBuild.Scene.Title
             mainMenuScreen.OnOnlineMatchClick.AddListener(() => ChangeScreen(characterSelectScreen).Forget());
             mainMenuScreen.OnBackClick.AddListener(() => ChangeScreen(titleScreen).Forget());
             characterSelectScreen.OnBackClick.AddListener(() => ChangeScreen(mainMenuScreen).Forget());
+            characterSelectScreen.OnReadyClick.AddListener(() => EnterMatchmaking().Forget());
 
             ShowTitleAsync().Forget();
         }
@@ -66,7 +68,7 @@ namespace StackBuild.Scene.Title
             menuBackground.rectTransform.DOAnchorMin(new Vector2(1, 0), SlideDecelerationDuration).SetEase(SlideDecelerationEasing);
         }
 
-        private async UniTaskVoid ChangeScreen(TitleSceneScreen screen)
+        private async UniTask ChangeScreen(TitleSceneScreen screen)
         {
             if (currentScreen.ShouldShowLogo != screen.ShouldShowLogo)
             {
@@ -85,6 +87,12 @@ namespace StackBuild.Scene.Title
             await currentScreen.HideAsync();
             currentScreen = screen;
             await currentScreen.ShowAsync();
+        }
+
+        private async UniTaskVoid EnterMatchmaking()
+        {
+            await ChangeScreen(matchmakingScreen);
+            // matchmaker.enter(...)
         }
 
     }
