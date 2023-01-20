@@ -77,7 +77,7 @@ namespace StackBuild
             while (!token.IsCancellationRequested)
             {
                 var rule = settings.SpawnRuleList.Find(x => x.threshould > GetActiveCount());
-                if (rule == null || !settings.isLocalPlayTest && (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsServer))
+                if (rule == null || NetworkManager.Singleton == null && !NetworkManager.Singleton.IsServer)
                 {
                     await UniTask.Yield(PlayerLoopTiming.Update, token);
                     continue;
@@ -112,7 +112,7 @@ namespace StackBuild
             if (!parts.transform.IsChildOf(transform)) return;
 
             var net = parts.GetComponent<PartsNetworkSync>();
-            if (!settings.isLocalPlayTest || (net.IsSpawned && NetworkManager.Singleton != null && !NetworkManager.Singleton.IsServer)) return;
+            if (net.IsSpawned && NetworkManager.Singleton != null && !NetworkManager.Singleton.IsServer) return;
 
             parts.isActive.Value = false;
             parts.partsId.Value = PartsId.Default;

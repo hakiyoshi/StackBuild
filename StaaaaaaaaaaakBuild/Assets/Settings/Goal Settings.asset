@@ -12,15 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3465daa45920419d92a3c6b17e2746ae, type: 3}
   m_Name: Goal Settings
   m_EditorClassIdentifier: 
-  <IsLocalPlayTest>k__BackingField: 1
-  <WidthSize>k__BackingField: 12
-  <HeightSize>k__BackingField: 3
-  <Column>k__BackingField: 3
-  <Row>k__BackingField: 3
-  <MaxHeight>k__BackingField: 16
-  <PartsFallTime>k__BackingField: 0.8
-  <BaseFallTime>k__BackingField: 1
-  <LoopTime>k__BackingField: 0.05
+  <IsLocalPlayTest>k__BackingField: 0
   <FloorDataList>k__BackingField:
   - name: BasicMetal
     score: 10
