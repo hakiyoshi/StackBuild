@@ -16,13 +16,16 @@ namespace StackBuild.Scene.Title
         [Serializable]
         private struct CharacterInfo
         {
+            [SerializeField] internal CharacterProperty character;
             [SerializeField] internal Transform cameraTarget;
-            [SerializeField] internal CharacterSelectButton button;
+            internal CharacterSelectButton button;
         }
 
         [SerializeField] private CinemachineVirtualCamera vcam;
         [SerializeField] private Transform unselectedCameraTarget;
         [SerializeField] private CanvasGroup container;
+        [SerializeField] private Transform buttonContainer;
+        [SerializeField] private CharacterSelectButton buttonPrefab;
         [SerializeField] private CharacterInfo[] characters;
         [SerializeField] private CharacterInfoDisplay characterInfoDisplay;
         [SerializeField] private StackbuildButton backButton;
@@ -35,9 +38,12 @@ namespace StackBuild.Scene.Title
 
         private void Awake()
         {
-            foreach (var character in characters)
+            for (int i = 0; i < characters.Length; i++)
             {
-                character.button.OnClick.Subscribe(_ => SelectCharacter(character.button.Character)).AddTo(this);
+                var i1 = i;
+                characters[i].button = Instantiate(buttonPrefab, buttonContainer);
+                characters[i].button.Character = characters[i].character;
+                characters[i].button.OnClick.Subscribe(_ => SelectCharacter(characters[i1].character)).AddTo(this);
             }
         }
 
@@ -70,8 +76,8 @@ namespace StackBuild.Scene.Title
             readyButton.Disabled = characterToSelect == null;
             foreach (var character in characters)
             {
-                character.button.SetCharacterSelected(characterToSelect == character.button.Character);
-                if (character.button.Character == characterSelected)
+                character.button.SetCharacterSelected(characterToSelect == character.character);
+                if (character.character == characterSelected)
                 {
                     vcam.Follow = character.cameraTarget;
                 }
