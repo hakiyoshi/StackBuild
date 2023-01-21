@@ -14,6 +14,7 @@ namespace StackBuild.UI
         [SerializeField] private Button button;
         [SerializeField] private RectTransform[] cornerIndicators;
         [SerializeField] private Image characterImage;
+        [SerializeField] private TMP_Text nameText;
 
         public CharacterProperty Character
         {
@@ -40,6 +41,7 @@ namespace StackBuild.UI
         {
             if(character == null) return;
             characterImage.sprite = character.Sprite;
+            nameText.text = character.Name;
         }
 
         public void SetCharacterSelected(bool selected)

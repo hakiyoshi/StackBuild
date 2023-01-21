@@ -509,6 +509,7 @@ MonoBehaviour:
   - {fileID: 4369705853680492283}
   - {fileID: 4369705852467117703}
   characterImage: {fileID: 1771416953505660255}
+  nameText: {fileID: 4369705852828546121}
 --- !u!1 &4369705853659252156
 GameObject:
   m_ObjectHideFlags: 0
