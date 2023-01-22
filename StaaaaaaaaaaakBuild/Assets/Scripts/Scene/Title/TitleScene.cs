@@ -23,6 +23,7 @@ namespace StackBuild.Scene.Title
         [SerializeField] private MainMenuScreen mainMenuScreen;
         [SerializeField] private CharacterSelectScreen characterSelectScreen;
         [SerializeField] private MatchmakingScreen matchmakingScreen;
+        [SerializeField] private MatchFoundDisplay matchFoundDisplay;
 
         private TitleSceneScreen currentScreen;
 
@@ -93,6 +94,8 @@ namespace StackBuild.Scene.Title
         {
             await ChangeScreen(matchmakingScreen);
             // matchmaker.enter(...)
+            await UniTask.Delay(TimeSpan.FromSeconds(3));
+            matchFoundDisplay.Display();
         }
 
     }
