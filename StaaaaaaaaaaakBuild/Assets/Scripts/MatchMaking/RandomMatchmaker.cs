@@ -4,13 +4,11 @@ using Cysharp.Threading.Tasks;
 using NetworkSystem;
 using StackBuild.Game;
 using UniRx;
-using Unity.Netcode;
-using UnityEditor;
 using UnityEngine;
 
 namespace StackBuild.MatchMaking
 {
-    public sealed class RandomMatchmaker : SyncWaitingSystem, IRandomMatchmaker
+    public sealed class RandomMatchmaker : SyncClientsNetworkBehaviourNetworkBehaviour, IRandomMatchmaker
     {
         [SerializeField] private LobbyManager lobby;
         [SerializeField] private RelayManager relay;
