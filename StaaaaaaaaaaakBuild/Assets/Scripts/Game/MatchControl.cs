@@ -5,6 +5,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using NetworkSystem;
+using StackBuild.Audio;
 using StackBuild.UI;
 using UniRx;
 using Unity.Netcode;
@@ -53,6 +54,12 @@ namespace StackBuild.Game
         [SerializeField] private LobbyManager lobbyManager;
         [SerializeField] private RelayManager relayManager;
 
+        [Header("Audio")]
+        [SerializeField] private AudioSourcePool audioSourcePool;
+        [SerializeField] private AudioCue gameBgmCue;
+
+        private AudioSourceWatching gameAudio = null;
+
         private float timeRemaining;
         private readonly ReactiveProperty<MatchState> state = new();
         public IReadOnlyReactiveProperty<MatchState> State => state;
@@ -97,6 +104,12 @@ namespace StackBuild.Game
                 SendStandbyServerRpc();
                 await WaitForAllToSync(MatchStateSignal.GameStart, token);
             }
+
+            //ゲームBGM再生
+            gameAudio = audioSourcePool.Rent(gameBgmCue);
+            gameAudio.audioSource.volume = 0.0f;
+            gameAudio.audioSource.DOFade(1.0f, 5.0f);
+            gameAudio.audioSource.Play();
 
             //ホワイトアウト
             await fade.DOFade(1, fadeIn).From(0).SetEase(Ease.InQuad)
@@ -148,6 +161,9 @@ namespace StackBuild.Game
                 SendStandbyServerRpc();
                 await WaitForAllToSync(MatchStateSignal.GameFinish, token);
             }
+
+            //ゲームBGM止める
+            gameAudio.audioSource.DOFade(0.0f, 5.0f).OnKill(() => gameAudio.audioSource.Stop());
 
             //リザルト表示
             await UniTask.Delay(TimeSpan.FromSeconds(resultsDelay), cancellationToken: token);
