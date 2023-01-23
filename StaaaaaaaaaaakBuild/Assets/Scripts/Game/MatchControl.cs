@@ -94,7 +94,7 @@ namespace StackBuild.Game
             if (IsSpawned)
             {
                 //開始待ちを送信して待つ
-                SendStandbyServerRpc();
+                SendSpawnServerRpc();
                 await WaitForAllToSync(MatchStateSignal.GameStart, token);
             }
 
@@ -145,7 +145,7 @@ namespace StackBuild.Game
             if (IsSpawned)
             {
                 //開始待ちを送信して待つ
-                SendStandbyServerRpc();
+                SendSpawnServerRpc();
                 await WaitForAllToSync(MatchStateSignal.GameFinish, token);
             }
 
@@ -196,9 +196,9 @@ namespace StackBuild.Game
             }
         }
 
-        protected override void OnSendStandby(int numWaitingToSignal)
+        protected override void OnClientSpawn(int count)
         {
-            if (numWaitingToSignal >= NetworkManager.ConnectedClientsIds.Count)
+            if (count >= NetworkManager.ConnectedClientsIds.Count)
             {
                 SendMatchStateSignalServerRpc(NetworkManager.LocalTime.Time, matchStateSignalServer);
             }
