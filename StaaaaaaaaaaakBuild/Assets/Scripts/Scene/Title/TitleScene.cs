@@ -95,7 +95,8 @@ namespace StackBuild.Scene.Title
             await ChangeScreen(matchmakingScreen);
             // matchmaker.enter(...)
             await UniTask.Delay(TimeSpan.FromSeconds(3));
-            matchFoundDisplay.Display();
+            await matchFoundDisplay.DisplayAsync();
+            // changeScene(...)
         }
 
     }

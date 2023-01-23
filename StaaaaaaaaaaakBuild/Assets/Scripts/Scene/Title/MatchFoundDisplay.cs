@@ -1,4 +1,5 @@
-﻿using DG.Tweening;
+﻿using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,7 +20,7 @@ namespace StackBuild.Scene.Title
             container.alpha = 0;
         }
 
-        public void Display()
+        public async UniTask DisplayAsync()
         {
             container.alpha = 1;
 
@@ -43,9 +44,8 @@ namespace StackBuild.Scene.Title
                 .Join(DOTween.To(() => titleText.characterSpacing, v => titleText.characterSpacing = v, 0, 1).From()
                     .SetEase(Ease.OutQuint))
                 .Join(subtitleText.DOFade(1, 0.3f).From(0).SetDelay(0.2f));
-            // .Join(DOTween
-            //     .To(() => subtitleText.maxVisibleCharacters, v => subtitleText.maxVisibleCharacters = v,
-            //         subtitleText.text.Length, 0.5f).From(0).SetEase(Ease.Linear));
+
+            await seq.AsyncWaitForCompletion();
         }
 
     }
