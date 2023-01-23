@@ -47,13 +47,13 @@ namespace StackBuild.UI.Network
             }).AddTo(this);
         }
 
-        protected override void OnClientSpawn(int count)
+        protected override void OnSendStandby(int numWaitingToSignal)
         {
             if (IsSpawned && !IsServer)
                 return;
 
             //待機人数が参加人数の場合シーン変更
-            if (count >= NetworkManager.ConnectedClientsIds.Count)
+            if (numWaitingToSignal >= NetworkManager.ConnectedClientsIds.Count)
             {
                 SceneLoad(sceneName);
             }
@@ -74,7 +74,7 @@ namespace StackBuild.UI.Network
             //ネットワーク処理
             if(IsSpawned)
             {
-                SendSpawnServerRpc();
+                SendStandbyServerRpc();
             }
             else
             {
@@ -88,7 +88,7 @@ namespace StackBuild.UI.Network
         void ButtonUp()
         {
             if (IsSpawned)
-                SendDespawnServerRpc();
+                SendStandbyReleaseServerRpc();
 
             isPressed = false;
         }
