@@ -21,6 +21,11 @@ namespace StackBuild
                 OwnerAllocation();
         }
 
+        public void OnDestroy()
+        {
+            playerManagerProperty.playerManager = null;
+        }
+
         public override void OnNetworkSpawn()
         {
             if(!IsServer)
@@ -77,5 +82,7 @@ namespace StackBuild
 
             return null;
         }
+
+
     }
 }

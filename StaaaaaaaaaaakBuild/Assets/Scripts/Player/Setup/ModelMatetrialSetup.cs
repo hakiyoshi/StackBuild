@@ -75,7 +75,11 @@ namespace StackBuild
             var player = RootPlayerParent(this.transform, this.transform);
 
             //自分のプレイヤーインデックスを取得
-            var playerIndex = playerManagerProperty.playerManager.GetPlayerIndex(player.gameObject);
+            int playerIndex = 0;
+            if (playerManagerProperty.playerManager != null)
+                playerIndex = playerManagerProperty.playerManager.GetPlayerIndex(player.gameObject);
+            else
+                return;
 
             //マテリアルを書き換える
             foreach (var set in setupMaterials)
