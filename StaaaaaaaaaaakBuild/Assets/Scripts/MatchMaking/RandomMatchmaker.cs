@@ -15,6 +15,7 @@ namespace StackBuild.MatchMaking
         [SerializeField] private RelayManager relay;
         [SerializeField] private LobbyOption lobbyOption;
         [SerializeField] private PlayerOption playerOption;
+        [SerializeField] private SceneAsset nextSceneAsset;
 
         private readonly AsyncSubject<Unit> succeedMatchmaking = new AsyncSubject<Unit>();
         public IObservable<Unit> SucceedMatchmaking => succeedMatchmaking;
@@ -85,6 +86,11 @@ namespace StackBuild.MatchMaking
         {
             succeedMatchmaking.OnNext(Unit.Default);
             succeedMatchmaking.OnCompleted();
+
+            if (nextSceneAsset)
+            {
+                NetworkSystemSceneManager.LoadScene(nextSceneAsset.name);
+            }
         }
 
         private void InitializeCancellationTokenSource()
