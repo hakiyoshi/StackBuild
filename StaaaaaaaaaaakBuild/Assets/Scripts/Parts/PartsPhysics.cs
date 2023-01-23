@@ -42,6 +42,7 @@ namespace StackBuild
             rb.velocity = Vector3.zero;
             rb.position = pos;
             PartsCore.isActive.Value = true;
+            rb.mass = PartsCore.Settings.PartsDataDictionary[PartsCore.partsId.Value].mass;
             rb.AddForce(force, forceMode);
             rb.AddTorque(force);
         }
