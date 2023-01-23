@@ -85,11 +85,6 @@ namespace StackBuild.Game
             state.Value = MatchState.Starting;
             matchControlState.SendState(MatchState.Starting);
 
-            //最初のStackBuildが画面に映る
-            introDisplay.Display();
-            timeDisplay.Display(Mathf.RoundToInt(gameTime));
-            await UniTask.Delay(TimeSpan.FromSeconds(introDisplayDuration), cancellationToken: token);
-
             //オンライン時全員が同期するまで待ち
             if (IsSpawned)
             {
@@ -97,6 +92,14 @@ namespace StackBuild.Game
                 SendStandbyServerRpc();
                 await WaitForAllToSync(MatchStateSignal.GameStart, token);
             }
+
+            // TODO: MATCH FOUNDを消す
+
+
+            //最初のStackBuildが画面に映る
+            introDisplay.Display();
+            timeDisplay.Display(Mathf.RoundToInt(gameTime));
+            await UniTask.Delay(TimeSpan.FromSeconds(introDisplayDuration), cancellationToken: token);
 
             //ホワイトアウト
             await fade.DOFade(1, fadeIn).From(0).SetEase(Ease.InQuad)

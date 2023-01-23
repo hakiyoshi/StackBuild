@@ -1,6 +1,7 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using StackBuild.MatchMaking;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
@@ -24,6 +25,8 @@ namespace StackBuild.Scene.Title
         [SerializeField] private CharacterSelectScreen characterSelectScreen;
         [SerializeField] private MatchmakingScreen matchmakingScreen;
         [SerializeField] private MatchFoundDisplay matchFoundDisplay;
+        [SerializeField] private RandomMatchmaker randomMatchmaker;
+        [SerializeField] private NetworkSceneChanger sceneChanger;
 
         private TitleSceneScreen currentScreen;
 
@@ -93,11 +96,12 @@ namespace StackBuild.Scene.Title
         private async UniTaskVoid EnterMatchmaking()
         {
             await ChangeScreen(matchmakingScreen);
-            // matchmaker.enter(...)
-            await UniTask.Delay(TimeSpan.FromSeconds(3));
+            randomMatchmaker.StartRandomMatchmaking().Forget();
+            await randomMatchmaker.SucceedMatchmaking;
             await matchFoundDisplay.DisplayAsync();
-            // changeScene(...)
+            randomMatchmaker.SceneChangeReady().Forget();
+            await randomMatchmaker.AllClientReady;
+            sceneChanger.SceneChange();
         }
-
     }
 }
