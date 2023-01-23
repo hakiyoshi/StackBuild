@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace StackBuild.MatchMaking
 {
-    public sealed class RandomMatchmaker : SyncClientsNetworkBehaviourNetworkBehaviour, IRandomMatchmaker
+    public sealed class RandomMatchmaker : SyncClientsNetworkBehaviour, IRandomMatchmaker
     {
         [SerializeField] private LobbyManager lobby;
         [SerializeField] private RelayManager relay;
