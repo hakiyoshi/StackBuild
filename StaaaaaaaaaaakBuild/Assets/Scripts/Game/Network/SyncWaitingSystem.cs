@@ -1,102 +1,42 @@
 ﻿using Unity.Netcode;
-using Unity.VisualScripting;
 
 namespace StackBuild.Game
 {
     public class SyncWaitingSystem : NetworkBehaviour
     {
-        protected int connectedClientCount { get; private set; } = 0;
-        protected int readyClientCount { get; private set; } = 0;
+        private int numWaitingToSignal = 0;
 
-        public override void OnNetworkSpawn()
+        [ServerRpc(RequireOwnership = false)]
+        protected void SendStandbyServerRpc()
         {
-            SendSpawnServerRpc();
-        }
+            if (!IsServer)
+                return;
 
-        public override void OnNetworkDespawn()
-        {
-            SendDespawnServerRpc();
+            numWaitingToSignal++;
+            OnSendStandby(numWaitingToSignal);
         }
 
         [ServerRpc(RequireOwnership = false)]
-        protected void SendSpawnServerRpc()
+        protected void SendStandbyReleaseServerRpc()
         {
             if (!IsServer)
                 return;
 
-            connectedClientCount++;
-            SetSpawnCountClientRpc(connectedClientCount);
-            OnClientSpawn(connectedClientCount);
+            numWaitingToSignal--;
+            OnSendStandbyRelease(numWaitingToSignal);
         }
 
-        [ServerRpc(RequireOwnership = false)]
-        protected void SendDespawnServerRpc()
+        protected void ResetNumWaitingToSignal()
         {
-            if (!IsServer)
-                return;
-
-            connectedClientCount--;
-            SetSpawnCountClientRpc(connectedClientCount);
+            numWaitingToSignal = 0;
         }
 
-        [ServerRpc(RequireOwnership = false)]
-        protected void SendReadyServerRpc()
-        {
-            if (!IsServer)
-                return;
-
-            readyClientCount++;
-            SetReadyCountClientRpc(readyClientCount);
-            OnClientReady(readyClientCount);
-        }
-
-        [ServerRpc]
-        protected void SendUnreadyServerRpc()
-        {
-            if (!IsServer)
-                return;
-
-            readyClientCount--;
-            SetReadyCountClientRpc(readyClientCount);
-            OnClientDespawn(connectedClientCount);
-        }
-
-        [ClientRpc]
-        protected void SetSpawnCountClientRpc(int count)
-        {
-            connectedClientCount = count;
-        }
-
-        [ClientRpc]
-        protected void SetReadyCountClientRpc(int count)
-        {
-            readyClientCount = count;
-        }
-
-        protected void ResetParameters()
-        {
-            connectedClientCount = 0;
-            readyClientCount = 0;
-            SetSpawnCountClientRpc(0);
-            SetReadyCountClientRpc(0);
-        }
-
-        protected virtual void OnClientSpawn(int count)
+        protected virtual void OnSendStandby(int numWaitingToSignal)
         {
 
         }
 
-        protected virtual void OnClientDespawn(int count)
-        {
-
-        }
-
-        protected virtual void OnClientReady(int count)
-        {
-
-        }
-
-        protected virtual void OnClientUnready(int count)
+        protected virtual void OnSendStandbyRelease(int numWaitingToSignal)
         {
 
         }
