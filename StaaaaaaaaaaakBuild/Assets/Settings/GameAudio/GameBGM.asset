@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: GameBGM
   m_EditorClassIdentifier: 
   <Loop>k__BackingField: 0
-  <Clip>k__BackingField: {fileID: 0}
+  <Clip>k__BackingField: {fileID: 8300000, guid: 742120dda3a95e5438025cf643034e51, type: 3}
