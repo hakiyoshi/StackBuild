@@ -29,6 +29,9 @@ namespace StackBuild.UI
 
             fadeBackground.color = backgroundColor;
             trianglesBackground.color = backgroundColor;
+
+            contents.alpha = 1;
+            fadeBackground.enabled = true;
         }
 
         private void OnDestroy()
@@ -47,7 +50,7 @@ namespace StackBuild.UI
             trianglesBackground.enabled = type == LoadingScreenType.Triangles;
 
             var seq = DOTween.Sequence()
-                .Join(contents.DOFade(1, 0.4f).From(0));
+                .Join(contents.DOFade(1, 0.4f).From(0).SetEase(Ease.Linear));
 
             switch (type)
             {
@@ -73,7 +76,7 @@ namespace StackBuild.UI
             trianglesBackground.enabled = type == LoadingScreenType.Triangles;
 
             var seq = DOTween.Sequence()
-                .Join(contents.DOFade(0, 0.2f).From(1));
+                .Join(contents.DOFade(0, 0.25f).From(1).SetEase(Ease.Linear));
 
             switch (type)
             {

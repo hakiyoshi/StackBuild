@@ -2,6 +2,7 @@
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using StackBuild.MatchMaking;
+using StackBuild.UI;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
@@ -101,6 +102,7 @@ namespace StackBuild.Scene.Title
             await matchFoundDisplay.DisplayAsync();
             randomMatchmaker.SceneChangeReady().Forget();
             await randomMatchmaker.AllClientReady;
+            await LoadingScreen.Instance.ShowAsync();
             sceneChanger.SceneChange();
         }
     }

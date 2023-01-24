@@ -93,8 +93,7 @@ namespace StackBuild.Game
                 await WaitForAllToSync(MatchStateSignal.GameStart, token);
             }
 
-            // TODO: MATCH FOUNDを消す
-
+            await LoadingScreen.Instance.HideAsync(LoadingScreenType.Triangles);
 
             //最初のStackBuildが画面に映る
             introDisplay.Display();
