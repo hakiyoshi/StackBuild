@@ -27,6 +27,7 @@ namespace StackBuild.Scene.Title
         public override async UniTask ShowAsync()
         {
             container.interactable = true;
+            container.blocksRaycasts = true;
             container.alpha = 1;
 
             EventSystem.current.SetSelectedGameObject(null);
@@ -38,6 +39,7 @@ namespace StackBuild.Scene.Title
         public override async UniTask HideAsync()
         {
             container.interactable = false;
+            container.blocksRaycasts = false;
             await container.DOFade(0, 0.07f);
             staggerDisplay.Hide();
         }

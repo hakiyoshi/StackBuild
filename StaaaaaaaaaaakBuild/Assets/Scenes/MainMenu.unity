@@ -227,7 +227,7 @@ CanvasGroup:
   m_Enabled: 1
   m_Alpha: 1
   m_Interactable: 0
-  m_BlocksRaycasts: 1
+  m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
 --- !u!114 &25587962
 MonoBehaviour:
@@ -500,8 +500,8 @@ CanvasGroup:
   m_GameObject: {fileID: 80287799}
   m_Enabled: 1
   m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
 --- !u!1 &82240860
 GameObject:
@@ -1091,10 +1091,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnDown: {fileID: 1006315489}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
@@ -1339,6 +1339,14 @@ PrefabInstance:
       propertyPath: style
       value: 
       objectReference: {fileID: 11400000, guid: 08e3e7324432f1446ba2d37f4844c933, type: 2}
+    - target: {fileID: 9147136604494914362, guid: dfa585924eca51446be566c3beb302c0, type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9147136604494914362, guid: dfa585924eca51446be566c3beb302c0, type: 3}
+      propertyPath: m_Navigation.m_WrapAround
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9147136604494914366, guid: dfa585924eca51446be566c3beb302c0, type: 3}
       propertyPath: m_Pivot.x
       value: 1
@@ -3811,10 +3819,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnUp: {fileID: 173870782}
+    m_SelectOnDown: {fileID: 1168222956}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
@@ -4385,10 +4393,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnUp: {fileID: 1006315489}
+    m_SelectOnDown: {fileID: 1834509603}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
@@ -4737,6 +4745,10 @@ PrefabInstance:
     - target: {fileID: 9147136604494914361, guid: dfa585924eca51446be566c3beb302c0, type: 3}
       propertyPath: text
       value: BACK
+      objectReference: {fileID: 0}
+    - target: {fileID: 9147136604494914362, guid: dfa585924eca51446be566c3beb302c0, type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9147136604494914366, guid: dfa585924eca51446be566c3beb302c0, type: 3}
       propertyPath: m_Pivot.x
@@ -5386,7 +5398,7 @@ CanvasGroup:
   m_Enabled: 1
   m_Alpha: 0
   m_Interactable: 1
-  m_BlocksRaycasts: 1
+  m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
 --- !u!114 &1481866628
 MonoBehaviour:
@@ -6116,9 +6128,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
+    m_SelectOnUp: {fileID: 1834509603}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
@@ -6823,10 +6835,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnUp: {fileID: 1168222956}
+    m_SelectOnDown: {fileID: 1647785515}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
@@ -7065,7 +7077,7 @@ CanvasGroup:
   m_Enabled: 1
   m_Alpha: 0
   m_Interactable: 0
-  m_BlocksRaycasts: 1
+  m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
 --- !u!114 &1847919295
 MonoBehaviour:

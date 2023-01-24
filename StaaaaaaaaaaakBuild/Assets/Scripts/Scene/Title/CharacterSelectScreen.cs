@@ -51,6 +51,7 @@ namespace StackBuild.Scene.Title
         {
             vcam.enabled = true;
             container.interactable = true;
+            container.blocksRaycasts = true;
             container.alpha = 1;
 
             SelectCharacter(null);
@@ -61,6 +62,7 @@ namespace StackBuild.Scene.Title
         {
             vcam.enabled = false;
             container.interactable = false;
+            container.blocksRaycasts = false;
             await container.DOFade(0, 0.2f);
         }
 
