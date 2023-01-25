@@ -70,10 +70,10 @@ namespace StackBuild.Scene.Title
 
         public override async UniTask HideAsync()
         {
-            vcam.enabled = false;
             container.interactable = false;
             container.blocksRaycasts = false;
             await container.DOFade(0, 0.2f);
+            vcam.enabled = false;
         }
 
         private void SelectCharacter(CharacterProperty characterToSelect)
