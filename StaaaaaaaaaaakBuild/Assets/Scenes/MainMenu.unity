@@ -966,6 +966,7 @@ GameObject:
   - component: {fileID: 173870782}
   - component: {fileID: 173870781}
   - component: {fileID: 173870786}
+  - component: {fileID: 173870787}
   m_Layer: 5
   m_Name: Online Match
   m_TagString: Untagged
@@ -1148,6 +1149,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 0
+--- !u!114 &173870787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 173870778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7abad5ad8c0c4aaf8e0ab1eb47a69bfd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 173870782}
+  gameMode: {fileID: 11400000, guid: c64a3bae61ede53458a61da69abc80f0, type: 2}
 --- !u!1 &187415137
 GameObject:
   m_ObjectHideFlags: 0
@@ -3694,6 +3709,7 @@ GameObject:
   - component: {fileID: 1006315489}
   - component: {fileID: 1006315488}
   - component: {fileID: 1006315493}
+  - component: {fileID: 1006315494}
   m_Layer: 5
   m_Name: Local Match
   m_TagString: Untagged
@@ -3876,6 +3892,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 0
+--- !u!114 &1006315494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1006315485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7abad5ad8c0c4aaf8e0ab1eb47a69bfd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 1006315489}
+  gameMode: {fileID: 11400000, guid: 997cfe6c4ee39eb42a63a03ec663beaa, type: 2}
 --- !u!1 &1012069774
 GameObject:
   m_ObjectHideFlags: 0
@@ -4268,8 +4298,9 @@ GameObject:
   - component: {fileID: 1168222956}
   - component: {fileID: 1168222955}
   - component: {fileID: 1168222960}
+  - component: {fileID: 1168222961}
   m_Layer: 5
-  m_Name: Tutorial
+  m_Name: Training
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4315,7 +4346,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: TUTORIAL
+  m_text: TRAINING
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6e960e95f71d8cc4d891eafd52f86f66, type: 2}
   m_sharedMaterial: {fileID: -688978901423406445, guid: 6e960e95f71d8cc4d891eafd52f86f66, type: 2}
@@ -4450,6 +4481,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 0
+--- !u!114 &1168222961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1168222952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7abad5ad8c0c4aaf8e0ab1eb47a69bfd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 1168222956}
+  gameMode: {fileID: 11400000, guid: 6b1de0e40bf07334f94f70ef5e95e35a, type: 2}
 --- !u!1 &1185647507 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8557961566005941342, guid: 368e95c774bdc9847bd7d544770ae1d7, type: 3}
@@ -4666,7 +4711,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 16
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -5419,9 +5464,11 @@ MonoBehaviour:
   shouldShowLogo: 1
   container: {fileID: 1481866627}
   staggerDisplay: {fileID: 1481866629}
+  gameModeButtons:
+  - {fileID: 173870787}
+  - {fileID: 1006315494}
+  - {fileID: 1168222961}
   buttonOnlineMatch: {fileID: 173870782}
-  buttonLocalMatch: {fileID: 1006315489}
-  buttonTutorial: {fileID: 1168222956}
   buttonSettings: {fileID: 1834509603}
   buttonBack: {fileID: 1647785515}
 --- !u!114 &1481866629

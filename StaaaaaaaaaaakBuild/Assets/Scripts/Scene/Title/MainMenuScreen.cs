@@ -1,5 +1,8 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using StackBuild.Game;
+using UniRx;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -12,17 +15,24 @@ namespace StackBuild.Scene.Title
 
         [SerializeField] private CanvasGroup container;
         [SerializeField] private TitleMenuStaggerDisplay staggerDisplay;
+        [SerializeField] private GameModeButton[] gameModeButtons;
         [SerializeField] private Button buttonOnlineMatch;
-        [SerializeField] private Button buttonLocalMatch;
-        [SerializeField] private Button buttonTutorial;
         [SerializeField] private Button buttonSettings;
         [SerializeField] private Button buttonBack;
 
-        public Button.ButtonClickedEvent OnOnlineMatchClick => buttonOnlineMatch.onClick;
-        public Button.ButtonClickedEvent OnLocalMatchClick => buttonLocalMatch.onClick;
-        public Button.ButtonClickedEvent OnTutorialClick => buttonTutorial.onClick;
+        private readonly Subject<GameMode> onGameModeSelect = new();
+
+        public IObservable<GameMode> OnGameModeSelect => onGameModeSelect;
         public Button.ButtonClickedEvent OnSettingsClick => buttonSettings.onClick;
         public Button.ButtonClickedEvent OnBackClick => buttonBack.onClick;
+
+        private void Awake()
+        {
+            foreach (var button in gameModeButtons)
+            {
+                button.OnClick.AddListener(() => onGameModeSelect.OnNext(button.GameMode));
+            }
+        }
 
         public override async UniTask ShowAsync()
         {

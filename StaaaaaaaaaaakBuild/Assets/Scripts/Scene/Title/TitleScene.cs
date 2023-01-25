@@ -1,10 +1,12 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using StackBuild.Game;
 using StackBuild.MatchMaking;
 using StackBuild.UI;
 using UniRx;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace StackBuild.Scene.Title
@@ -34,23 +36,9 @@ namespace StackBuild.Scene.Title
         private void Start()
         {
             titleScreen.OnStartPressed.Subscribe(_ => ChangeScreen(mainMenuScreen).Forget()).AddTo(this);
-            mainMenuScreen.OnOnlineMatchClick.AddListener(() =>
-            {
-                characterSelectScreen.ModeName = "ONLINE MATCH";
-                ChangeScreen(characterSelectScreen).Forget();
-            });
-            mainMenuScreen.OnLocalMatchClick.AddListener(() =>
-            {
-                characterSelectScreen.ModeName = "LOCAL MATCH";
-                ChangeScreen(characterSelectScreen).Forget();
-            });
+            mainMenuScreen.OnGameModeSelect.Subscribe(mode => OnGameModeSelectAsync(mode).Forget());
             mainMenuScreen.OnBackClick.AddListener(() => ChangeScreen(titleScreen).Forget());
             characterSelectScreen.OnBackClick.AddListener(() => ChangeScreen(mainMenuScreen).Forget());
-            characterSelectScreen.OnReady.Subscribe(character =>
-            {
-                // TODO PlayerPropertyに適用
-                EnterMatchmaking().Forget();
-            });
 
             ShowTitleAsync().Forget();
         }
@@ -105,6 +93,26 @@ namespace StackBuild.Scene.Title
             await currentScreen.HideAsync();
             currentScreen = screen;
             await currentScreen.ShowAsync();
+        }
+
+        private async UniTaskVoid OnGameModeSelectAsync(GameMode mode)
+        {
+            characterSelectScreen.ModeName = mode.Name;
+            foreach (var player in mode.PlayersToSelectCharacter)
+            {
+                await ChangeScreen(characterSelectScreen);
+                player.Initialize(await characterSelectScreen.OnReady.First());
+            }
+
+            if (mode.IsOnline)
+            {
+                EnterMatchmaking().Forget();
+            }
+            else
+            {
+                await LoadingScreen.Instance.ShowAsync();
+                SceneManager.LoadSceneAsync("Game");
+            }
         }
 
         private async UniTaskVoid EnterMatchmaking()
