@@ -46,7 +46,11 @@ namespace StackBuild.Scene.Title
             });
             mainMenuScreen.OnBackClick.AddListener(() => ChangeScreen(titleScreen).Forget());
             characterSelectScreen.OnBackClick.AddListener(() => ChangeScreen(mainMenuScreen).Forget());
-            characterSelectScreen.OnReadyClick.AddListener(() => EnterMatchmaking().Forget());
+            characterSelectScreen.OnReady.Subscribe(character =>
+            {
+                // TODO PlayerPropertyに適用
+                EnterMatchmaking().Forget();
+            });
 
             ShowTitleAsync().Forget();
         }

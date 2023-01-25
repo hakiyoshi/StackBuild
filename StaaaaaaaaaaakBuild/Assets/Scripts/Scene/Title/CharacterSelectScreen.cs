@@ -34,13 +34,16 @@ namespace StackBuild.Scene.Title
         [SerializeField] private StackbuildButton readyButton;
 
         private CharacterProperty characterSelected;
+        private readonly Subject<CharacterProperty> onReady = new();
 
         public string ModeName
         {
             set => modeNameText.text = value;
         }
+
         public Button.ButtonClickedEvent OnBackClick => backButton.OnClick;
-        public Button.ButtonClickedEvent OnReadyClick => readyButton.OnClick;
+
+        public IObservable<CharacterProperty> OnReady => onReady;
 
         private void Awake()
         {
@@ -51,6 +54,7 @@ namespace StackBuild.Scene.Title
                 characters[i].button.Character = characters[i].character;
                 characters[i].button.OnClick.Subscribe(_ => SelectCharacter(characters[i1].character)).AddTo(this);
             }
+            readyButton.OnClick.AddListener(() => onReady.OnNext(characterSelected));
         }
 
         public override async UniTask ShowAsync()
@@ -80,6 +84,7 @@ namespace StackBuild.Scene.Title
             {
                 vcam.Follow = unselectedCameraTarget;
             }
+
             characterInfoDisplay.DisplayAsync(characterToSelect).Forget();
             readyButton.Disabled = characterToSelect == null;
             foreach (var character in characters)
