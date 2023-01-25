@@ -499,7 +499,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 80287799}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
@@ -7095,6 +7095,7 @@ MonoBehaviour:
   vcam: {fileID: 1209722782}
   unselectedCameraTarget: {fileID: 795780568}
   container: {fileID: 1847919294}
+  modeNameText: {fileID: 1239385815}
   buttonContainer: {fileID: 2094684894}
   buttonPrefab: {fileID: 5947108278342413506, guid: af6c81d6633f25c4f8ae8e7d1c796956, type: 3}
   characters:

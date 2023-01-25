@@ -34,7 +34,16 @@ namespace StackBuild.Scene.Title
         private void Start()
         {
             titleScreen.OnStartPressed.Subscribe(_ => ChangeScreen(mainMenuScreen).Forget()).AddTo(this);
-            mainMenuScreen.OnOnlineMatchClick.AddListener(() => ChangeScreen(characterSelectScreen).Forget());
+            mainMenuScreen.OnOnlineMatchClick.AddListener(() =>
+            {
+                characterSelectScreen.ModeName = "ONLINE MATCH";
+                ChangeScreen(characterSelectScreen).Forget();
+            });
+            mainMenuScreen.OnLocalMatchClick.AddListener(() =>
+            {
+                characterSelectScreen.ModeName = "LOCAL MATCH";
+                ChangeScreen(characterSelectScreen).Forget();
+            });
             mainMenuScreen.OnBackClick.AddListener(() => ChangeScreen(titleScreen).Forget());
             characterSelectScreen.OnBackClick.AddListener(() => ChangeScreen(mainMenuScreen).Forget());
             characterSelectScreen.OnReadyClick.AddListener(() => EnterMatchmaking().Forget());

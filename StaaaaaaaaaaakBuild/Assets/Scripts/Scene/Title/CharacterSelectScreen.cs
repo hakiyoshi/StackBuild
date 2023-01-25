@@ -3,6 +3,7 @@ using Cinemachine;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using StackBuild.UI;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -24,6 +25,7 @@ namespace StackBuild.Scene.Title
         [SerializeField] private CinemachineVirtualCamera vcam;
         [SerializeField] private Transform unselectedCameraTarget;
         [SerializeField] private CanvasGroup container;
+        [SerializeField] private TMP_Text modeNameText;
         [SerializeField] private Transform buttonContainer;
         [SerializeField] private CharacterSelectButton buttonPrefab;
         [SerializeField] private CharacterInfo[] characters;
@@ -33,6 +35,10 @@ namespace StackBuild.Scene.Title
 
         private CharacterProperty characterSelected;
 
+        public string ModeName
+        {
+            set => modeNameText.text = value;
+        }
         public Button.ButtonClickedEvent OnBackClick => backButton.OnClick;
         public Button.ButtonClickedEvent OnReadyClick => readyButton.OnClick;
 
