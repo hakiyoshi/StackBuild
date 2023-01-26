@@ -28,11 +28,6 @@ namespace StackBuild.MatchMaking
             allClientReady.AddTo(this);
         }
 
-        private void Start()
-        {
-            NetworkSystemManager.NetworkInitAsync().Forget();
-        }
-
         public override void OnDestroy()
         {
             StopRandomMatchmaking();
@@ -82,9 +77,12 @@ namespace StackBuild.MatchMaking
             }
         }
 
-        public void StopRandomMatchmaking()
+        public async UniTask StopRandomMatchmaking()
         {
             FinalizeCancellationTokenSource();
+            ResetParameters();
+
+            await NetworkSystemManager.NetworkExit(lobby, relay);
         }
 
         public async UniTask SceneChangeReady()
@@ -128,6 +126,6 @@ namespace StackBuild.MatchMaking
     {
         public IObservable<Unit> SucceedMatchmaking { get; }
         public UniTask StartRandomMatchmaking();
-        public void StopRandomMatchmaking();
+        public UniTask StopRandomMatchmaking();
     }
 }
