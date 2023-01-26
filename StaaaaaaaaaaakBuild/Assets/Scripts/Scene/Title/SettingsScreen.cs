@@ -2,6 +2,7 @@
 using DG.Tweening;
 using StackBuild.UI;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace StackBuild.Scene.Title
@@ -23,6 +24,9 @@ namespace StackBuild.Scene.Title
             {
                 slider.UpdateSliderValue();
             }
+
+            EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(volumeSliders[0].gameObject);
 
             container.interactable = true;
             container.blocksRaycasts = true;

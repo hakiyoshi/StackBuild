@@ -4908,7 +4908,10 @@ MonoBehaviour:
   shouldShowLogo: 1
   container: {fileID: 933712157}
   staggerDisplay: {fileID: 933712156}
-  volumeSliders: []
+  volumeSliders:
+  - {fileID: 18430080}
+  - {fileID: 585361820}
+  - {fileID: 186987835}
   buttonBack: {fileID: 1686005961}
 --- !u!1 &936282217
 GameObject:
