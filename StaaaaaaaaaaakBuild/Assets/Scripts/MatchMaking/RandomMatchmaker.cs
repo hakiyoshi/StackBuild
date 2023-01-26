@@ -33,11 +33,6 @@ namespace StackBuild.MatchMaking
             {
                 await NetworkSystemManager.NetworkInitAsync();
             }
-            catch (OperationCanceledException ex)
-            {
-                Debug.Log("Canceled RandomMatchmaking");
-                throw;
-            }
             catch (Exception ex)
             {
                 throw;
@@ -47,22 +42,12 @@ namespace StackBuild.MatchMaking
             {
                 await NetworkSystemManager.ClientQuickAsync(lobby, relay, cts.Token);
             }
-            catch (OperationCanceledException ex)
-            {
-                Debug.Log("Canceled RandomMatchmaking");
-                throw;
-            }
             catch (Exception)
             {
                 try
                 {
                     await NetworkSystemManager.CreateRoomAsync(false, lobby, relay, lobbyOption, playerOption,
                         cts.Token);
-                }
-                catch (OperationCanceledException ex)
-                {
-                    Debug.Log("Canceled RandomMatchmaking");
-                    throw;
                 }
                 catch (Exception ex)
                 {
@@ -74,11 +59,6 @@ namespace StackBuild.MatchMaking
             {
                 await UniTask.WaitUntil(() => IsSpawned, cancellationToken: cts.Token);
                 await UniTask.WaitUntil(() => connectedClientCount >= 2, cancellationToken: cts.Token);
-            }
-            catch (OperationCanceledException ex)
-            {
-                Debug.Log("Canceled RandomMatchmaking");
-                throw;
             }
             catch (Exception ex)
             {
@@ -101,11 +81,6 @@ namespace StackBuild.MatchMaking
             try
             {
                 await UniTask.WaitUntil(() => readyClientCount >= 2, cancellationToken: cts.Token);
-            }
-            catch (OperationCanceledException ex)
-            {
-                Debug.Log("Canceled SceneChangeReady");
-                throw;
             }
             catch (Exception ex)
             {
