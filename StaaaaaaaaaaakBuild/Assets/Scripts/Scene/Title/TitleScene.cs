@@ -25,6 +25,7 @@ namespace StackBuild.Scene.Title
         [SerializeField] private TitleLogo logo;
         [SerializeField] private TitleScreen titleScreen;
         [SerializeField] private MainMenuScreen mainMenuScreen;
+        [SerializeField] private SettingsScreen settingsScreen;
         [SerializeField] private CharacterSelectScreen characterSelectScreen;
         [SerializeField] private MatchmakingScreen matchmakingScreen;
         [SerializeField] private MatchFoundDisplay matchFoundDisplay;
@@ -36,8 +37,13 @@ namespace StackBuild.Scene.Title
         private void Start()
         {
             titleScreen.OnStartPressed.Subscribe(_ => ChangeScreen(mainMenuScreen).Forget()).AddTo(this);
+
             mainMenuScreen.OnGameModeSelect.Subscribe(mode => OnGameModeSelectAsync(mode).Forget());
+            mainMenuScreen.OnSettingsClick.AddListener(() => ChangeScreen(settingsScreen).Forget());
             mainMenuScreen.OnBackClick.AddListener(() => ChangeScreen(titleScreen).Forget());
+
+            settingsScreen.OnBackClick.AddListener(() => ChangeScreen(mainMenuScreen).Forget());
+
             characterSelectScreen.OnBackClick.AddListener(() => ChangeScreen(mainMenuScreen).Forget());
 
             ShowTitleAsync().Forget();
