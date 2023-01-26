@@ -22,7 +22,7 @@ namespace StackBuild.MatchMaking
 
         public override void OnDestroy()
         {
-            StopRandomMatchmaking().Forget();
+            FinalizeCancellationTokenSource();
         }
 
         public async UniTask StartRandomMatchmaking()
@@ -48,9 +48,9 @@ namespace StackBuild.MatchMaking
         public async UniTask StopRandomMatchmaking()
         {
             FinalizeCancellationTokenSource();
-            ResetParameters();
 
             await NetworkSystemManager.NetworkExit(lobby, relay);
+            ResetParameters();
         }
 
         public async UniTask SceneChangeReady()
