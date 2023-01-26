@@ -4,6 +4,8 @@ using Cysharp.Threading.Tasks;
 using NetworkSystem;
 using StackBuild.Game;
 using UniRx;
+using Unity.Services.Authentication;
+using Unity.Services.Core;
 using UnityEngine;
 
 namespace StackBuild.MatchMaking
@@ -30,7 +32,7 @@ namespace StackBuild.MatchMaking
 
         public override void OnDestroy()
         {
-            StopRandomMatchmaking();
+            StopRandomMatchmaking().Forget();
         }
 
         public async UniTask StartRandomMatchmaking()
@@ -41,7 +43,12 @@ namespace StackBuild.MatchMaking
             {
                 await NetworkSystemManager.NetworkInitAsync();
             }
-            catch (Exception)
+            catch (OperationCanceledException ex)
+            {
+                succeedMatchmaking.OnError(ex);
+                Debug.LogException(ex);
+            }
+            catch (Exception ex)
             {
                 // ignored
             }
@@ -57,6 +64,11 @@ namespace StackBuild.MatchMaking
                     await NetworkSystemManager.CreateRoomAsync(false, lobby, relay, lobbyOption, playerOption,
                         cts.Token);
                 }
+                catch (OperationCanceledException ex)
+                {
+                    succeedMatchmaking.OnError(ex);
+                    Debug.LogException(ex);
+                }
                 catch (Exception)
                 {
                     // ignored
@@ -70,6 +82,11 @@ namespace StackBuild.MatchMaking
 
                 succeedMatchmaking.OnNext(Unit.Default);
                 succeedMatchmaking.OnCompleted();
+            }
+            catch (OperationCanceledException ex)
+            {
+                succeedMatchmaking.OnError(ex);
+                Debug.LogException(ex);
             }
             catch (Exception)
             {
@@ -89,9 +106,22 @@ namespace StackBuild.MatchMaking
         {
             SendReadyServerRpc();
 
-            await UniTask.WaitUntil(() => readyClientCount >= 2, cancellationToken: cts.Token);
-            allClientReady.OnNext(Unit.Default);
-            allClientReady.OnCompleted();
+            try
+            {
+                await UniTask.WaitUntil(() => readyClientCount >= 2, cancellationToken: cts.Token);
+
+                allClientReady.OnNext(Unit.Default);
+                allClientReady.OnCompleted();
+            }
+            catch (OperationCanceledException ex)
+            {
+                allClientReady.OnError(ex);
+                Debug.LogException(ex);
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
         }
 
         private void InitializeCancellationTokenSource()
