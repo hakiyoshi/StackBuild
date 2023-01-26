@@ -18,7 +18,8 @@ namespace StackBuild
         private void Start()
         {
             //モデルセットアップを取得
-            transform.parent.TryGetComponent(out modelSetup);
+            if (transform.parent == null || !transform.parent.TryGetComponent(out modelSetup))
+                return;
 
             //オーディオセット
             source.clip = cue.Clip;
