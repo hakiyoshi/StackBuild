@@ -29,14 +29,7 @@ namespace StackBuild.MatchMaking
         {
             InitializeCancellationTokenSource();
 
-            try
-            {
-                await NetworkSystemManager.NetworkInitAsync();
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            await NetworkSystemManager.NetworkInitAsync();
 
             try
             {
@@ -44,26 +37,12 @@ namespace StackBuild.MatchMaking
             }
             catch (Exception)
             {
-                try
-                {
-                    await NetworkSystemManager.CreateRoomAsync(false, lobby, relay, lobbyOption, playerOption,
-                        cts.Token);
-                }
-                catch (Exception ex)
-                {
-                    throw;
-                }
+                await NetworkSystemManager.CreateRoomAsync(false, lobby, relay, lobbyOption, playerOption,
+                    cts.Token);
             }
 
-            try
-            {
-                await UniTask.WaitUntil(() => IsSpawned, cancellationToken: cts.Token);
-                await UniTask.WaitUntil(() => connectedClientCount >= 2, cancellationToken: cts.Token);
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            await UniTask.WaitUntil(() => IsSpawned, cancellationToken: cts.Token);
+            await UniTask.WaitUntil(() => connectedClientCount >= 2, cancellationToken: cts.Token);
         }
 
         public async UniTask StopRandomMatchmaking()
@@ -78,14 +57,7 @@ namespace StackBuild.MatchMaking
         {
             SendReadyServerRpc();
 
-            try
-            {
-                await UniTask.WaitUntil(() => readyClientCount >= 2, cancellationToken: cts.Token);
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            await UniTask.WaitUntil(() => readyClientCount >= 2, cancellationToken: cts.Token);
         }
 
         private void InitializeCancellationTokenSource()
