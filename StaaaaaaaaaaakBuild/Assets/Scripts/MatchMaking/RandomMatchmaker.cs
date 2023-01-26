@@ -46,7 +46,7 @@ namespace StackBuild.MatchMaking
             catch (OperationCanceledException ex)
             {
                 succeedMatchmaking.OnError(ex);
-                Debug.LogException(ex);
+                throw;
             }
             catch (Exception ex)
             {
@@ -67,7 +67,7 @@ namespace StackBuild.MatchMaking
                 catch (OperationCanceledException ex)
                 {
                     succeedMatchmaking.OnError(ex);
-                    Debug.LogException(ex);
+                    throw;
                 }
                 catch (Exception)
                 {
@@ -86,7 +86,7 @@ namespace StackBuild.MatchMaking
             catch (OperationCanceledException ex)
             {
                 succeedMatchmaking.OnError(ex);
-                Debug.LogException(ex);
+                throw;
             }
             catch (Exception)
             {
@@ -116,7 +116,7 @@ namespace StackBuild.MatchMaking
             catch (OperationCanceledException ex)
             {
                 allClientReady.OnError(ex);
-                Debug.LogException(ex);
+                throw;
             }
             catch (Exception)
             {
