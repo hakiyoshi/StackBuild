@@ -6,6 +6,7 @@ using StackBuild.Game;
 using UniRx;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
+using Unity.Services.Lobbies;
 using UnityEngine;
 
 namespace StackBuild.MatchMaking
@@ -32,6 +33,16 @@ namespace StackBuild.MatchMaking
             {
                 await NetworkSystemManager.NetworkInitAsync();
             }
+            catch (AuthenticationException ex)
+            {
+                // TODO: Retry
+                throw;
+            }
+            catch (RequestFailedException ex)
+            {
+                // TODO: Retry
+                throw;
+            }
             catch (OperationCanceledException ex)
             {
                 Debug.Log("Canceled RandomMatchmaking");
@@ -45,6 +56,16 @@ namespace StackBuild.MatchMaking
             try
             {
                 await NetworkSystemManager.ClientQuickAsync(lobby, relay, cts.Token);
+            }
+            catch (OperationCanceledException ex)
+            {
+                Debug.Log("Canceled RandomMatchmaking");
+                throw;
+            }
+            catch (LobbyServiceException ex)
+            {
+                // TODO: Retry
+                throw;
             }
             catch (Exception)
             {
