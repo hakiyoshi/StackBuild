@@ -34,7 +34,6 @@ namespace StackBuild.Scene.Title
         [SerializeField] private NetworkSceneChanger sceneChanger;
 
         private TitleSceneScreen currentScreen;
-        private CancellationTokenSource cts;
 
         private void Start()
         {
@@ -131,27 +130,25 @@ namespace StackBuild.Scene.Title
 
         private async UniTaskVoid EnterMatchmaking()
         {
-            cts?.Dispose();
-            cts = new CancellationTokenSource();
             await ChangeScreen(matchmakingScreen);
-            randomMatchmaker.StartRandomMatchmaking().Forget();
-            await randomMatchmaker.SucceedMatchmaking;
-            if (cts.IsCancellationRequested)
+            try
+            {
+                await randomMatchmaker.StartRandomMatchmaking();
+            }
+            catch (OperationCanceledException)
             {
                 await ChangeScreen(mainMenuScreen);
                 return;
             }
 
             await matchFoundDisplay.DisplayAsync();
-            randomMatchmaker.SceneChangeReady().Forget();
-            await randomMatchmaker.AllClientReady;
+            await randomMatchmaker.SceneChangeReady();
             await LoadingScreen.Instance.ShowAsync();
             sceneChanger.SceneChange();
         }
 
         private void CancelMatchmaking()
         {
-            cts?.Cancel();
             randomMatchmaker.StopRandomMatchmaking().Forget();
             matchmakingScreen.SetCanceling();
         }
