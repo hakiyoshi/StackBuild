@@ -377,6 +377,7 @@ GameObject:
   - component: {fileID: 4369705853339599618}
   - component: {fileID: 3086688025159762027}
   - component: {fileID: 5947108278342413506}
+  - component: {fileID: 287455788101793532}
   m_Layer: 5
   m_Name: Character Button
   m_TagString: Untagged
@@ -510,6 +511,22 @@ MonoBehaviour:
   - {fileID: 4369705852467117703}
   characterImage: {fileID: 1771416953505660255}
   nameText: {fileID: 4369705852828546121}
+--- !u!114 &287455788101793532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4369705853339599628}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34b24ad2595a4fc09a70f3f28446c1f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ui: {fileID: 3086688025159762027}
+  channel: {fileID: 11400000, guid: 81faf6d923e32304ea6f6ad1e2d35791, type: 2}
+  cursorSound: {fileID: 11400000, guid: b4916e0ec27403749a4e4e574044d8bd, type: 2}
+  selectSound: {fileID: 11400000, guid: 0c5f2ad265aeada40bf58102ea292f3d, type: 2}
 --- !u!1 &4369705853659252156
 GameObject:
   m_ObjectHideFlags: 0
