@@ -28,6 +28,16 @@ namespace StackBuild
                 return;
 
             modelObject = GameObject.Instantiate(property.Model.CharacterModelPrefab, transform);
+            ChengeModelLayer(modelObject);
+        }
+
+        void ChengeModelLayer(GameObject parent)
+        {
+            parent.layer = gameObject.layer;
+            foreach (Transform child in parent.transform)
+            {
+                ChengeModelLayer(child.gameObject);
+            }
         }
     }
 }
