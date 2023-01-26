@@ -105,6 +105,7 @@ namespace StackBuild.Game
                 .ToUniTask(cancellationToken: fade.gameObject.GetCancellationTokenOnDestroy());
 
             introDisplay.gameObject.SetActive(false);
+            introDisplay.DisableVirtualCamera();
 
             await UniTask.Delay(TimeSpan.FromSeconds(fadeSustain), cancellationToken: token);
             await fade.DOFade(0, fadeOut).ToUniTask(cancellationToken: fade.gameObject.GetCancellationTokenOnDestroy());

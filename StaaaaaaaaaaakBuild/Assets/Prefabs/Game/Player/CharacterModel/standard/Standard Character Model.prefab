@@ -2157,7 +2157,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cue: {fileID: 11400000, guid: 34f23b0874e80d54185673504649f8d1, type: 2}
   source: {fileID: 2109139555465671830}
-  characterProperty: {fileID: 11400000, guid: a255eb5a3e201804bb6af8c87c5325ca, type: 2}
 --- !u!82 &2109139555465671830
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2167,7 +2166,7 @@ AudioSource:
   m_GameObject: {fileID: 7589776343792720418}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 7035001380055121578, guid: 83f2bd16808073544ab82b3ee66bad4b, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
