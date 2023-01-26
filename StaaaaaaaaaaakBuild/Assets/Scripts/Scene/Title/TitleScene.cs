@@ -149,6 +149,7 @@ namespace StackBuild.Scene.Title
         {
             cts?.Cancel();
             randomMatchmaker.StopRandomMatchmaking().Forget();
+            matchmakingScreen.SetCanceling();
         }
 
     }
