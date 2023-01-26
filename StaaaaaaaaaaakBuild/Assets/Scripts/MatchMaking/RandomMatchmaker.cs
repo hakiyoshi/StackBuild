@@ -4,6 +4,9 @@ using Cysharp.Threading.Tasks;
 using NetworkSystem;
 using StackBuild.Game;
 using UniRx;
+using Unity.Services.Authentication;
+using Unity.Services.Core;
+using Unity.Services.Lobbies;
 using UnityEngine;
 
 namespace StackBuild.MatchMaking
@@ -15,36 +18,18 @@ namespace StackBuild.MatchMaking
         [SerializeField] private LobbyOption lobbyOption;
         [SerializeField] private PlayerOption playerOption;
 
-        private readonly AsyncSubject<Unit> succeedMatchmaking = new ();
-        public IObservable<Unit> SucceedMatchmaking => succeedMatchmaking;
-        private readonly AsyncSubject<Unit> allClientReady = new();
-        public IObservable<Unit> AllClientReady => allClientReady;
-
         private CancellationTokenSource cts;
-
-        private void Awake()
-        {
-            succeedMatchmaking.AddTo(this);
-            allClientReady.AddTo(this);
-        }
 
         public override void OnDestroy()
         {
-            StopRandomMatchmaking();
+            StopRandomMatchmaking().Forget();
         }
 
         public async UniTask StartRandomMatchmaking()
         {
             InitializeCancellationTokenSource();
 
-            try
-            {
-                await NetworkSystemManager.NetworkInitAsync();
-            }
-            catch (Exception)
-            {
-                // ignored
-            }
+            await NetworkSystemManager.NetworkInitAsync();
 
             try
             {
@@ -52,29 +37,12 @@ namespace StackBuild.MatchMaking
             }
             catch (Exception)
             {
-                try
-                {
-                    await NetworkSystemManager.CreateRoomAsync(false, lobby, relay, lobbyOption, playerOption,
-                        cts.Token);
-                }
-                catch (Exception)
-                {
-                    // ignored
-                }
+                await NetworkSystemManager.CreateRoomAsync(false, lobby, relay, lobbyOption, playerOption,
+                    cts.Token);
             }
 
-            try
-            {
-                await UniTask.WaitUntil(() => IsSpawned, cancellationToken: cts.Token);
-                await UniTask.WaitUntil(() => connectedClientCount >= 2, cancellationToken: cts.Token);
-
-                succeedMatchmaking.OnNext(Unit.Default);
-                succeedMatchmaking.OnCompleted();
-            }
-            catch (Exception)
-            {
-                // ignored
-            }
+            await UniTask.WaitUntil(() => IsSpawned, cancellationToken: cts.Token);
+            await UniTask.WaitUntil(() => connectedClientCount >= 2, cancellationToken: cts.Token);
         }
 
         public async UniTask StopRandomMatchmaking()
@@ -90,8 +58,6 @@ namespace StackBuild.MatchMaking
             SendReadyServerRpc();
 
             await UniTask.WaitUntil(() => readyClientCount >= 2, cancellationToken: cts.Token);
-            allClientReady.OnNext(Unit.Default);
-            allClientReady.OnCompleted();
         }
 
         private void InitializeCancellationTokenSource()
@@ -124,7 +90,6 @@ namespace StackBuild.MatchMaking
 
     public interface IRandomMatchmaker
     {
-        public IObservable<Unit> SucceedMatchmaking { get; }
         public UniTask StartRandomMatchmaking();
         public UniTask StopRandomMatchmaking();
     }
