@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 50f16f2810e64f688744436e4106b8a5, type: 3}
-  m_Name: Training
+  m_Name: Practice
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: Training
+  <Name>k__BackingField: Practice
   <IsOnline>k__BackingField: 0
   <PlayersToSelectCharacter>k__BackingField:
   - {fileID: 11400000, guid: 94434b52069cc2f4ba70d07e78b196cd, type: 2}

@@ -3565,7 +3565,6 @@ MonoBehaviour:
   matchFoundDisplay: {fileID: 80287803}
   randomMatchmaker: {fileID: 396594194}
   sceneChanger: {fileID: 1497647040}
-  a: 0
 --- !u!1 &676541577
 GameObject:
   m_ObjectHideFlags: 0
@@ -6037,7 +6036,7 @@ GameObject:
   - component: {fileID: 1168222961}
   - component: {fileID: 1168222962}
   m_Layer: 5
-  m_Name: Training
+  m_Name: Practice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6083,7 +6082,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: TRAINING
+  m_text: PRACTICE
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6e960e95f71d8cc4d891eafd52f86f66, type: 2}
   m_sharedMaterial: {fileID: -688978901423406445, guid: 6e960e95f71d8cc4d891eafd52f86f66, type: 2}
