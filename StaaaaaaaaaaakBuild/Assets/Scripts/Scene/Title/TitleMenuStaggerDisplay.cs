@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,14 +9,28 @@ namespace StackBuild.Scene.Title
     public class TitleMenuStaggerDisplay : MonoBehaviour
     {
 
+        [Serializable]
+        private struct ItemComponentInfo
+        {
+            public Graphic graphic;
+            public CanvasGroup group;
+        }
+
         private const float DefaultStagger = 0.07f;
 
         [SerializeField] private bool hideOnAwake;
-        [SerializeField] private Graphic[] items;
+        [SerializeField] private RectTransform[] items;
         private Sequence seq;
+        private ItemComponentInfo[] itemComponents;
 
         private void Awake()
         {
+            itemComponents = items.Select(item => new ItemComponentInfo
+            {
+                graphic = item.GetComponent<Graphic>(),
+                group = item.GetComponent<CanvasGroup>(),
+            }).ToArray();
+
             if (hideOnAwake)
             {
                 Hide();
@@ -26,14 +41,26 @@ namespace StackBuild.Scene.Title
         {
             seq = DOTween.Sequence();
 
-            int i = 0;
-            foreach (var item in items)
+            for (int i = 0; i < items.Length; i++)
             {
-                seq
-                    .Join(item.DOFade(1, 0).From(0).SetDelay(i > 0 ? DefaultStagger : 0))
-                    .Join(((RectTransform)item.transform).DOAnchorPosX(0, TitleScene.SlideDecelerationDuration).From(new Vector2(-200, 0))
-                        .SetEase(TitleScene.SlideDecelerationEasing));
-                i++;
+                var item = items[i];
+                var comp = itemComponents[i];
+
+                if (comp.graphic != null)
+                {
+                    seq.Insert(i * DefaultStagger, comp.graphic.DOFade(1, 0).From(0));
+                }
+                else if (comp.group != null)
+                {
+                    seq.Insert(i * DefaultStagger, comp.group.DOFade(1, 0).From(0));
+                }
+                else
+                {
+                    seq.InsertCallback(i * DefaultStagger, () => item.gameObject.SetActive(true));
+                }
+
+                seq.Join(item.DOAnchorPosX(0, TitleScene.SlideDecelerationDuration).From(new Vector2(-200, 0))
+                    .SetEase(TitleScene.SlideDecelerationEasing));
             }
 
             return seq;
@@ -42,11 +69,25 @@ namespace StackBuild.Scene.Title
         public void Hide()
         {
             seq?.Kill();
-            foreach (var item in items)
+            for (int i = 0; i < items.Length; i++)
             {
-                var color = item.color;
-                color.a = 0;
-                item.color = color;
+                var item = items[i];
+                var comp = itemComponents[i];
+
+                if (comp.graphic != null)
+                {
+                    var color = comp.graphic.color;
+                    color.a = 0;
+                    comp.graphic.color = color;
+                }
+                else if (comp.group != null)
+                {
+                    comp.group.alpha = 0;
+                }
+                else
+                {
+                    item.gameObject.SetActive(false);
+                }
             }
         }
 
