@@ -111,6 +111,7 @@ namespace StackBuild.Scene.Title
                 var player = mode.PlayersToSelectCharacter[i];
                 characterSelectScreen.PlayerName =
                     mode.PlayersToSelectCharacter.Length > 1 ? $"Player {(i + 1).ToString()}" : null;
+                characterSelectScreen.FlipPlayerBackground = i % 2 == 0;
                 await ChangeScreen(characterSelectScreen);
                 var selectedCharacter = await characterSelectScreen.OnConfirm.First();
                 if (selectedCharacter == null)

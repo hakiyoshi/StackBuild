@@ -2,6 +2,7 @@
 using Cinemachine;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using StackBuild.Extensions;
 using StackBuild.UI;
 using TMPro;
 using UnityEngine;
@@ -26,6 +27,8 @@ namespace StackBuild.Scene.Title
         [SerializeField] private Transform unselectedCameraTarget;
         [SerializeField] private CanvasGroup container;
         [SerializeField] private TMP_Text modeNameText;
+        [SerializeField] private CanvasGroup playerNameContainer;
+        [SerializeField] private RectTransform playerNameBackground;
         [SerializeField] private TMP_Text playerNameText;
         [SerializeField] private Transform buttonContainer;
         [SerializeField] private CharacterSelectButton buttonPrefab;
@@ -34,7 +37,6 @@ namespace StackBuild.Scene.Title
         [SerializeField] private StackbuildButton backButton;
         [SerializeField] private StackbuildButton readyButton;
 
-        private bool isPlayerNameSet;
         private CharacterProperty characterSelected;
         private Sequence playerTextAnimation;
         private readonly Subject<CharacterProperty> onConfirm = new();
@@ -44,14 +46,8 @@ namespace StackBuild.Scene.Title
             set => modeNameText.text = value;
         }
 
-        public string PlayerName
-        {
-            set
-            {
-                playerNameText.text = value ?? "";
-                isPlayerNameSet = value != null;
-            }
-        }
+        public string PlayerName { private get; set; }
+        public bool FlipPlayerBackground { private get; set; }
 
         /// READYされたら選択キャラクター、戻るが押されたらnull
         public IObservable<CharacterProperty> OnConfirm => onConfirm;
@@ -68,18 +64,22 @@ namespace StackBuild.Scene.Title
             readyButton.OnClick.AddListener(() => onConfirm.OnNext(characterSelected));
             backButton.OnClick.AddListener(() => onConfirm.OnNext(null));
 
+            var playerNameContainerTransform = (RectTransform)playerNameContainer.transform;
             playerTextAnimation = DOTween.Sequence()
-                .Join(playerNameText.rectTransform.DOScale(3, TitleScene.SlideDecelerationDuration).From(1)
-                    .SetEase(TitleScene.SlideDecelerationEasing))
-                .Append(playerNameText.rectTransform.DOScale(1, 0.4f)
+                .Join(playerNameContainerTransform
+                    .DOSizeDelta(playerNameContainerTransform.sizeDelta.WithX(0), TitleScene.SlideDecelerationDuration)
+                    .From().SetEase(TitleScene.SlideDecelerationEasing))
+                .Join(playerNameText.DOFade(0, 0.2f).From().SetDelay(0.2f))
+                .Join(playerNameText.rectTransform.DOScale(0.8f, 0.2f).From())
+                .Append(playerNameContainerTransform.DOScale(1, 0.4f).From(2)
                     .SetEase(Ease.InOutCubic))
-                .Join(playerNameText.rectTransform.DOAnchorMax(new Vector2(0.5f, 0.5f), 0.4f).From()
+                .Join(playerNameContainerTransform.DOAnchorMax(new Vector2(0.5f, 0.5f), 0.4f).From()
                     .SetEase(Ease.InOutCubic))
-                .Join(playerNameText.rectTransform.DOAnchorMin(new Vector2(0.5f, 0.5f), 0.4f).From()
+                .Join(playerNameContainerTransform.DOAnchorMin(new Vector2(0.5f, 0.5f), 0.4f).From()
                     .SetEase(Ease.InOutCubic))
-                .Join(playerNameText.rectTransform.DOPivot(new Vector2(0.5f, 0.5f), 0.4f).From()
+                .Join(playerNameContainerTransform.DOPivot(new Vector2(0.5f, 0.5f), 0.4f).From()
                     .SetEase(Ease.InOutCubic))
-                .Join(playerNameText.rectTransform.DOAnchorPos(Vector2.zero, 0.4f).From()
+                .Join(playerNameContainerTransform.DOAnchorPos(Vector2.zero, 0.4f).From()
                     .SetEase(Ease.InOutCubic))
                 .SetAutoKill(false).SetLink(gameObject).Pause();
         }
@@ -91,10 +91,15 @@ namespace StackBuild.Scene.Title
             container.blocksRaycasts = true;
             container.alpha = 1;
 
+            var isPlayerNameSet = PlayerName != null;
             if (isPlayerNameSet)
             {
                 playerTextAnimation.Restart();
+                playerNameText.text = PlayerName;
             }
+
+            playerNameContainer.alpha = isPlayerNameSet ? 1 : 0;
+            playerNameBackground.localScale = new Vector3(FlipPlayerBackground ? -1 : 1, 1, 1);
 
             SelectCharacter(null);
             EventSystem.current.SetSelectedGameObject(characters[0].button.gameObject);
