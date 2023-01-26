@@ -45,8 +45,6 @@ namespace StackBuild.Scene.Title
 
             settingsScreen.OnBackClick.AddListener(() => ChangeScreen(mainMenuScreen).Forget());
 
-            characterSelectScreen.OnBackClick.AddListener(() => ChangeScreen(mainMenuScreen).Forget());
-
             matchmakingScreen.OnCancel.AddListener(CancelMatchmaking);
 
             ShowTitleAsync().Forget();
@@ -114,7 +112,13 @@ namespace StackBuild.Scene.Title
                 characterSelectScreen.PlayerName =
                     mode.PlayersToSelectCharacter.Length > 1 ? $"Player {(i + 1).ToString()}" : null;
                 await ChangeScreen(characterSelectScreen);
-                player.Initialize(await characterSelectScreen.OnReady.First());
+                var selectedCharacter = await characterSelectScreen.OnConfirm.First();
+                if (selectedCharacter == null)
+                {
+                    await ChangeScreen(mainMenuScreen);
+                    return;
+                }
+                player.Initialize(selectedCharacter);
             }
 
             if (mode.IsOnline)

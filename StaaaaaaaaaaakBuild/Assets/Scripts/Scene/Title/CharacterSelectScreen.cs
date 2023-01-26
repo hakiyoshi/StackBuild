@@ -37,7 +37,7 @@ namespace StackBuild.Scene.Title
         private bool isPlayerNameSet;
         private CharacterProperty characterSelected;
         private Sequence playerTextAnimation;
-        private readonly Subject<CharacterProperty> onReady = new();
+        private readonly Subject<CharacterProperty> onConfirm = new();
 
         public string ModeName
         {
@@ -53,9 +53,8 @@ namespace StackBuild.Scene.Title
             }
         }
 
-        public Button.ButtonClickedEvent OnBackClick => backButton.OnClick;
-
-        public IObservable<CharacterProperty> OnReady => onReady;
+        /// READYされたら選択キャラクター、戻るが押されたらnull
+        public IObservable<CharacterProperty> OnConfirm => onConfirm;
 
         private void Awake()
         {
@@ -66,7 +65,8 @@ namespace StackBuild.Scene.Title
                 characters[i].button.Character = characters[i].character;
                 characters[i].button.OnClick.Subscribe(_ => SelectCharacter(characters[i1].character)).AddTo(this);
             }
-            readyButton.OnClick.AddListener(() => onReady.OnNext(characterSelected));
+            readyButton.OnClick.AddListener(() => onConfirm.OnNext(characterSelected));
+            backButton.OnClick.AddListener(() => onConfirm.OnNext(null));
 
             playerTextAnimation = DOTween.Sequence()
                 .Join(playerNameText.rectTransform.DOScale(3, TitleScene.SlideDecelerationDuration).From(1)
