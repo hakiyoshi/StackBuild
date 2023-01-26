@@ -108,8 +108,12 @@ namespace StackBuild.Scene.Title
         private async UniTaskVoid OnGameModeSelectAsync(GameMode mode)
         {
             characterSelectScreen.ModeName = mode.Name;
-            foreach (var player in mode.PlayersToSelectCharacter)
+            characterSelectScreen.PlayerName = null;
+            for (int i = 0; i < mode.PlayersToSelectCharacter.Length; i++)
             {
+                var player = mode.PlayersToSelectCharacter[i];
+                characterSelectScreen.PlayerName =
+                    mode.PlayersToSelectCharacter.Length > 1 ? $"Player {(i + 1).ToString()}" : null;
                 await ChangeScreen(characterSelectScreen);
                 player.Initialize(await characterSelectScreen.OnReady.First());
             }

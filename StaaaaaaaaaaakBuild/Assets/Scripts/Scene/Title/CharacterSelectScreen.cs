@@ -26,6 +26,7 @@ namespace StackBuild.Scene.Title
         [SerializeField] private Transform unselectedCameraTarget;
         [SerializeField] private CanvasGroup container;
         [SerializeField] private TMP_Text modeNameText;
+        [SerializeField] private TMP_Text playerNameText;
         [SerializeField] private Transform buttonContainer;
         [SerializeField] private CharacterSelectButton buttonPrefab;
         [SerializeField] private CharacterInfo[] characters;
@@ -33,12 +34,23 @@ namespace StackBuild.Scene.Title
         [SerializeField] private StackbuildButton backButton;
         [SerializeField] private StackbuildButton readyButton;
 
+        private bool isPlayerNameSet;
         private CharacterProperty characterSelected;
+        private Sequence playerTextAnimation;
         private readonly Subject<CharacterProperty> onReady = new();
 
         public string ModeName
         {
             set => modeNameText.text = value;
+        }
+
+        public string PlayerName
+        {
+            set
+            {
+                playerNameText.text = value ?? "";
+                isPlayerNameSet = value != null;
+            }
         }
 
         public Button.ButtonClickedEvent OnBackClick => backButton.OnClick;
@@ -55,6 +67,21 @@ namespace StackBuild.Scene.Title
                 characters[i].button.OnClick.Subscribe(_ => SelectCharacter(characters[i1].character)).AddTo(this);
             }
             readyButton.OnClick.AddListener(() => onReady.OnNext(characterSelected));
+
+            playerTextAnimation = DOTween.Sequence()
+                .Join(playerNameText.rectTransform.DOScale(3, TitleScene.SlideDecelerationDuration).From(1)
+                    .SetEase(TitleScene.SlideDecelerationEasing))
+                .Append(playerNameText.rectTransform.DOScale(1, 0.4f)
+                    .SetEase(Ease.InOutCubic))
+                .Join(playerNameText.rectTransform.DOAnchorMax(new Vector2(0.5f, 0.5f), 0.4f).From()
+                    .SetEase(Ease.InOutCubic))
+                .Join(playerNameText.rectTransform.DOAnchorMin(new Vector2(0.5f, 0.5f), 0.4f).From()
+                    .SetEase(Ease.InOutCubic))
+                .Join(playerNameText.rectTransform.DOPivot(new Vector2(0.5f, 0.5f), 0.4f).From()
+                    .SetEase(Ease.InOutCubic))
+                .Join(playerNameText.rectTransform.DOAnchorPos(Vector2.zero, 0.4f).From()
+                    .SetEase(Ease.InOutCubic))
+                .SetAutoKill(false).SetLink(gameObject).Pause();
         }
 
         public override async UniTask ShowAsync()
@@ -64,12 +91,18 @@ namespace StackBuild.Scene.Title
             container.blocksRaycasts = true;
             container.alpha = 1;
 
+            if (isPlayerNameSet)
+            {
+                playerTextAnimation.Restart();
+            }
+
             SelectCharacter(null);
             EventSystem.current.SetSelectedGameObject(characters[0].button.gameObject);
         }
 
         public override async UniTask HideAsync()
         {
+            playerTextAnimation.Pause();
             container.interactable = false;
             container.blocksRaycasts = false;
             await container.DOFade(0, 0.2f);
