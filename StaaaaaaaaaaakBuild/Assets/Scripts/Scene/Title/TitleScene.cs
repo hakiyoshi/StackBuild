@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using StackBuild.Game;
@@ -33,6 +34,7 @@ namespace StackBuild.Scene.Title
         [SerializeField] private NetworkSceneChanger sceneChanger;
 
         private TitleSceneScreen currentScreen;
+        private CancellationTokenSource cts;
 
         private void Start()
         {
@@ -45,6 +47,8 @@ namespace StackBuild.Scene.Title
             settingsScreen.OnBackClick.AddListener(() => ChangeScreen(mainMenuScreen).Forget());
 
             characterSelectScreen.OnBackClick.AddListener(() => ChangeScreen(mainMenuScreen).Forget());
+
+            matchmakingScreen.OnCancel.AddListener(CancelMatchmaking);
 
             ShowTitleAsync().Forget();
         }
@@ -123,14 +127,29 @@ namespace StackBuild.Scene.Title
 
         private async UniTaskVoid EnterMatchmaking()
         {
+            cts?.Dispose();
+            cts = new CancellationTokenSource();
             await ChangeScreen(matchmakingScreen);
             randomMatchmaker.StartRandomMatchmaking().Forget();
             await randomMatchmaker.SucceedMatchmaking;
+            if (cts.IsCancellationRequested)
+            {
+                await ChangeScreen(mainMenuScreen);
+                return;
+            }
+
             await matchFoundDisplay.DisplayAsync();
             randomMatchmaker.SceneChangeReady().Forget();
             await randomMatchmaker.AllClientReady;
             await LoadingScreen.Instance.ShowAsync();
             sceneChanger.SceneChange();
         }
+
+        private void CancelMatchmaking()
+        {
+            cts?.Cancel();
+            randomMatchmaker.StopRandomMatchmaking().Forget();
+        }
+
     }
 }
