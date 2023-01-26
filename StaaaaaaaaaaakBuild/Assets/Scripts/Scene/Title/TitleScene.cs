@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using StackBuild.Audio;
 using StackBuild.Game;
 using StackBuild.MatchMaking;
 using StackBuild.UI;
@@ -32,12 +32,20 @@ namespace StackBuild.Scene.Title
         [SerializeField] private MatchFoundDisplay matchFoundDisplay;
         [SerializeField] private RandomMatchmaker randomMatchmaker;
         [SerializeField] private NetworkSceneChanger sceneChanger;
+        [SerializeField] private AudioChannel audioChannel;
+        [SerializeField] private AudioCue cueStart;
+        [SerializeField] private AudioCue cueReady;
+        [SerializeField] private AudioCue cueMatchFound;
 
         private TitleSceneScreen currentScreen;
 
         private void Start()
         {
-            titleScreen.OnStartPressed.Subscribe(_ => ChangeScreen(mainMenuScreen).Forget()).AddTo(this);
+            titleScreen.OnStartPressed.Subscribe(_ =>
+            {
+                audioChannel.Request(cueStart);
+                ChangeScreen(mainMenuScreen).Forget();
+            }).AddTo(this);
 
             mainMenuScreen.OnGameModeSelect.Subscribe(mode => OnGameModeSelectAsync(mode).Forget());
             mainMenuScreen.OnSettingsClick.AddListener(() => ChangeScreen(settingsScreen).Forget());
@@ -135,6 +143,7 @@ namespace StackBuild.Scene.Title
 
         private async UniTaskVoid EnterMatchmaking()
         {
+            audioChannel.Request(cueReady);
             await ChangeScreen(matchmakingScreen);
             try
             {
@@ -146,6 +155,7 @@ namespace StackBuild.Scene.Title
                 return;
             }
 
+            audioChannel.Request(cueMatchFound);
             await matchFoundDisplay.DisplayAsync();
             await randomMatchmaker.SceneChangeReady();
             await LoadingScreen.Instance.ShowAsync();

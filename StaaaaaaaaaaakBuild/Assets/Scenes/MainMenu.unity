@@ -3565,6 +3565,10 @@ MonoBehaviour:
   matchFoundDisplay: {fileID: 80287803}
   randomMatchmaker: {fileID: 396594194}
   sceneChanger: {fileID: 1497647040}
+  audioChannel: {fileID: 11400000, guid: 81faf6d923e32304ea6f6ad1e2d35791, type: 2}
+  cueStart: {fileID: 11400000, guid: ce1dadf300b75f845ab31b71fa2d1f17, type: 2}
+  cueReady: {fileID: 11400000, guid: 008dccbbe89a17141bb281bcc0a979c6, type: 2}
+  cueMatchFound: {fileID: 11400000, guid: 65faaa13f0eb7b24b813b58b70f207cc, type: 2}
 --- !u!1 &676541577
 GameObject:
   m_ObjectHideFlags: 0
