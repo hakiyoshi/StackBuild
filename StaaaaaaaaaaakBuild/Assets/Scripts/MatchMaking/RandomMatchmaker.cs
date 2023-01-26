@@ -17,18 +17,7 @@ namespace StackBuild.MatchMaking
         [SerializeField] private LobbyOption lobbyOption;
         [SerializeField] private PlayerOption playerOption;
 
-        private readonly AsyncSubject<Unit> succeedMatchmaking = new ();
-        public IObservable<Unit> SucceedMatchmaking => succeedMatchmaking;
-        private readonly AsyncSubject<Unit> allClientReady = new();
-        public IObservable<Unit> AllClientReady => allClientReady;
-
         private CancellationTokenSource cts;
-
-        private void Awake()
-        {
-            succeedMatchmaking.AddTo(this);
-            allClientReady.AddTo(this);
-        }
 
         public override void OnDestroy()
         {
@@ -45,7 +34,6 @@ namespace StackBuild.MatchMaking
             }
             catch (Exception ex)
             {
-                succeedMatchmaking.OnError(ex);
                 throw;
             }
 
@@ -62,7 +50,6 @@ namespace StackBuild.MatchMaking
                 }
                 catch (Exception ex)
                 {
-                    succeedMatchmaking.OnError(ex);
                     throw;
                 }
             }
@@ -71,13 +58,9 @@ namespace StackBuild.MatchMaking
             {
                 await UniTask.WaitUntil(() => IsSpawned, cancellationToken: cts.Token);
                 await UniTask.WaitUntil(() => connectedClientCount >= 2, cancellationToken: cts.Token);
-
-                succeedMatchmaking.OnNext(Unit.Default);
-                succeedMatchmaking.OnCompleted();
             }
             catch (Exception ex)
             {
-                succeedMatchmaking.OnError(ex);
                 throw;
             }
         }
@@ -97,13 +80,9 @@ namespace StackBuild.MatchMaking
             try
             {
                 await UniTask.WaitUntil(() => readyClientCount >= 2, cancellationToken: cts.Token);
-
-                allClientReady.OnNext(Unit.Default);
-                allClientReady.OnCompleted();
             }
             catch (Exception ex)
             {
-                allClientReady.OnError(ex);
                 throw;
             }
         }
@@ -138,7 +117,6 @@ namespace StackBuild.MatchMaking
 
     public interface IRandomMatchmaker
     {
-        public IObservable<Unit> SucceedMatchmaking { get; }
         public UniTask StartRandomMatchmaking();
         public UniTask StopRandomMatchmaking();
     }
