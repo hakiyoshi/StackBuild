@@ -43,14 +43,10 @@ namespace StackBuild.MatchMaking
             {
                 await NetworkSystemManager.NetworkInitAsync();
             }
-            catch (OperationCanceledException ex)
+            catch (Exception ex)
             {
                 succeedMatchmaking.OnError(ex);
                 throw;
-            }
-            catch (Exception ex)
-            {
-                // ignored
             }
 
             try
@@ -64,14 +60,10 @@ namespace StackBuild.MatchMaking
                     await NetworkSystemManager.CreateRoomAsync(false, lobby, relay, lobbyOption, playerOption,
                         cts.Token);
                 }
-                catch (OperationCanceledException ex)
+                catch (Exception ex)
                 {
                     succeedMatchmaking.OnError(ex);
                     throw;
-                }
-                catch (Exception)
-                {
-                    // ignored
                 }
             }
 
@@ -83,14 +75,10 @@ namespace StackBuild.MatchMaking
                 succeedMatchmaking.OnNext(Unit.Default);
                 succeedMatchmaking.OnCompleted();
             }
-            catch (OperationCanceledException ex)
+            catch (Exception ex)
             {
                 succeedMatchmaking.OnError(ex);
                 throw;
-            }
-            catch (Exception)
-            {
-                // ignored
             }
         }
 
@@ -113,14 +101,10 @@ namespace StackBuild.MatchMaking
                 allClientReady.OnNext(Unit.Default);
                 allClientReady.OnCompleted();
             }
-            catch (OperationCanceledException ex)
+            catch (Exception ex)
             {
                 allClientReady.OnError(ex);
                 throw;
-            }
-            catch (Exception)
-            {
-                // ignored
             }
         }
 
