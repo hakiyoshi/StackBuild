@@ -305,6 +305,7 @@ GameObject:
   m_Component:
   - component: {fileID: 18430077}
   - component: {fileID: 18430078}
+  - component: {fileID: 18430080}
   - component: {fileID: 18430079}
   m_Layer: 5
   m_Name: Slider
@@ -402,6 +403,21 @@ MonoBehaviour:
   channel: {fileID: 11400000, guid: 81faf6d923e32304ea6f6ad1e2d35791, type: 2}
   cursorSound: {fileID: 11400000, guid: b4916e0ec27403749a4e4e574044d8bd, type: 2}
   selectSound: {fileID: 11400000, guid: 0c5f2ad265aeada40bf58102ea292f3d, type: 2}
+--- !u!114 &18430080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 18430076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 069f48fd1d4d97545891c1804d4742ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slider: {fileID: 18430078}
+  audioMixer: {fileID: 24100000, guid: 83f2bd16808073544ab82b3ee66bad4b, type: 2}
+  mixerParameterName: MasterVolume
 --- !u!1 &25587958
 GameObject:
   m_ObjectHideFlags: 0
@@ -1496,6 +1512,7 @@ GameObject:
   m_Component:
   - component: {fileID: 186987832}
   - component: {fileID: 186987833}
+  - component: {fileID: 186987835}
   - component: {fileID: 186987834}
   m_Layer: 5
   m_Name: Slider
@@ -1593,6 +1610,21 @@ MonoBehaviour:
   channel: {fileID: 11400000, guid: 81faf6d923e32304ea6f6ad1e2d35791, type: 2}
   cursorSound: {fileID: 11400000, guid: b4916e0ec27403749a4e4e574044d8bd, type: 2}
   selectSound: {fileID: 11400000, guid: 0c5f2ad265aeada40bf58102ea292f3d, type: 2}
+--- !u!114 &186987835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 186987831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 069f48fd1d4d97545891c1804d4742ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slider: {fileID: 186987833}
+  audioMixer: {fileID: 24100000, guid: 83f2bd16808073544ab82b3ee66bad4b, type: 2}
+  mixerParameterName: SFXVolume
 --- !u!1 &187415137
 GameObject:
   m_ObjectHideFlags: 0
@@ -3278,6 +3310,7 @@ GameObject:
   m_Component:
   - component: {fileID: 585361817}
   - component: {fileID: 585361818}
+  - component: {fileID: 585361820}
   - component: {fileID: 585361819}
   m_Layer: 5
   m_Name: Slider
@@ -3375,6 +3408,21 @@ MonoBehaviour:
   channel: {fileID: 11400000, guid: 81faf6d923e32304ea6f6ad1e2d35791, type: 2}
   cursorSound: {fileID: 11400000, guid: b4916e0ec27403749a4e4e574044d8bd, type: 2}
   selectSound: {fileID: 11400000, guid: 0c5f2ad265aeada40bf58102ea292f3d, type: 2}
+--- !u!114 &585361820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 585361816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 069f48fd1d4d97545891c1804d4742ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slider: {fileID: 585361818}
+  audioMixer: {fileID: 24100000, guid: 83f2bd16808073544ab82b3ee66bad4b, type: 2}
+  mixerParameterName: BGMVolume
 --- !u!1 &598129830
 GameObject:
   m_ObjectHideFlags: 0
@@ -4860,6 +4908,7 @@ MonoBehaviour:
   shouldShowLogo: 1
   container: {fileID: 933712157}
   staggerDisplay: {fileID: 933712156}
+  volumeSliders: []
   buttonBack: {fileID: 1686005961}
 --- !u!1 &936282217
 GameObject:

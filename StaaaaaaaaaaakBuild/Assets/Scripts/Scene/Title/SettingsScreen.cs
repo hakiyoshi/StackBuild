@@ -1,5 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using StackBuild.UI;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,12 +12,18 @@ namespace StackBuild.Scene.Title
 
         [SerializeField] private CanvasGroup container;
         [SerializeField] private TitleMenuStaggerDisplay staggerDisplay;
+        [SerializeField] private AudioMixerVolumeSlider[] volumeSliders;
         [SerializeField] private Button buttonBack;
 
         public Button.ButtonClickedEvent OnBackClick => buttonBack.onClick;
 
         public override async UniTask ShowAsync()
         {
+            foreach (var slider in volumeSliders)
+            {
+                slider.UpdateSliderValue();
+            }
+
             container.interactable = true;
             container.blocksRaycasts = true;
             container.alpha = 1;
