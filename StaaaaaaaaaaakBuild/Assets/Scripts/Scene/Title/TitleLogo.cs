@@ -18,10 +18,8 @@ namespace StackBuild.Scene.Title
         private void Awake()
         {
             sequence = DOTween.Sequence()
-                    .Append(ShowLogo())
-                ;
-            sequence.SetAutoKill(false);
-            sequence.Pause();
+                .Append(ShowLogo())
+                .SetAutoKill(false).SetLink(gameObject).Pause();
         }
 
         public async UniTask DisplayAsync()

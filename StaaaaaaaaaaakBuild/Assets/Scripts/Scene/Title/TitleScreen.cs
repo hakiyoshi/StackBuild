@@ -36,7 +36,8 @@ namespace StackBuild.Scene.Title
             {
                 onStartPressed.OnNext(Unit.Default);
             }).AddTo(this);
-            playTextFlash = playText.DOFade(0, 1).From(1).SetEase(Ease.InQuad).SetLoops(-1, LoopType.Yoyo).Pause().SetAutoKill(false);
+            playTextFlash = playText.DOFade(0, 1).From(1).SetEase(Ease.InQuad).SetLoops(-1, LoopType.Yoyo)
+                .SetAutoKill(false).SetLink(gameObject).Pause();
         }
 
         public override async UniTask ShowAsync()
