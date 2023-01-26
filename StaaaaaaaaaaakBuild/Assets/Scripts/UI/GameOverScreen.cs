@@ -29,10 +29,10 @@ namespace StackBuild.UI
 
         public async UniTaskVoid ShowAsync(CharacterProperty[] characters)
         {
-            for (int i = 0; i < characters.Length && i < characterImages.Length; i++)
-            {
-                characterImages[i].sprite = characters[i].Sprite;
-            }
+            // for (int i = 0; i < characters.Length && i < characterImages.Length; i++)
+            // {
+            //     characterImages[i].sprite = characters[i].Sprite;
+            // }
 
             await DOTween.Sequence()
                 .Join(group.DOFade(1, 0.3f).From(0))
