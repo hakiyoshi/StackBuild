@@ -3,6 +3,7 @@ using DG.Tweening;
 using StackBuild.UI;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace StackBuild.Scene.Title
@@ -32,6 +33,8 @@ namespace StackBuild.Scene.Title
             container.interactable = true;
             container.blocksRaycasts = true;
             await container.DOFade(1, 0.3f);
+
+            EventSystem.current.SetSelectedGameObject(cancelButton.gameObject);
         }
 
         public override async UniTask HideAsync()
