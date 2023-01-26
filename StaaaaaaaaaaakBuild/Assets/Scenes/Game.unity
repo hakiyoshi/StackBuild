@@ -1500,7 +1500,7 @@ MonoBehaviour:
   resultsDisplay: {fileID: 439746646}
   resultsDelay: 1.35
   gameOverScreen: {fileID: 71828187}
-  gameTime: 60
+  gameTime: 1
   playerInputProperty: {fileID: 11400000, guid: 0dd4cc4c4954c3942815643f00138d40, type: 2}
   players:
   - player: {fileID: 11400000, guid: 94434b52069cc2f4ba70d07e78b196cd, type: 2}
@@ -2165,14 +2165,6 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 1553902614
       objectReference: {fileID: 0}
-    - target: {fileID: 4434834973486339519, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
-      propertyPath: m_TargetTexture
-      value: 
-      objectReference: {fileID: 8400000, guid: 6c8000c420400bf40b8a85103983349a, type: 2}
-    - target: {fileID: 4434834973486339519, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
-      propertyPath: m_CullingMask.m_Bits
-      value: 128
-      objectReference: {fileID: 0}
     - target: {fileID: 6005636020752271032, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 33.5
@@ -2201,37 +2193,21 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 1770700641
       objectReference: {fileID: 0}
-    - target: {fileID: 6679077271874074660, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 4.230015
+    - target: {fileID: 6679077271042981336, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 15.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6679077271042981336, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 25.83
       objectReference: {fileID: 0}
     - target: {fileID: 6679077271874074660, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 3.27
-      objectReference: {fileID: 0}
-    - target: {fileID: 6679077271874074660, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -7.7900305
-      objectReference: {fileID: 0}
-    - target: {fileID: 6679077271874074660, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.97050023
-      objectReference: {fileID: 0}
-    - target: {fileID: 6679077271874074660, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.085073836
-      objectReference: {fileID: 0}
-    - target: {fileID: 6679077271874074660, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0.2189705
-      objectReference: {fileID: 0}
-    - target: {fileID: 6679077271874074660, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0.054255564
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 15.2
       objectReference: {fileID: 0}
     - target: {fileID: 6679077271874074660, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -25.05
+      value: -25.83
       objectReference: {fileID: 0}
     - target: {fileID: 7233628905526096602, guid: 3eae45b586645514ea9f9fbdeb6df8e9, type: 3}
       propertyPath: pool
