@@ -43,6 +43,7 @@ namespace StackBuild
 
         public void StartOfUse(AudioCue cue, AudioSourcePool pool)
         {
+            Audio.volume = 1.0f;
             Audio.clip = cue.Clip;
             Audio.loop = cue.Loop;
             audioSourcePool = pool;
