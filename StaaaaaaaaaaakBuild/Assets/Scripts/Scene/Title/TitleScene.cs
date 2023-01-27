@@ -166,6 +166,8 @@ namespace StackBuild.Scene.Title
                 await LoadingScreen.Instance.ShowAsync();
                 SceneManager.LoadSceneAsync("Game");
             }
+
+            GameMode.Current = mode;
         }
 
         private async UniTaskVoid EnterMatchmaking()
