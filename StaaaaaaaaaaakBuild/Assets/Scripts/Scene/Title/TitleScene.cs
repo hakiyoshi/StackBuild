@@ -76,7 +76,7 @@ namespace StackBuild.Scene.Title
                     }
                     else
                     {
-                        // 初回起動時はスキップ関係なくタイトル
+                        Debug.LogWarning("GameModeの指定がないためスキップできません。");
                         ShowTitleAsync().Forget();
                     }
                 }
