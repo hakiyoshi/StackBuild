@@ -3835,8 +3835,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54afe5ecb45a4276ba8eef74898d3938, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneAsset: {fileID: 102900000, guid: 81d8e93ff07610b4cbccba08863fd008, type: 3}
-  sceneName: Game
+  sceneAsset: {fileID: 102900000, guid: 7c89f37df45447c41a5c93bb9c641b03, type: 3}
+  sceneName: MainMenu
   uiInputSender: {fileID: 11400000, guid: 3a74e2605d620a84b813eb43e7a4bef4, type: 2}
   clickCooltime: 0.1
 --- !u!114 &1615849575 stripped
@@ -3999,8 +3999,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54afe5ecb45a4276ba8eef74898d3938, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneAsset: {fileID: 102900000, guid: 81d8e93ff07610b4cbccba08863fd008, type: 3}
-  sceneName: Game
+  sceneAsset: {fileID: 102900000, guid: 7c89f37df45447c41a5c93bb9c641b03, type: 3}
+  sceneName: MainMenu
   uiInputSender: {fileID: 11400000, guid: 3a74e2605d620a84b813eb43e7a4bef4, type: 2}
   clickCooltime: 0.1
 --- !u!114 &1764070396 stripped
