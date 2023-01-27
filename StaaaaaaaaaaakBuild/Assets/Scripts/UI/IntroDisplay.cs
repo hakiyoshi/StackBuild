@@ -39,20 +39,20 @@ namespace StackBuild.UI
             // ついでにCanvas activeのままにできるようになった (active化でレイアウト走るのでその分の軽量化)
             // 11msまで軽くなったのでもうこれでいいかな
             sequence = DOTween.Sequence()
-                    // ★タイミング調整はこちら★
-                    .Insert(0,     DOTween.To(() => dolly.m_PathPosition, v => dolly.m_PathPosition = v, 1, 3).From(0).SetEase(Ease.OutQuint))
-                    .Insert(0,     ShowLogo())
-                    .Insert(1.2f + 0,     ShowTitleLine(titleLineTop, true, 0.5f, Ease.OutQuart))
-                    .Insert(1.2f + 0,     ShowTitleLine(titleLineBottom, false, 0.5f, Ease.OutQuart))
-                    .Insert(1.2f + 0.38f, OpenTitleBackground(0.12f).Append(ShowTitleText()))
-                    .Insert(1.2f + 0.25f, ShowAccentLine(accentLineTop, true, 0.65f, Ease.OutQuart))
-                    .Insert(1.2f + 0.25f, ShowAccentLine(accentLineBottom, false, 0.65f, Ease.OutQuart))
-                    .Insert(1.2f + 0,     ShowFrameLines(0.5f, Ease.OutQuart))
-                    .Insert(1.2f + 0.75f, MoveFrames(20, 0.4f, Ease.OutQuart))
-                    .Insert(1.2f + 0,     ShowMapInfo(300, 0.05f, 0.5f, Ease.OutQuart))
-                ;
-            sequence.SetAutoKill(false);
-            sequence.Pause();
+                // ★タイミング調整はこちら★
+                .Insert(0,
+                    DOTween.To(() => dolly.m_PathPosition, v => dolly.m_PathPosition = v, 1, 3).From(0)
+                        .SetEase(Ease.OutQuint))
+                .Insert(0, ShowLogo())
+                .Insert(1.2f + 0, ShowTitleLine(titleLineTop, true, 0.5f, Ease.OutQuart))
+                .Insert(1.2f + 0, ShowTitleLine(titleLineBottom, false, 0.5f, Ease.OutQuart))
+                .Insert(1.2f + 0.38f, OpenTitleBackground(0.12f).Append(ShowTitleText()))
+                .Insert(1.2f + 0.25f, ShowAccentLine(accentLineTop, true, 0.65f, Ease.OutQuart))
+                .Insert(1.2f + 0.25f, ShowAccentLine(accentLineBottom, false, 0.65f, Ease.OutQuart))
+                .Insert(1.2f + 0, ShowFrameLines(0.5f, Ease.OutQuart))
+                .Insert(1.2f + 0.75f, MoveFrames(20, 0.4f, Ease.OutQuart))
+                .Insert(1.2f + 0, ShowMapInfo(300, 0.05f, 0.5f, Ease.OutQuart))
+                .SetAutoKill(false).SetLink(gameObject).Pause();
         }
 
         private void OnEnable()

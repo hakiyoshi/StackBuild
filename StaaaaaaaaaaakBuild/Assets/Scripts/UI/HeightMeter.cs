@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
@@ -15,8 +16,9 @@ namespace StackBuild.UI
         [SerializeField] private RectTransform bar;
         [SerializeField] private Image imageLines;
         [SerializeField] private TextMeshProUGUI labelPrefab;
-        [SerializeField] private RectTransform labelContainer;
+        [SerializeField] private CanvasGroup labelContainer;
         private TextMeshProUGUI[] labels;
+        private bool isLabelNumbersHidden;
 
         private float tweenedValue;
 
@@ -32,7 +34,7 @@ namespace StackBuild.UI
             labels = new TextMeshProUGUI[Mathf.CeilToInt(height / scale / interval) + 1];
             for (int i = 0; i < labels.Length; i++)
             {
-                labels[i] = Instantiate(labelPrefab, labelContainer != null ? labelContainer : transform);
+                labels[i] = Instantiate(labelPrefab, labelContainer != null ? labelContainer.transform : transform);
                 labels[i].rectTransform.pivot = new Vector2(alignRight ? 1 : 0, 0);
                 labels[i].rectTransform.anchorMin = new Vector2(alignRight ? 1 : 0, 0);
                 labels[i].rectTransform.anchorMax = new Vector2(alignRight ? 1 : 0, 0);
@@ -58,6 +60,17 @@ namespace StackBuild.UI
             }, value, 0.5f).SetTarget(this).SetEase(Ease.OutCubic);
         }
 
+        public async UniTaskVoid HideNumbersAsync()
+        {
+            await labelContainer.DOFade(0, 0.2f);
+            isLabelNumbersHidden = true;
+            foreach (var label in labels)
+            {
+                label.text = "???";
+            }
+            await labelContainer.DOFade(1, 0.2f);
+        }
+
         private void Display(float v)
         {
             float height = ((RectTransform)transform).rect.height;
@@ -78,7 +91,8 @@ namespace StackBuild.UI
             int startRow = Mathf.RoundToInt(scroll / interval) - Mathf.FloorToInt(height / 2 / scale / interval);
             for (int i = 0; i < labels.Length; i++)
             {
-                labels[i].text = ((i + startRow) * interval).ToString();
+                if(!isLabelNumbersHidden)
+                    labels[i].text = ((i + startRow) * interval).ToString();
                 var labelPos = labels[i].rectTransform.anchoredPosition;
                 labelPos.y = (-scroll + (i + startRow) * interval) * scale;
                 labels[i].rectTransform.anchoredPosition = labelPos;

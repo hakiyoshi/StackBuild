@@ -25,6 +25,19 @@ namespace StackBuild.UI
         private bool isHovered;
         private bool isPressed;
 
+        public bool Disabled
+        {
+            get => disabled;
+            set
+            {
+                disabled = value;
+                button.interactable = !disabled;
+                UpdateColor();
+            }
+        }
+
+        public Button.ButtonClickedEvent OnClick => button.onClick;
+
         private void Reset()
         {
             button = GetComponent<Button>();

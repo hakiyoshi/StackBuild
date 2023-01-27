@@ -35,13 +35,14 @@ namespace StackBuild.Game
         [SerializeField] private StartDisplay startDisplay;
         [SerializeField] private float startDelay;
         [SerializeField] private TimeDisplay timeDisplay;
-        [SerializeField] private int flashTimeBelow;
         [SerializeField] private FinishDisplay finishDisplay;
         [SerializeField] private ResultsDisplay resultsDisplay;
         [SerializeField] private float resultsDelay;
         [SerializeField] private GameOverScreen gameOverScreen;
         [Header("Game Parameters")]
         [SerializeField] private float gameTime;
+        [SerializeField] private int flashTimeBelow;
+        [SerializeField] private int hideHeightMeterNumbersIn;
 
         [Header("System")]
         [SerializeField] private PlayerInputProperty playerInputProperty;
@@ -84,6 +85,8 @@ namespace StackBuild.Game
 
             state.Value = MatchState.Starting;
             matchControlState.SendState(MatchState.Starting);
+
+            await LoadingScreen.Instance.HideAsync(LoadingScreenType.Triangles);
 
             //最初のStackBuildが画面に映る
             introDisplay.Display();
@@ -166,6 +169,13 @@ namespace StackBuild.Game
             if (seconds != lastSeconds)
             {
                 timeDisplay.Display(seconds, seconds <= flashTimeBelow);
+                if (seconds == hideHeightMeterNumbersIn)
+                {
+                    foreach (var playerInfo in players)
+                    {
+                        playerInfo.heightMeter.HideNumbersAsync().Forget();
+                    }
+                }
             }
 
             if (timeRemaining == 0)

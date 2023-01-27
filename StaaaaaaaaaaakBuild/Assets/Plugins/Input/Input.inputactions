@@ -649,28 +649,6 @@
                 },
                 {
                     "name": "",
-                    "id": "36e9e926-6956-446d-a13e-a812d70f930c",
-                    "path": "<Keyboard>/space",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "Click",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "f166ce06-3c83-4f1f-9e81-72f4e708945f",
-                    "path": "<Gamepad>/buttonSouth",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Click",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "09acaefb-62de-4c7d-9b2b-2d3d92083200",
                     "path": "<Mouse>/scroll",
                     "interactions": "",
