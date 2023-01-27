@@ -1693,8 +1693,8 @@ Canvas:
   m_GameObject: {fileID: 525953987}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 442153764}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -2209,6 +2209,14 @@ PrefabInstance:
     - target: {fileID: 1955920966837208018, guid: 9e82430e1b4de8a46883be2bd34e2689, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1955920966895857225, guid: 9e82430e1b4de8a46883be2bd34e2689, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 442153764}
+    - target: {fileID: 1955920966895857225, guid: 9e82430e1b4de8a46883be2bd34e2689, type: 3}
+      propertyPath: m_RenderMode
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1955920966895857226, guid: 9e82430e1b4de8a46883be2bd34e2689, type: 3}
       propertyPath: m_Pivot.x
@@ -3552,6 +3560,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6072253208730754645, guid: 229c8e580215c8a43be1abe10691848d, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 442153764}
     - target: {fileID: 6072253208797582464, guid: 229c8e580215c8a43be1abe10691848d, type: 3}
       propertyPath: m_Layer
       value: 5
@@ -4864,6 +4876,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 5962449684605314441, guid: 9b34d485583771c44b74fb81359a56e4, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 442153764}
     - target: {fileID: 5962449684764467120, guid: 9b34d485583771c44b74fb81359a56e4, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
