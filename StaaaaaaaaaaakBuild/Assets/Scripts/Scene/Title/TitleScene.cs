@@ -38,6 +38,8 @@ namespace StackBuild.Scene.Title
         [SerializeField] private RandomMatchmaker randomMatchmaker;
         [SerializeField] private NetworkSceneChanger sceneChanger;
         [SerializeField] private AudioChannel audioChannel;
+        [SerializeField] private AudioSource titleBGM; // ちょっといろいろ諦めて直でSource使う(
+        [SerializeField] private AudioSource menuBGM;
         [SerializeField] private AudioCue cueStart;
         [SerializeField] private AudioCue cueReady;
         [SerializeField] private AudioCue cueMatchFound;
@@ -99,6 +101,8 @@ namespace StackBuild.Scene.Title
         {
             currentScreen = titleScreen;
 
+            UpdateBGM();
+
             var logoTransform = (RectTransform)logo.transform;
             var seq = DOTween.Sequence()
                 .Append(logoTransform.DOAnchorMin(new Vector2(0.5f, 0.5f), SlideAccelerationDuration).From().SetEase(SlideAccelerationEasing))
@@ -112,6 +116,24 @@ namespace StackBuild.Scene.Title
             await seq.Play().AsyncWaitForCompletion();
             ShowBackground();
             titleScreen.ShowAsync().Forget();
+        }
+
+        private void UpdateBGM()
+        {
+            if (currentScreen == titleScreen)
+            {
+                titleBGM.Play();
+                _ = titleBGM.DOFade(1, 1).SetEase(Ease.Linear);
+                _ = menuBGM.DOFade(0, 1).SetEase(Ease.Linear).OnComplete(() => menuBGM.Pause());
+            }
+            else
+            {
+                if(!menuBGM.isPlaying)
+                    menuBGM.Play();
+                _ = titleBGM.DOFade(0, 0.5f).SetEase(Ease.Linear);
+                _ = menuBGM.DOKill();
+                _ = menuBGM.volume = 1;
+            }
         }
 
         private void ShowBackground()
@@ -145,6 +167,7 @@ namespace StackBuild.Scene.Title
             }
             if (currentScreen != null) await currentScreen.HideAsync();
             currentScreen = screen;
+            UpdateBGM();
             await currentScreen.ShowAsync();
         }
 
