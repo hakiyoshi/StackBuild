@@ -7,6 +7,7 @@ using StackBuild.MatchMaking;
 using StackBuild.UI;
 using UniRx;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -57,6 +58,7 @@ namespace StackBuild.Scene.Title
             mainMenuScreen.OnGameModeSelect.Subscribe(mode => OnGameModeSelectAsync(mode).Forget());
             mainMenuScreen.OnSettingsClick.AddListener(() => ChangeScreen(settingsScreen).Forget());
             mainMenuScreen.OnBackClick.AddListener(() => ChangeScreen(titleScreen).Forget());
+            mainMenuScreen.OnExitClick.AddListener(() => ExitGame().Forget());
 
             settingsScreen.OnBackClick.AddListener(() => ChangeScreen(mainMenuScreen).Forget());
 
@@ -229,6 +231,16 @@ namespace StackBuild.Scene.Title
         {
             randomMatchmaker.StopRandomMatchmaking().Forget();
             matchmakingScreen.SetCanceling();
+        }
+
+        private async UniTaskVoid ExitGame()
+        {
+            EventSystem.current.enabled = false;
+            await UniTask.WhenAll(
+                LoadingScreen.Instance.ShowAsync(LoadingScreenType.Fade, Color.black),
+                menuBGM.DOFade(0, 1).AsyncWaitForCompletion().AsUniTask()
+            );
+            Application.Quit();
         }
 
     }
