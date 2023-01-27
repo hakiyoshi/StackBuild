@@ -62,10 +62,12 @@ namespace StackBuild.Game
         [SerializeField] private AudioCue gameStartCue;
         [SerializeField] private AudioCue gameCue;
         [SerializeField] private AudioCue gameEndCue;
+        [SerializeField] private AudioCue resultCue;
 
         [SerializeField] private float delay = 3.0f;
 
         private AudioSourceWatching gameAudio = null;
+        private AudioSourceWatching resultAudio = null;
 
         private float timeRemaining;
         private readonly ReactiveProperty<MatchState> state = new();
@@ -105,11 +107,12 @@ namespace StackBuild.Game
             var introStart = audioSourcePool.Rent(introStartCue);
             introStart.audioSource.volume = 0.0f;
             introStart.audioSource.Play();
-            introStart.audioSource.DOFade(0.5f, 1.0f);
+            introStart.audioSource.DOFade(0.5f, 1.0f).SetLink(gameObject);
 
             //StackBuildが表示される時のSE
             {
-                DOVirtual.DelayedCall(0.4f, () => audioSourcePool.Rent(introStackBuildCue).PlayAndReturnWhenStopped());
+                DOVirtual.DelayedCall(0.4f, () => audioSourcePool.Rent(introStackBuildCue).PlayAndReturnWhenStopped())
+                    .SetLink(gameObject);
             }
 
             //最初のStackBuildが画面に映る
@@ -130,7 +133,7 @@ namespace StackBuild.Game
             {
                 introStart.audioSource.Stop();
                 introStart.ReturnAudio();
-            });
+            }).SetLink(gameObject);
 
             //ホワイトアウト
             await fade.DOFade(1, fadeIn).From(0).SetEase(Ease.InQuad)
@@ -149,7 +152,7 @@ namespace StackBuild.Game
             {
                 gameAudio = audioSourcePool.Rent(gameCue);
                 gameAudio.audioSource.volume = 0.0f;
-                gameAudio.audioSource.DOFade(0.15f, 2.5f);
+                gameAudio.audioSource.DOFade(0.15f, 2.5f).SetLink(gameObject);
                 gameAudio.audioSource.Play();
             }
 
@@ -204,7 +207,12 @@ namespace StackBuild.Game
                 gameAudio.audioSource.Stop();
                 gameAudio.ReturnAudio();
                 gameAudio = null;
-            });
+            }).SetLink(gameObject);
+
+            resultAudio = audioSourcePool.Rent(resultCue);
+            resultAudio.audioSource.volume = 0.0f;
+            resultAudio.audioSource.DOFade(0.4f, 5.0f).SetLink(gameObject);
+            resultAudio.audioSource.Play();
 
             //リザルト表示
             await UniTask.Delay(TimeSpan.FromSeconds(resultsDelay), cancellationToken: token);
