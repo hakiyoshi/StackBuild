@@ -1571,12 +1571,13 @@ MonoBehaviour:
   startDisplay: {fileID: 130576881}
   startDelay: 0
   timeDisplay: {fileID: 1687397716}
-  flashTimeBelow: 0
   finishDisplay: {fileID: 701645681}
   resultsDisplay: {fileID: 439746646}
   resultsDelay: 1.35
   gameOverScreen: {fileID: 71828187}
   gameTime: 60
+  flashTimeBelow: 0
+  hideHeightMeterNumbersIn: 10
   playerInputProperty: {fileID: 11400000, guid: 0dd4cc4c4954c3942815643f00138d40, type: 2}
   players:
   - player: {fileID: 11400000, guid: 94434b52069cc2f4ba70d07e78b196cd, type: 2}
