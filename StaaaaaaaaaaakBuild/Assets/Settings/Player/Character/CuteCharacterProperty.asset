@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Name>k__BackingField: "\u3068\u3045\u304F"
   <CompanyName>k__BackingField: "\u30CF\u30E0\uFF06\u30B9\u30BF\u30FC Inc."
-  <DashDescription>k__BackingField: "\u30C0\u30C3\u30B7\u30E5\u3067\u4F53\u5F53\u305F\u308A\u3059\u308B\u3053\u3068\u3067\u3001\u76F8\u624B\u306E\u52D5\u304D\u3092\u4E00\u77AC\u5C01\u3058\u308B\u3053\u3068\u304C\u3067\u304D\u308B\u3002"
+  <DashDescription>k__BackingField: "\u79FB\u52D5\u901F\u5EA6\u306F\u4E26\u307F\u3060\u304C\u3001\r\n\u7A81\u9032\u3092\u5F53\u3066\u308B\u3068\u30B9\u30BF\u30F3\u3055\u305B\u308B\u3002\r\n\u5C11\u3057\u7656\u304C\u5F37\u3044\u6A5F\u4F53\u3002\r"
   <Model>k__BackingField: {fileID: 11400000, guid: 3649007573f491e43a914a255ed8e485, type: 2}
   <Sprite>k__BackingField: {fileID: 21300000, guid: 70294c89bf9a6dc4f9611a1cf1a126ea, type: 3}
-  <Move>k__BackingField: {fileID: 11400000, guid: 929c566f937b50743bec5275181da7d6, type: 2}
-  <Dash>k__BackingField: {fileID: 11400000, guid: 63fecd0bbc6e3964a8dc5b5c49eea461, type: 2}
-  <Attack>k__BackingField: {fileID: 11400000, guid: bea00ad1dd34a3c4aaed44518272cc50, type: 2}
-  <Catch>k__BackingField: {fileID: 11400000, guid: 38afc42e6fa858148868ba6aac69430d, type: 2}
+  <Move>k__BackingField: {fileID: 11400000, guid: 35cf1212819f65d478e379a4e5f60e90, type: 2}
+  <Dash>k__BackingField: {fileID: 11400000, guid: 7bb9163dd071a924081d92429cd19c9e, type: 2}
+  <Attack>k__BackingField: {fileID: 11400000, guid: 1dcc9d4b6acf4814cb09512540cee55c, type: 2}
+  <Catch>k__BackingField: {fileID: 11400000, guid: d7b1963eccbaeda4b854f063fb738e52, type: 2}
