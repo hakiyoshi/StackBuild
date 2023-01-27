@@ -147,7 +147,7 @@
                 {
                     "name": "",
                     "id": "71bcb887-cdfe-4154-a32a-be536886504b",
-                    "path": "<Keyboard>/space",
+                    "path": "<Keyboard>/enter",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
@@ -169,7 +169,7 @@
                 {
                     "name": "",
                     "id": "78a80ed6-0686-4555-be18-f9d3da89794b",
-                    "path": "<Keyboard>/shift",
+                    "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",

@@ -14,7 +14,7 @@ namespace StackBuild.Audio
             // tweenあきらめた
             // たぶんばれない
             // UnityのAudio Mixer使えばいけそうではある
-            channel.OnEffectRequest.Subscribe(active => filter.enabled = active);
+            channel.OnEffectRequest.Subscribe(active => filter.enabled = active).AddTo(this);
         }
 
     }

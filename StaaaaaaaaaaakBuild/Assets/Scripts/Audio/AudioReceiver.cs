@@ -19,8 +19,8 @@ namespace StackBuild.Audio
                 source.clip = cue.Clip;
                 source.loop = allowLoop && cue.Loop;
                 source.Play();
-            });
-            channel.OnStopRequest.Subscribe(_ => { source.Stop(); });
+            }).AddTo(this);
+            channel.OnStopRequest.Subscribe(_ => { source.Stop(); }).AddTo(this);
         }
 
     }
