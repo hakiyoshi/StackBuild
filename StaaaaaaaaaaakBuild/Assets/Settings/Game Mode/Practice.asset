@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Practice
   <IsOnline>k__BackingField: 0
+  <IsPractice>k__BackingField: 1
   <PlayersToSelectCharacter>k__BackingField:
   - {fileID: 11400000, guid: 94434b52069cc2f4ba70d07e78b196cd, type: 2}

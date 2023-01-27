@@ -4,6 +4,7 @@ using System.Threading;
 using Cinemachine;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using StackBuild.Audio;
 using StackBuild.Extensions;
 using UnityEngine;
 
@@ -29,6 +30,11 @@ namespace StackBuild.UI
         [SerializeField] private float winDisplayDelay;
         [SerializeField] private float moveDelay;
 
+        [Header("Audio")]
+        [SerializeField] private AudioSourcePool audioSourcePool;
+        [SerializeField] private AudioCue buildingCue;
+        [SerializeField] private AudioCue winCue;
+
         public async UniTask DisplayAsync(CancellationToken token)
         {
             vcam.enabled = true;
@@ -41,6 +47,12 @@ namespace StackBuild.UI
                 player.heightDisplay.SetVisible(true, true);
             }
 
+            //高さ表示のサウンド
+            var buildingAudio = audioSourcePool.Rent(buildingCue);
+            buildingAudio.audioSource.volume = 0.5f;
+            buildingAudio.audioSource.DOFade(0.1f, 7.0f);
+            buildingAudio.audioSource.Play();
+
             await DOVirtual.Float(0, winner.Height, heightDisplayDuration, y =>
             {
                 foreach (var player in players)
@@ -52,7 +64,13 @@ namespace StackBuild.UI
                 }
             }).SetEase(Ease.InQuad).ToUniTask(cancellationToken: token);
 
+            //高さ表示のサウンド止める
+            buildingAudio.audioSource.Stop();
+            buildingAudio.ReturnAudio();
+
             await UniTask.Delay(TimeSpan.FromSeconds(winDisplayDelay), cancellationToken: token);
+
+            DOVirtual.DelayedCall(0.4f, () => audioSourcePool.Rent(winCue).PlayAndReturnWhenStopped()).SetLink(gameObject);
 
             foreach (var player in players)
             {
