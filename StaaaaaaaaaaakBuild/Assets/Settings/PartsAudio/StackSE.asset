@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: StackSE
   m_EditorClassIdentifier: 
   <Loop>k__BackingField: 0
-  <Clip>k__BackingField: {fileID: 0}
+  <Clip>k__BackingField: {fileID: 8300000, guid: fe6175f12ce50e3429d7ce8e0f18d7b6, type: 3}
