@@ -12,21 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9bdd7f2b10444a59eb88f43e8e7a3c1, type: 3}
   m_Name: Parts Manager Settings
   m_EditorClassIdentifier: 
-  isLocalPlayTest: 1
   <SpawnRuleList>k__BackingField:
-  - threshould: 10
-    count: 3
-    minSeconds: 1
-    maxSeconds: 1.5
   - threshould: 15
-    count: 2
-    minSeconds: 2
-    maxSeconds: 3
+    count: 4
+    minSeconds: 0.5
+    maxSeconds: 1
   - threshould: 20
+    count: 3
+    minSeconds: 1.5
+    maxSeconds: 2
+  - threshould: 25
+    count: 2
+    minSeconds: 2.5
+    maxSeconds: 3
+  - threshould: 29
     count: 1
     minSeconds: 3
-    maxSeconds: 5
+    maxSeconds: 3.5
   - threshould: 30
-    count: 1
+    count: 0
     minSeconds: 0.1
     maxSeconds: 0.1
