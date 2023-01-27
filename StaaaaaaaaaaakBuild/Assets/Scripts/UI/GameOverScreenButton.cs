@@ -28,7 +28,7 @@ namespace StackBuild.UI
             {
                 GameMode.Current = null;
             }
-            TitleScene.IsTitleSkip = true;
+            TitleScene.ShouldSkipTitle = true;
             ChangeScene().Forget();
         }
 

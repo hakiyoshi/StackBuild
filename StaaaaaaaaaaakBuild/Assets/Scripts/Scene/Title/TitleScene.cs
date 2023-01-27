@@ -14,7 +14,7 @@ namespace StackBuild.Scene.Title
 {
     public class TitleScene : MonoBehaviour
     {
-        public static bool IsTitleSkip { get; set; }
+        public static bool ShouldSkipTitle { get; set; }
 
         private const float MenuBackgroundAlpha = 0.5f;
 
@@ -61,13 +61,12 @@ namespace StackBuild.Scene.Title
 
         private async UniTaskVoid SwitchLoadMode()
         {
-            if (IsTitleSkip)
+            if (ShouldSkipTitle)
             {
-                IsTitleSkip = false;
+                ShouldSkipTitle = false;
 
                 if (GameMode.Current == null)
                 {
-                    currentScreen = null;
                     await logo.DisplayAsync();
                     await ChangeScreen(mainMenuScreen);
                 }
