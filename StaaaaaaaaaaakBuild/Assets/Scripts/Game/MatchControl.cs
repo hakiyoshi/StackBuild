@@ -56,7 +56,14 @@ namespace StackBuild.Game
 
         [Header("Audio")]
         [SerializeField] private AudioSourcePool audioSourcePool;
-        [SerializeField] private AudioCue gameBgmCue;
+
+        [SerializeField] private AudioCue introStartCue;
+        [SerializeField] private AudioCue introStackBuildCue;
+        [SerializeField] private AudioCue gameStartCue;
+        [SerializeField] private AudioCue gameCue;
+        [SerializeField] private AudioCue gameEndCue;
+
+        [SerializeField] private float delay = 3.0f;
 
         private AudioSourceWatching gameAudio = null;
 
@@ -94,6 +101,17 @@ namespace StackBuild.Game
 
             await LoadingScreen.Instance.HideAsync(LoadingScreenType.Triangles);
 
+            //イントロ開始時に流すBGM
+            var introStart = audioSourcePool.Rent(introStartCue);
+            introStart.audioSource.volume = 0.0f;
+            introStart.audioSource.Play();
+            introStart.audioSource.DOFade(0.5f, 1.0f);
+
+            //StackBuildが表示される時のSE
+            {
+                DOVirtual.DelayedCall(0.4f, () => audioSourcePool.Rent(introStackBuildCue).PlayAndReturnWhenStopped());
+            }
+
             //最初のStackBuildが画面に映る
             introDisplay.Display();
             timeDisplay.Display(Mathf.RoundToInt(gameTime));
@@ -107,11 +125,12 @@ namespace StackBuild.Game
                 await WaitForAllToSync(MatchStateSignal.GameStart, token);
             }
 
-            //ゲームBGM再生
-            gameAudio = audioSourcePool.Rent(gameBgmCue);
-            gameAudio.audioSource.volume = 0.0f;
-            gameAudio.audioSource.DOFade(1.0f, 5.0f);
-            gameAudio.audioSource.Play();
+            //イントロ開始時BGMを止める
+            introStart.audioSource.DOFade(0.0f, 1.0f).OnKill(() =>
+            {
+                introStart.audioSource.Stop();
+                introStart.ReturnAudio();
+            });
 
             //ホワイトアウト
             await fade.DOFade(1, fadeIn).From(0).SetEase(Ease.InQuad)
@@ -122,6 +141,17 @@ namespace StackBuild.Game
 
             await UniTask.Delay(TimeSpan.FromSeconds(fadeSustain), cancellationToken: token);
             await fade.DOFade(0, fadeOut).ToUniTask(cancellationToken: fade.gameObject.GetCancellationTokenOnDestroy());
+
+            //始まりサウンド
+            audioSourcePool.Rent(gameStartCue).PlayAndReturnWhenStopped();
+
+            //ゲームBGM再生
+            {
+                gameAudio = audioSourcePool.Rent(gameCue);
+                gameAudio.audioSource.volume = 0.0f;
+                gameAudio.audioSource.DOFade(0.15f, 2.5f);
+                gameAudio.audioSource.Play();
+            }
 
             //HUD表示
             await UniTask.Delay(TimeSpan.FromSeconds(hudDelay), cancellationToken: token);
@@ -149,6 +179,9 @@ namespace StackBuild.Game
             state.Value = MatchState.Finished;
             matchControlState.SendState(MatchState.Finished);
 
+            //ゲーム終了サウンド
+            audioSourcePool.Rent(gameEndCue).PlayAndReturnWhenStopped();
+
             //HUD表示
             foreach (var hud in huds)
             {
@@ -166,7 +199,12 @@ namespace StackBuild.Game
             }
 
             //ゲームBGM止める
-            gameAudio.audioSource.DOFade(0.0f, 5.0f).OnKill(() => gameAudio.audioSource.Stop());
+            gameAudio.audioSource.DOFade(0.0f, 5.0f).OnKill(() =>
+            {
+                gameAudio.audioSource.Stop();
+                gameAudio.ReturnAudio();
+                gameAudio = null;
+            });
 
             //リザルト表示
             await UniTask.Delay(TimeSpan.FromSeconds(resultsDelay), cancellationToken: token);
