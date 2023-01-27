@@ -1838,7 +1838,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1986494725027733400, guid: 9e82430e1b4de8a46883be2bd34e2689, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 150.505
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1986494725027733400, guid: 9e82430e1b4de8a46883be2bd34e2689, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -1910,7 +1910,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4334470801316489797, guid: 9e82430e1b4de8a46883be2bd34e2689, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 924.525
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4334470801316489797, guid: 9e82430e1b4de8a46883be2bd34e2689, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -1998,7 +1998,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4680031917211939197, guid: 9e82430e1b4de8a46883be2bd34e2689, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 521.015
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4680031917211939197, guid: 9e82430e1b4de8a46883be2bd34e2689, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -3037,6 +3037,14 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 6072253208929812123, guid: 229c8e580215c8a43be1abe10691848d, type: 3}
+      propertyPath: m_text
+      value: PLAYER 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6072253208929812123, guid: 229c8e580215c8a43be1abe10691848d, type: 3}
+      propertyPath: m_characterSpacing
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 6072253209100254377, guid: 229c8e580215c8a43be1abe10691848d, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
@@ -3052,6 +3060,14 @@ PrefabInstance:
     - target: {fileID: 6072253209379229866, guid: 229c8e580215c8a43be1abe10691848d, type: 3}
       propertyPath: m_Layer
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6072253210021890040, guid: 229c8e580215c8a43be1abe10691848d, type: 3}
+      propertyPath: m_text
+      value: PLAYER 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6072253210021890040, guid: 229c8e580215c8a43be1abe10691848d, type: 3}
+      propertyPath: m_characterSpacing
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6072253210021890042, guid: 229c8e580215c8a43be1abe10691848d, type: 3}
       propertyPath: m_SizeDelta.y
