@@ -6,7 +6,6 @@ using StackBuild.Game;
 using StackBuild.MatchMaking;
 using StackBuild.UI;
 using UniRx;
-using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -66,30 +65,34 @@ namespace StackBuild.Scene.Title
 
         private async UniTaskVoid SwitchLoadMode()
         {
-            if (!skipTitleMarked)
+            if (skipTitleMarked)
+            {
+                if (skipMainMenuMarked)
+                {
+                    if (GameMode.Current != null)
+                    {
+                        currentScreen = characterSelectScreen;
+                        OnGameModeSelectAsync(GameMode.Current).Forget();
+                    }
+                    else
+                    {
+                        // 初回起動時はスキップ関係なくタイトル
+                        ShowTitleAsync().Forget();
+                    }
+                }
+                else
+                {
+                    await logo.DisplayAsync();
+                    await ChangeScreen(mainMenuScreen);
+                }
+            }
+            else
             {
                 ShowTitleAsync().Forget();
-                return;
             }
+
             skipTitleMarked = false;
-
-            if (!skipMainMenuMarked)
-            {
-                await logo.DisplayAsync();
-                await ChangeScreen(mainMenuScreen);
-                return;
-            }
             skipMainMenuMarked = false;
-
-            if (GameMode.Current == null)
-            {
-                // 初回起動時はスキップ関係なくタイトル
-                ShowTitleAsync().Forget();
-                return;
-            }
-
-            currentScreen = characterSelectScreen;
-            OnGameModeSelectAsync(GameMode.Current).Forget();
         }
 
         private async UniTaskVoid ShowTitleAsync()
