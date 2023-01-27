@@ -24,11 +24,11 @@ namespace StackBuild.UI
 
         private void LoadMainMenu()
         {
-            if (!isCharacterSelect)
+            TitleScene.MarkTitleSkip();
+            if (isCharacterSelect)
             {
-                GameMode.Current = null;
+                TitleScene.MarkMainMenuSkip();
             }
-            TitleScene.ShouldSkipTitle = true;
             ChangeScene().Forget();
         }
 

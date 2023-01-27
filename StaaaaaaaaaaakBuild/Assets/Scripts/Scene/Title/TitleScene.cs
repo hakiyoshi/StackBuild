@@ -6,6 +6,7 @@ using StackBuild.Game;
 using StackBuild.MatchMaking;
 using StackBuild.UI;
 using UniRx;
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -14,7 +15,11 @@ namespace StackBuild.Scene.Title
 {
     public class TitleScene : MonoBehaviour
     {
-        public static bool ShouldSkipTitle { get; set; }
+        private static bool skipTitleMarked;
+        public static void MarkTitleSkip() => skipTitleMarked = true;
+
+        private static bool skipMainMenuMarked;
+        public static void MarkMainMenuSkip() => skipMainMenuMarked = true;
 
         private const float MenuBackgroundAlpha = 0.5f;
 
@@ -61,25 +66,30 @@ namespace StackBuild.Scene.Title
 
         private async UniTaskVoid SwitchLoadMode()
         {
-            if (ShouldSkipTitle)
-            {
-                ShouldSkipTitle = false;
-
-                if (GameMode.Current == null)
-                {
-                    await logo.DisplayAsync();
-                    await ChangeScreen(mainMenuScreen);
-                }
-                else
-                {
-                    currentScreen = characterSelectScreen;
-                    OnGameModeSelectAsync(GameMode.Current).Forget();
-                }
-            }
-            else
+            if (!skipTitleMarked)
             {
                 ShowTitleAsync().Forget();
+                return;
             }
+            skipTitleMarked = false;
+
+            if (!skipMainMenuMarked)
+            {
+                await logo.DisplayAsync();
+                await ChangeScreen(mainMenuScreen);
+                return;
+            }
+            skipMainMenuMarked = false;
+
+            if (GameMode.Current == null)
+            {
+                // 初回起動時はスキップ関係なくタイトル
+                ShowTitleAsync().Forget();
+                return;
+            }
+
+            currentScreen = characterSelectScreen;
+            OnGameModeSelectAsync(GameMode.Current).Forget();
         }
 
         private async UniTaskVoid ShowTitleAsync()
