@@ -8,6 +8,7 @@ using StackBuild.UI;
 using UniRx;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
 namespace StackBuild.Scene.Title
@@ -55,7 +56,32 @@ namespace StackBuild.Scene.Title
 
             matchmakingScreen.OnCancel.AddListener(CancelMatchmaking);
 
-            ShowTitleAsync().Forget();
+            SwitchLoadMode().Forget();
+        }
+
+        private async UniTaskVoid SwitchLoadMode()
+        {
+            if (MainMenuLoadSetting.IsSkipTitle)
+            {
+                if (MainMenuLoadSetting.SelectMode == null)
+                {
+                    currentScreen = mainMenuScreen;
+                    ShowBackground();
+
+                    logo.gameObject.SetActive(true);
+                    await logo.DisplayAsync();
+                    await mainMenuScreen.ShowAsync();
+                }
+                else
+                {
+                    currentScreen = characterSelectScreen;
+                    OnGameModeSelectAsync(MainMenuLoadSetting.SelectMode).Forget();
+                }
+            }
+            else
+            {
+                ShowTitleAsync().Forget();
+            }
         }
 
         private async UniTaskVoid ShowTitleAsync()
