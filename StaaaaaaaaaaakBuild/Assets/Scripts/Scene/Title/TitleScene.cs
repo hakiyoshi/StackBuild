@@ -64,6 +64,8 @@ namespace StackBuild.Scene.Title
         {
             if (IsSkipTitle)
             {
+                IsSkipTitle = false;
+
                 if (GameMode.Current == null)
                 {
                     currentScreen = mainMenuScreen;
