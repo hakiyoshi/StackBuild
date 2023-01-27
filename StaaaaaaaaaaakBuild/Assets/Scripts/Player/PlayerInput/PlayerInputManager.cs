@@ -71,6 +71,17 @@ namespace StackBuild
                 SettingPlayerDevice(x.playerIndex, inputDevice);
             }).AddTo(this);
 
+            //
+            Observable.FromEvent<PlayerInput>(
+                x => playerInputManager.onPlayerLeft += x,
+                x => playerInputManager.onPlayerLeft -= x).Subscribe(x =>
+            {
+                var inputSender = playerInputProperty.inputSenders[x.playerIndex];
+                inputSender.Move.Send(Vector2.zero);
+                inputSender.Catch.Send(false);
+                inputSender.Dash.Send(false);
+            });
+
             //Input生成
             CreatePlayerInput();
         }
