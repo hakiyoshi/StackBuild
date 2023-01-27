@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace StackBuild.UI
 {
-    public class MainMenuLoader : MonoBehaviour
+    public class GameOverScreenButton : MonoBehaviour
     {
         [SerializeField] private Button button;
         [SerializeField] private bool isCharacterSelect;
@@ -28,11 +28,11 @@ namespace StackBuild.UI
             {
                 GameMode.Current = null;
             }
-            TitleScene.IsSkipTitle = true;
-            SceneChange().Forget();
+            TitleScene.IsTitleSkip = true;
+            ChangeScene().Forget();
         }
 
-        private async UniTask SceneChange()
+        private async UniTask ChangeScene()
         {
             await LoadingScreen.Instance.ShowAsync();
             await SceneManager.LoadSceneAsync("MainMenu");

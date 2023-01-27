@@ -8,14 +8,13 @@ using StackBuild.UI;
 using UniRx;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
 namespace StackBuild.Scene.Title
 {
     public class TitleScene : MonoBehaviour
     {
-        public static bool IsSkipTitle { get; set; }
+        public static bool IsTitleSkip { get; set; }
 
         private const float MenuBackgroundAlpha = 0.5f;
 
@@ -62,18 +61,15 @@ namespace StackBuild.Scene.Title
 
         private async UniTaskVoid SwitchLoadMode()
         {
-            if (IsSkipTitle)
+            if (IsTitleSkip)
             {
-                IsSkipTitle = false;
+                IsTitleSkip = false;
 
                 if (GameMode.Current == null)
                 {
-                    currentScreen = mainMenuScreen;
-                    ShowBackground();
-
-                    logo.gameObject.SetActive(true);
+                    currentScreen = null;
                     await logo.DisplayAsync();
-                    await mainMenuScreen.ShowAsync();
+                    await ChangeScreen(mainMenuScreen);
                 }
                 else
                 {
@@ -120,7 +116,7 @@ namespace StackBuild.Scene.Title
 
         private async UniTask ChangeScreen(TitleSceneScreen screen)
         {
-            if (currentScreen.ShouldShowLogo != screen.ShouldShowLogo)
+            if (currentScreen != null && currentScreen.ShouldShowLogo != screen.ShouldShowLogo)
             {
                 logo.gameObject.SetActive(screen.ShouldShowLogo);
                 if (screen.ShouldShowLogo)
@@ -134,7 +130,7 @@ namespace StackBuild.Scene.Title
                     HideBackground();
                 }
             }
-            await currentScreen.HideAsync();
+            if (currentScreen != null) await currentScreen.HideAsync();
             currentScreen = screen;
             await currentScreen.ShowAsync();
         }
