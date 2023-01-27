@@ -2328,9 +2328,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 1719179497}
     m_Modifications:
     - target: {fileID: 5637207992087717520, guid: ae91d53d228a5a94bb8a7d55c2a2c920, type: 3}
+      propertyPath: stackCue
+      value: 
+      objectReference: {fileID: 11400000, guid: 8da200da54fec8b46b8bfd3438318588, type: 2}
+    - target: {fileID: 5637207992087717520, guid: ae91d53d228a5a94bb8a7d55c2a2c920, type: 3}
       propertyPath: matchControl
       value: 
       objectReference: {fileID: 736238924}
+    - target: {fileID: 5637207992087717520, guid: ae91d53d228a5a94bb8a7d55c2a2c920, type: 3}
+      propertyPath: audioSourcePool
+      value: 
+      objectReference: {fileID: 830618465}
     - target: {fileID: 5637207992087717521, guid: ae91d53d228a5a94bb8a7d55c2a2c920, type: 3}
       propertyPath: m_RootOrder
       value: -1
@@ -2403,9 +2411,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1367161147}
     - target: {fileID: 3571626307994262756, guid: 5a1d94e4c70b40743bc626ca51bd4734, type: 3}
+      propertyPath: audioSourcePool
+      value: 
+      objectReference: {fileID: 830618465}
+    - target: {fileID: 3571626307994262756, guid: 5a1d94e4c70b40743bc626ca51bd4734, type: 3}
       propertyPath: collisionObject
       value: 
       objectReference: {fileID: 1255309146}
+    - target: {fileID: 3571626307994262756, guid: 5a1d94e4c70b40743bc626ca51bd4734, type: 3}
+      propertyPath: enderThePortalCue
+      value: 
+      objectReference: {fileID: 11400000, guid: 6ff7ea490fdc0a741a3ebba4ca757809, type: 2}
     - target: {fileID: 3571626307994262757, guid: 5a1d94e4c70b40743bc626ca51bd4734, type: 3}
       propertyPath: m_Name
       value: Goal L
@@ -2888,9 +2904,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1095907746}
     - target: {fileID: 7909347572663846741, guid: 5e2a30d206f66ff4983219820fbf203f, type: 3}
+      propertyPath: audioSourcePool
+      value: 
+      objectReference: {fileID: 830618465}
+    - target: {fileID: 7909347572663846741, guid: 5e2a30d206f66ff4983219820fbf203f, type: 3}
       propertyPath: collisionObject
       value: 
       objectReference: {fileID: 511104189}
+    - target: {fileID: 7909347572663846741, guid: 5e2a30d206f66ff4983219820fbf203f, type: 3}
+      propertyPath: enderThePortalCue
+      value: 
+      objectReference: {fileID: 11400000, guid: 6ff7ea490fdc0a741a3ebba4ca757809, type: 2}
     - target: {fileID: 7909347572663846742, guid: 5e2a30d206f66ff4983219820fbf203f, type: 3}
       propertyPath: m_RootOrder
       value: -1
@@ -3554,7 +3578,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8529688388391987223, guid: 9093be795d5519147bcb5402c8ad3e37, type: 3}
       propertyPath: poolMaxSize
-      value: 20
+      value: 50
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
@@ -4264,9 +4288,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 1719179497}
     m_Modifications:
     - target: {fileID: 1251658806330010960, guid: 75e32094395b79c469c4c763bf3388a1, type: 3}
+      propertyPath: stackCue
+      value: 
+      objectReference: {fileID: 11400000, guid: 8da200da54fec8b46b8bfd3438318588, type: 2}
+    - target: {fileID: 1251658806330010960, guid: 75e32094395b79c469c4c763bf3388a1, type: 3}
       propertyPath: matchControl
       value: 
       objectReference: {fileID: 736238924}
+    - target: {fileID: 1251658806330010960, guid: 75e32094395b79c469c4c763bf3388a1, type: 3}
+      propertyPath: audioSourcePool
+      value: 
+      objectReference: {fileID: 830618465}
     - target: {fileID: 1251658806330010961, guid: 75e32094395b79c469c4c763bf3388a1, type: 3}
       propertyPath: m_RootOrder
       value: -1
