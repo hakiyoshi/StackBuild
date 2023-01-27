@@ -29,14 +29,14 @@ namespace StackBuild.Audio
                 sourceIdx = (sourceIdx + 1) % sources.Length;
                 source.clip = cue.Clip;
                 source.Play();
-            });
+            }).AddTo(this);
             channel.OnStopRequest.Subscribe(_ =>
             {
                 foreach (var source in sources)
                 {
                     source.Stop();
                 }
-            });
+            }).AddTo(this);
         }
 
     }
