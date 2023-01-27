@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using StackBuild.Audio;
 using UniRx;
 using UniRx.Triggers;
 using Unity.Netcode;
@@ -17,6 +18,10 @@ namespace StackBuild
         [SerializeField] private GoalSettings settings;
         [SerializeField] private BuildingCore buildingCore;
         [SerializeField] private GameObject collisionObject;
+
+        [Header("Audio")]
+        [SerializeField] private AudioSourcePool audioSourcePool;
+        [SerializeField] private AudioCue enderThePortalCue;
 
         private FloorData[] FloorDataArray => settings.FloorDataList.ToArray();
         private Dictionary<MaterialId, int> partsCount = new();
@@ -38,6 +43,8 @@ namespace StackBuild
 
         private void Goal(PartsCore parts)
         {
+            audioSourcePool.Rent(enderThePortalCue).PlayAndReturnWhenStopped();
+
             PartsNetworkSync networkSync = parts.GetComponent<PartsNetworkSync>();
 
             foreach (var buildMaterial in parts.GetPartsData().containsMaterials)
