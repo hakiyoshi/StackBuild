@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: EnterThePortalSE
   m_EditorClassIdentifier: 
   <Loop>k__BackingField: 0
-  <Clip>k__BackingField: {fileID: 0}
+  <Clip>k__BackingField: {fileID: 8300000, guid: 892ab6bd862d50e438a72a9520f7689d, type: 3}
