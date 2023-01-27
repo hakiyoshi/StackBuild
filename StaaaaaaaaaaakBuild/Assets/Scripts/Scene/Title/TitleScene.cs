@@ -131,6 +131,7 @@ namespace StackBuild.Scene.Title
             if (currentScreen != null && currentScreen.ShouldShowLogo != screen.ShouldShowLogo)
             {
                 logo.gameObject.SetActive(screen.ShouldShowLogo);
+                logo.DisplayImmediately();
                 if (screen.ShouldShowLogo)
                 {
                     ShowBackground();
