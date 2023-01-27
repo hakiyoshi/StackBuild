@@ -15,6 +15,7 @@ namespace StackBuild.Scene.Title
 {
     public class TitleScene : MonoBehaviour
     {
+        public static bool IsSkipTitle { get; set; }
 
         private const float MenuBackgroundAlpha = 0.5f;
 
@@ -61,9 +62,9 @@ namespace StackBuild.Scene.Title
 
         private async UniTaskVoid SwitchLoadMode()
         {
-            if (MainMenuLoadSetting.IsSkipTitle)
+            if (IsSkipTitle)
             {
-                if (MainMenuLoadSetting.SelectMode == null)
+                if (GameMode.Current == null)
                 {
                     currentScreen = mainMenuScreen;
                     ShowBackground();
@@ -75,7 +76,7 @@ namespace StackBuild.Scene.Title
                 else
                 {
                     currentScreen = characterSelectScreen;
-                    OnGameModeSelectAsync(MainMenuLoadSetting.SelectMode).Forget();
+                    OnGameModeSelectAsync(GameMode.Current).Forget();
                 }
             }
             else

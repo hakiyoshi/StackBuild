@@ -1,6 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 using StackBuild.Game;
-using Unity.Netcode;
+using StackBuild.Scene.Title;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -9,10 +9,8 @@ namespace StackBuild.UI
 {
     public class MainMenuLoader : MonoBehaviour
     {
-        [SerializeField] private bool isCharacterSelect;
         [SerializeField] private Button button;
-        [SerializeField] private GameMode onlineMatchMode;
-        [SerializeField] private GameMode localMatchMode;
+        [SerializeField] private bool isCharacterSelect;
 
         private void Start()
         {
@@ -26,19 +24,11 @@ namespace StackBuild.UI
 
         private void LoadMainMenu()
         {
-            if (NetworkManager.Singleton != null &&
-                (NetworkManager.Singleton.IsClient || NetworkManager.Singleton.IsServer))
+            if (!isCharacterSelect)
             {
-                MainMenuLoadSetting.SelectMode = onlineMatchMode;
+                GameMode.Current = null;
             }
-            else
-            {
-                MainMenuLoadSetting.SelectMode = localMatchMode;
-            }
-
-            if (!isCharacterSelect) MainMenuLoadSetting.SelectMode = null;
-
-            MainMenuLoadSetting.IsSkipTitle = true;
+            TitleScene.IsSkipTitle = true;
             SceneChange().Forget();
         }
 
