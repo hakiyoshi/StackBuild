@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7096bc16d85b492f915fd4ee0e23ed88, type: 3}
   m_Name: CoolCharacterProperty
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier:
   <Name>k__BackingField: KakkoII
   <CompanyName>k__BackingField: Stronger Building
   <DashDescription>k__BackingField: "\u57FA\u672C\u7684\u306A\u79FB\u52D5\u306F\u9045\u3044\u304C\u3001\r\n\u767A\u751F\u306E\u901F\u3044\u7A81\u9032\u304B\u3089\r\n\u76F8\u624B\u3092\u5927\u304D\u304F\u7A81\u304D\u98DB\u3070\u3059\u3002\r"

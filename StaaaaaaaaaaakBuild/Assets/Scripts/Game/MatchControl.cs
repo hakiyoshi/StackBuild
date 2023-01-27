@@ -85,6 +85,8 @@ namespace StackBuild.Game
             state.Value = MatchState.Starting;
             matchControlState.SendState(MatchState.Starting);
 
+            await LoadingScreen.Instance.HideAsync(LoadingScreenType.Triangles);
+
             //最初のStackBuildが画面に映る
             introDisplay.Display();
             timeDisplay.Display(Mathf.RoundToInt(gameTime));
