@@ -14,6 +14,11 @@ namespace StackBuild.Scene.Title
 {
     public class TitleScene : MonoBehaviour
     {
+        private static bool skipTitleMarked;
+        public static void MarkTitleSkip() => skipTitleMarked = true;
+
+        private static bool skipMainMenuMarked;
+        public static void MarkMainMenuSkip() => skipMainMenuMarked = true;
 
         private const float MenuBackgroundAlpha = 0.5f;
 
@@ -55,7 +60,39 @@ namespace StackBuild.Scene.Title
 
             matchmakingScreen.OnCancel.AddListener(CancelMatchmaking);
 
-            ShowTitleAsync().Forget();
+            SwitchLoadMode().Forget();
+        }
+
+        private async UniTaskVoid SwitchLoadMode()
+        {
+            if (skipTitleMarked)
+            {
+                if (skipMainMenuMarked)
+                {
+                    if (GameMode.Current != null)
+                    {
+                        currentScreen = characterSelectScreen;
+                        OnGameModeSelectAsync(GameMode.Current).Forget();
+                    }
+                    else
+                    {
+                        Debug.LogWarning("GameModeの指定がないためスキップできません。");
+                        ShowTitleAsync().Forget();
+                    }
+                }
+                else
+                {
+                    await logo.DisplayAsync();
+                    await ChangeScreen(mainMenuScreen);
+                }
+            }
+            else
+            {
+                ShowTitleAsync().Forget();
+            }
+
+            skipTitleMarked = false;
+            skipMainMenuMarked = false;
         }
 
         private async UniTaskVoid ShowTitleAsync()
@@ -91,7 +128,7 @@ namespace StackBuild.Scene.Title
 
         private async UniTask ChangeScreen(TitleSceneScreen screen)
         {
-            if (currentScreen.ShouldShowLogo != screen.ShouldShowLogo)
+            if (currentScreen != null && currentScreen.ShouldShowLogo != screen.ShouldShowLogo)
             {
                 logo.gameObject.SetActive(screen.ShouldShowLogo);
                 if (screen.ShouldShowLogo)
@@ -105,7 +142,7 @@ namespace StackBuild.Scene.Title
                     HideBackground();
                 }
             }
-            await currentScreen.HideAsync();
+            if (currentScreen != null) await currentScreen.HideAsync();
             currentScreen = screen;
             await currentScreen.ShowAsync();
         }
@@ -139,6 +176,8 @@ namespace StackBuild.Scene.Title
                 await LoadingScreen.Instance.ShowAsync();
                 SceneManager.LoadSceneAsync("Game");
             }
+
+            GameMode.Current = mode;
         }
 
         private async UniTaskVoid EnterMatchmaking()
