@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using StackBuild.Audio;
 using StackBuild.Game;
 using UniRx;
 using Unity.Netcode;
@@ -16,6 +17,10 @@ namespace StackBuild
         [SerializeField] private BuildSettings settings;
         [SerializeField] private MatchControl matchControl;
         [SerializeField] private Transform stackPos;
+
+        [Header("Audio")]
+        [SerializeField] private AudioSourcePool audioSourcePool;
+        [SerializeField] private AudioCue stackCue;
 
         private Queue<BuildCubeId> stackQueue = new();
         private GameObject buildingBase;
@@ -34,6 +39,8 @@ namespace StackBuild
         private float BaseFallTime => settings.BaseFallTime;
         private float LoopTime => settings.LoopTime;
         public IReadOnlyReactiveProperty<float> TotalHeight => totalHeight;
+
+        private int stackCounter = 0;
 
         public void Enqueue(BuildCubeId id)
         {
@@ -154,6 +161,15 @@ namespace StackBuild
                 .SetEase(Ease.InCubic)
                 .SetRelative(true)
                 .WithCancellation(token);
+
+            //9回に一回だけ効果音再生
+            if (stackCounter == 0)
+            {
+                var stackAudio = audioSourcePool.Rent(stackCue);
+                stackAudio.audioSource.volume = 0.8f;
+                stackAudio.PlayAndReturnWhenStopped();
+            }
+            stackCounter = (stackCounter + 1) % 9;
         }
 
         private async UniTask BaseDownAsync(CancellationToken token)
