@@ -92,6 +92,8 @@ namespace StackBuild.Game
             state.Value = MatchState.Starting;
             matchControlState.SendState(MatchState.Starting);
 
+            await LoadingScreen.Instance.HideAsync(LoadingScreenType.Triangles);
+
             //最初のStackBuildが画面に映る
             introDisplay.Display();
             timeDisplay.Display(Mathf.RoundToInt(gameTime));
@@ -116,6 +118,7 @@ namespace StackBuild.Game
                 .ToUniTask(cancellationToken: fade.gameObject.GetCancellationTokenOnDestroy());
 
             introDisplay.gameObject.SetActive(false);
+            introDisplay.DisableVirtualCamera();
 
             await UniTask.Delay(TimeSpan.FromSeconds(fadeSustain), cancellationToken: token);
             await fade.DOFade(0, fadeOut).ToUniTask(cancellationToken: fade.gameObject.GetCancellationTokenOnDestroy());

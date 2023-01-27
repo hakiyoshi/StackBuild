@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50f16f2810e64f688744436e4106b8a5, type: 3}
+  m_Name: Online Match
+  m_EditorClassIdentifier: 
+  <Name>k__BackingField: Online Match
+  <IsOnline>k__BackingField: 1
+  <PlayersToSelectCharacter>k__BackingField:
+  - {fileID: 11400000, guid: 94434b52069cc2f4ba70d07e78b196cd, type: 2}

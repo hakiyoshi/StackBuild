@@ -1,5 +1,7 @@
 ﻿using System;
 using DG.Tweening;
+using DG.Tweening.Core;
+using DG.Tweening.Plugins.Options;
 using StackBuild.Audio;
 using UniRx;
 using UnityEngine;
@@ -12,10 +14,12 @@ namespace StackBuild
         [SerializeField] private AudioSource source;
         private ModelSetup modelSetup;
         private InputSender inputSender => modelSetup.inputSender;
+
         private void Start()
         {
             //モデルセットアップを取得
-            transform.parent.TryGetComponent(out modelSetup);
+            if (transform.parent == null || !transform.parent.TryGetComponent(out modelSetup))
+                return;
 
             //オーディオセット
             source.clip = cue.Clip;
@@ -27,11 +31,17 @@ namespace StackBuild
             {
                 if (x.sqrMagnitude == 0.0f)
                 {
-                    source.DOFade(0.0f, 0.5f).SetEase(Ease.OutCubic);
+                    if (!(source.volume > 0.0f))
+                        return;
+
+                    source.DOFade(0.0f, 1.0f).SetEase(Ease.OutCubic);
                 }
                 else
                 {
-                    source.DOFade(1.0f, 0.5f).SetEase(Ease.OutCirc);
+                    if (!(source.volume < 1.0f))
+                        return;
+
+                    source.DOFade(1.0f, 2.0f).SetEase(Ease.OutCirc);
                 }
             }).AddTo(this);
         }

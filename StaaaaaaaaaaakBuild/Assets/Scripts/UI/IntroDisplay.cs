@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Cinemachine;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -10,6 +11,7 @@ namespace StackBuild.UI
     {
 
         [SerializeField] private bool displayOnEnable;
+        [SerializeField] private CinemachineVirtualCamera vcam;
         [SerializeField] private CanvasGroup group;
         [SerializeField] private RectTransform iconContainer;
         [SerializeField] private Image[] iconParts;
@@ -27,27 +29,30 @@ namespace StackBuild.UI
         [SerializeField] private RectTransform[] mapInfoRows;
 
         private Sequence sequence;
+        private CinemachineTrackedDolly dolly;
 
         private void Awake()
         {
+            dolly = vcam.GetCinemachineComponent<CinemachineTrackedDolly>();
             // Display()でSequence作ってSetActive(true)と一緒に呼ぶと600msくらいかかる あほか
             // なので先に作って停止したSequenceを持っておく
             // ついでにCanvas activeのままにできるようになった (active化でレイアウト走るのでその分の軽量化)
             // 11msまで軽くなったのでもうこれでいいかな
             sequence = DOTween.Sequence()
-                    // ★タイミング調整はこちら★
-                    .Insert(0,     ShowLogo())
-                    .Insert(1.2f + 0,     ShowTitleLine(titleLineTop, true, 0.5f, Ease.OutQuart))
-                    .Insert(1.2f + 0,     ShowTitleLine(titleLineBottom, false, 0.5f, Ease.OutQuart))
-                    .Insert(1.2f + 0.38f, OpenTitleBackground(0.12f).Append(ShowTitleText()))
-                    .Insert(1.2f + 0.25f, ShowAccentLine(accentLineTop, true, 0.65f, Ease.OutQuart))
-                    .Insert(1.2f + 0.25f, ShowAccentLine(accentLineBottom, false, 0.65f, Ease.OutQuart))
-                    .Insert(1.2f + 0,     ShowFrameLines(0.5f, Ease.OutQuart))
-                    .Insert(1.2f + 0.75f, MoveFrames(20, 0.4f, Ease.OutQuart))
-                    .Insert(1.2f + 0,     ShowMapInfo(300, 0.05f, 0.5f, Ease.OutQuart))
-                ;
-            sequence.SetAutoKill(false);
-            sequence.Pause();
+                // ★タイミング調整はこちら★
+                .Insert(0,
+                    DOTween.To(() => dolly.m_PathPosition, v => dolly.m_PathPosition = v, 1, 3).From(0)
+                        .SetEase(Ease.OutQuint))
+                .Insert(0, ShowLogo())
+                .Insert(1.2f + 0, ShowTitleLine(titleLineTop, true, 0.5f, Ease.OutQuart))
+                .Insert(1.2f + 0, ShowTitleLine(titleLineBottom, false, 0.5f, Ease.OutQuart))
+                .Insert(1.2f + 0.38f, OpenTitleBackground(0.12f).Append(ShowTitleText()))
+                .Insert(1.2f + 0.25f, ShowAccentLine(accentLineTop, true, 0.65f, Ease.OutQuart))
+                .Insert(1.2f + 0.25f, ShowAccentLine(accentLineBottom, false, 0.65f, Ease.OutQuart))
+                .Insert(1.2f + 0, ShowFrameLines(0.5f, Ease.OutQuart))
+                .Insert(1.2f + 0.75f, MoveFrames(20, 0.4f, Ease.OutQuart))
+                .Insert(1.2f + 0, ShowMapInfo(300, 0.05f, 0.5f, Ease.OutQuart))
+                .SetAutoKill(false).SetLink(gameObject).Pause();
         }
 
         private void OnEnable()
@@ -60,8 +65,14 @@ namespace StackBuild.UI
 
         public void Display()
         {
+            vcam.enabled = true;
             group.alpha = 1;
             sequence.Restart();
+        }
+
+        public void DisableVirtualCamera()
+        {
+            vcam.enabled = false;
         }
 
         private Sequence ShowLogo()
