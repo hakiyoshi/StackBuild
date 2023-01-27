@@ -8,6 +8,7 @@ namespace StackBuild.Game
         public static GameMode Current { get; set; }
         [field: SerializeField] public string Name { get; private set; }
         [field: SerializeField] public bool IsOnline { get; private set; }
+        [field: SerializeField] public bool IsPractice { get; private set; }
         [field: SerializeField] public PlayerProperty[] PlayersToSelectCharacter { get; private set; }
 
     }
