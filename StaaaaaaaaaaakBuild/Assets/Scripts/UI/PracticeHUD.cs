@@ -1,6 +1,7 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using StackBuild.Scene.Title;
 using UniRx;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -58,7 +59,9 @@ namespace StackBuild.UI
             exitConfirmed = true;
             inputExit.action.Disable();
             await LoadingScreen.Instance.ShowAsync();
-            SceneManager.LoadSceneAsync("MainMenu");
+            TitleScene.MarkTitleSkip();
+            await SceneManager.LoadSceneAsync("MainMenu");
+            await LoadingScreen.Instance.HideAsync();
         }
 
     }
