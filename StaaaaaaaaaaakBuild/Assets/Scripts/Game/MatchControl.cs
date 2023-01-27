@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
@@ -36,6 +35,7 @@ namespace StackBuild.Game
         [SerializeField] private float startDelay;
         [SerializeField] private TimeDisplay timeDisplay;
         [SerializeField] private int flashTimeBelow;
+        [SerializeField] private PracticeHUD practiceHUD;
         [SerializeField] private FinishDisplay finishDisplay;
         [SerializeField] private ResultsDisplay resultsDisplay;
         [SerializeField] private float resultsDelay;
@@ -53,6 +53,7 @@ namespace StackBuild.Game
         [SerializeField] private LobbyManager lobbyManager;
         [SerializeField] private RelayManager relayManager;
 
+        private bool isPractice;
         private float timeRemaining;
         private readonly ReactiveProperty<MatchState> state = new();
         public IReadOnlyReactiveProperty<MatchState> State => state;
@@ -78,6 +79,8 @@ namespace StackBuild.Game
 
         private async UniTaskVoid RunMatch(CancellationToken token)
         {
+            isPractice = GameMode.Current != null && GameMode.Current.IsPractice;
+
             //ネットワーク接続時サーバー限定でSignalを変えておく
             if (IsSpawned && IsServer)
                 matchStateSignalServer = MatchStateSignal.GameStart;
@@ -124,6 +127,11 @@ namespace StackBuild.Game
             matchControlState.SendState(MatchState.Ingame);
             startDisplay.gameObject.SetActive(true);
             startDisplay.Display();
+
+            if (isPractice)
+            {
+                practiceHUD.ShowAsync().Forget();
+            }
         }
 
         private async UniTaskVoid FinishMatch(CancellationToken token)
@@ -160,7 +168,7 @@ namespace StackBuild.Game
 
         private void Update()
         {
-            if (state.Value != MatchState.Ingame) return;
+            if (state.Value != MatchState.Ingame || isPractice) return;
 
             int lastSeconds = Mathf.CeilToInt(timeRemaining);
             timeRemaining = Mathf.Max(0, timeRemaining - Time.deltaTime);
