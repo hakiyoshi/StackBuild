@@ -31,16 +31,12 @@ namespace StackBuild
             {
                 if (x.sqrMagnitude == 0.0f)
                 {
-                    if (!(source.volume > 0.0f))
-                        return;
-
+                    source.DOKill();
                     source.DOFade(0.0f, 1.0f).SetEase(Ease.OutCubic);
                 }
                 else
                 {
-                    if (!(source.volume < 1.0f))
-                        return;
-
+                    source.DOKill();
                     source.DOFade(1.0f, 2.0f).SetEase(Ease.OutCirc);
                 }
             }).AddTo(this);
