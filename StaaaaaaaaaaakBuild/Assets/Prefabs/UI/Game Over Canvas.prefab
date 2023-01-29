@@ -929,6 +929,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   button: {fileID: 4680031917211939193}
   isCharacterSelect: 1
+  lobby: {fileID: 11400000, guid: e24ed35b67c6f614e882e1972bd8b5b6, type: 2}
+  relay: {fileID: 11400000, guid: c83824a8840dc0644a32557b15677068, type: 2}
 --- !u!224 &4680031917211939197 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7139460434811058984, guid: 55591cad4158d8942b4e57e3c5663b4a, type: 3}
@@ -1095,6 +1097,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   button: {fileID: 4334470801316489793}
   isCharacterSelect: 0
+  lobby: {fileID: 11400000, guid: e24ed35b67c6f614e882e1972bd8b5b6, type: 2}
+  relay: {fileID: 11400000, guid: c83824a8840dc0644a32557b15677068, type: 2}
 --- !u!224 &4334470801316489797 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7139460434811058984, guid: 55591cad4158d8942b4e57e3c5663b4a, type: 3}
