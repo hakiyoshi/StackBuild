@@ -70,6 +70,8 @@ namespace StackBuild
                     }
 
                     var playerInput = input.GetComponent<PlayerInput>();
+                    if(!playerInput.user.valid)
+                        return;
                     playerInput.SwitchCurrentActionMap("UI");
                     playerInput.SwitchCurrentControlScheme(InputSystem.devices.ToArray());
                     playerInput.actions.bindingMask = InputBinding.MaskByGroups("keyboard&Mouse", "Gamepad");
