@@ -37,12 +37,14 @@ namespace NetworkSystem
                     DontDestroyOnLoad(NetworkManagerObject);
                 }
 
+                /*
                 if (SceneManagerObject == null)
                 {
                     SceneManagerObject = Instantiate(Resources.Load("NetworkSceneManager") as GameObject)
                         .GetComponent<NetworkSystemSceneManager>();
                     DontDestroyOnLoad(SceneManagerObject);
                 }
+                */
             }
             catch (AuthenticationException ex)
             {
