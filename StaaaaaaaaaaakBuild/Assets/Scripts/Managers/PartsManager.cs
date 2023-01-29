@@ -77,7 +77,7 @@ namespace StackBuild
             while (!token.IsCancellationRequested)
             {
                 var rule = settings.SpawnRuleList.Find(x => x.threshould > GetActiveCount());
-                if (rule == null || NetworkManager.Singleton == null && !NetworkManager.Singleton.IsServer)
+                if (rule == null || NetworkManager.Singleton != null && !NetworkManager.Singleton.IsServer)
                 {
                     await UniTask.Yield(PlayerLoopTiming.Update, token);
                     continue;
