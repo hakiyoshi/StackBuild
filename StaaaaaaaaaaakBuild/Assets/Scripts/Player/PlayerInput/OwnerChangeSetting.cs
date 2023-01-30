@@ -96,7 +96,7 @@ namespace StackBuild
             if(playerInput == null)
                 return;
 
-            GainedInput(playerInput);
+            SwitchDevice();
         }
 
         public override void OnLostOwnership()

@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace StackBuild
 {
@@ -17,8 +19,13 @@ namespace StackBuild
 
         private void Start()
         {
-            if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsServer)
-                OwnerAllocation();
+            NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += LoadComplete;
+        }
+
+        private void LoadComplete(string scenename, LoadSceneMode loadscenemode, List<ulong> clientscompleted, List<ulong> clientstimedout)
+        {
+            OwnerAllocation();
+            NetworkManager.Singleton.SceneManager.OnLoadEventCompleted -= LoadComplete;
         }
 
         public void OnDestroy()
