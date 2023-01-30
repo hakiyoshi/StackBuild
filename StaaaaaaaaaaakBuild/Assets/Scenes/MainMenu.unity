@@ -3501,6 +3501,7 @@ MonoBehaviour:
   randomMatchmaker: {fileID: 1327517722}
   sceneChanger: {fileID: 1525366551}
   playerPropertyOperator: {fileID: 958659376}
+  playerInputProperty: {fileID: 11400000, guid: 0dd4cc4c4954c3942815643f00138d40, type: 2}
   audioChannel: {fileID: 11400000, guid: 81faf6d923e32304ea6f6ad1e2d35791, type: 2}
   cueStart: {fileID: 11400000, guid: ce1dadf300b75f845ab31b71fa2d1f17, type: 2}
   cueReady: {fileID: 11400000, guid: 008dccbbe89a17141bb281bcc0a979c6, type: 2}
