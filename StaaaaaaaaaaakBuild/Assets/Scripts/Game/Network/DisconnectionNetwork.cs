@@ -20,20 +20,29 @@ namespace StackBuild.Game
 
         private void Start()
         {
-            startNetwork = NetworkManager.Singleton != null && NetworkManager.Singleton.IsClient;
+            if (NetworkManager.Singleton != null)
+            {
+                startNetwork = NetworkManager.Singleton.IsClient;
+                NetworkManager.Singleton.OnClientDisconnectCallback += DisconnectClient;
+            }
         }
 
         private void Update()
         {
             if (!sceneChangeNow && startNetwork && lobby.Status == LobbyManager.LobbyStatus.NonPerticipation)
             {
-                sceneChangeNow = true;
                 LoadMainMenu(false);
             }
         }
 
+        private void DisconnectClient(ulong obj)
+        {
+            LoadMainMenu(false);
+        }
+
         private void LoadMainMenu(bool characterSelect)
         {
+            sceneChangeNow = true;
             TitleScene.MarkTitleSkip();
             if (characterSelect)
             {
