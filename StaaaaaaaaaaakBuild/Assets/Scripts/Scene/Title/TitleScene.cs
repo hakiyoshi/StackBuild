@@ -188,7 +188,7 @@ namespace StackBuild.Scene.Title
             {
                 await randomMatchmaker.StartRandomMatchmaking();
             }
-            catch (OperationCanceledException)
+            catch (Exception)
             {
                 await ChangeScreen(mainMenuScreen);
                 return;
