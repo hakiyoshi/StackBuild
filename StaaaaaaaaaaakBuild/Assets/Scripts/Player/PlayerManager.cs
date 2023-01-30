@@ -19,6 +19,8 @@ namespace StackBuild
 
         private void Start()
         {
+            if (NetworkManager.Singleton == null || NetworkManager.Singleton.SceneManager == null) return;
+
             NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += LoadComplete;
         }
 
