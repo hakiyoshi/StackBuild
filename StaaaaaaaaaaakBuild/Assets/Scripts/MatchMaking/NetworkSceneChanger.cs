@@ -1,6 +1,7 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
 using NetworkSystem;
+using StackBuild.UI;
 using Unity.Netcode;
 using UnityEditor;
 using UnityEngine;
@@ -20,6 +21,11 @@ namespace StackBuild.MatchMaking
             nextSceneName = nextSceneAsset.name;
         }
 #endif
+
+        private void Start()
+        {
+            LoadingScreen.Instance.HideAsync().Forget();
+        }
 
         public bool SceneChange()
         {
