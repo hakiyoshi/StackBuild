@@ -15,7 +15,7 @@ namespace NetworkSystem
     public class LobbyManager : ScriptableObject
     {
         public const string DefaultLobbyName = "PlayerLobby";
-        public const int DefaultMaxPlayer = 4;
+        public const int DefaultMaxPlayer = 2;
         public const bool DefaultIsPrivate = false;
 
         private const double CoolTimeInitialValue = 1;
