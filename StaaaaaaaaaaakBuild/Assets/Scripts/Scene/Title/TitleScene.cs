@@ -9,8 +9,10 @@ using StackBuild.MenuNetwork;
 using StackBuild.UI;
 using UniRx;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using InputDevice = UnityEngine.InputSystem.InputDevice;
 
 namespace StackBuild.Scene.Title
 {
@@ -40,6 +42,7 @@ namespace StackBuild.Scene.Title
         [SerializeField] private RandomMatchmaker randomMatchmaker;
         [SerializeField] private NetworkSceneChanger sceneChanger;
         [SerializeField] private PlayerPropertyOperator playerPropertyOperator;
+        [SerializeField] private PlayerInputProperty playerInputProperty;
         [SerializeField] private AudioChannel audioChannel;
         [SerializeField] private AudioCue cueStart;
         [SerializeField] private AudioCue cueReady;
@@ -172,6 +175,18 @@ namespace StackBuild.Scene.Title
                 var propertyList = playerPropertyOperator.characterProperties.ToList();
                 int characterIndex = propertyList.FindIndex(x => x == selectedCharacter);
                 playerPropertyOperator.ChangeSelectedCharacter(i, characterIndex);
+
+                InputDevice lastUpdateDevice = null;
+                var max = double.MinValue;
+                foreach (var device in InputSystem.devices)
+                {
+                    if (device.lastUpdateTime > max)
+                    {
+                        lastUpdateDevice = device;
+                        max = device.lastUpdateTime;
+                    }
+                }
+                playerInputProperty.SettingPlayerDevice(i, lastUpdateDevice, mode.IsOnline);
             }
 
             if (mode.IsOnline)
