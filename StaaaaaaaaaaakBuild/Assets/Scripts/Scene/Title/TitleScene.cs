@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using StackBuild.Audio;
 using StackBuild.Game;
 using StackBuild.MatchMaking;
+using StackBuild.MenuNetwork;
 using StackBuild.UI;
 using UniRx;
 using UnityEngine;
@@ -37,6 +39,7 @@ namespace StackBuild.Scene.Title
         [SerializeField] private MatchFoundDisplay matchFoundDisplay;
         [SerializeField] private RandomMatchmaker randomMatchmaker;
         [SerializeField] private NetworkSceneChanger sceneChanger;
+        [SerializeField] private PlayerPropertyOperator playerPropertyOperator;
         [SerializeField] private AudioChannel audioChannel;
         [SerializeField] private AudioCue cueStart;
         [SerializeField] private AudioCue cueReady;
@@ -164,7 +167,11 @@ namespace StackBuild.Scene.Title
                     await ChangeScreen(mainMenuScreen);
                     return;
                 }
-                player.Initialize(selectedCharacter);
+                //player.Initialize(selectedCharacter);
+
+                var propertyList = playerPropertyOperator.characterProperties.ToList();
+                int characterIndex = propertyList.FindIndex(x => x == selectedCharacter);
+                playerPropertyOperator.ChangeSelectedCharacter(i, characterIndex);
             }
 
             if (mode.IsOnline)
