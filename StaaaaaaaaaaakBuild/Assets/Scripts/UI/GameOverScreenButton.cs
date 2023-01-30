@@ -77,7 +77,10 @@ namespace StackBuild.UI
         private async UniTask ChangeScene(string sceneName)
         {
             await NetworkSystemManager.NetworkExit(lobby, relay);
-            await UniTask.WaitWhile(() => NetworkManager.Singleton.ShutdownInProgress);
+            if (NetworkManager.Singleton != null)
+            {
+                await UniTask.WaitWhile(() => NetworkManager.Singleton.ShutdownInProgress);
+            }
             await LoadingScreen.Instance.ShowAsync();
             await SceneManager.LoadSceneAsync(sceneName);
         }
