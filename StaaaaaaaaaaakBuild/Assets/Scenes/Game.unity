@@ -2023,6 +2023,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   relay: {fileID: 11400000, guid: c83824a8840dc0644a32557b15677068, type: 2}
   lobby: {fileID: 11400000, guid: e24ed35b67c6f614e882e1972bd8b5b6, type: 2}
+  loadingScreenCanvas: {fileID: 1570718318}
 --- !u!1 &741816563
 GameObject:
   m_ObjectHideFlags: 0
@@ -2404,7 +2405,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1986494725027733400, guid: 9e82430e1b4de8a46883be2bd34e2689, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 150.505
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1986494725027733400, guid: 9e82430e1b4de8a46883be2bd34e2689, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -2476,7 +2477,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4334470801316489797, guid: 9e82430e1b4de8a46883be2bd34e2689, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 924.525
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4334470801316489797, guid: 9e82430e1b4de8a46883be2bd34e2689, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -2564,7 +2565,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4680031917211939197, guid: 9e82430e1b4de8a46883be2bd34e2689, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 521.015
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4680031917211939197, guid: 9e82430e1b4de8a46883be2bd34e2689, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -4224,6 +4225,11 @@ PrefabInstance:
 --- !u!224 &1570718317 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3125027555793987247, guid: d49629681d1bb124c94b4f1eac8bf41d, type: 3}
+  m_PrefabInstance: {fileID: 1570718316}
+  m_PrefabAsset: {fileID: 0}
+--- !u!225 &1570718318 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 3125027556715064087, guid: d49629681d1bb124c94b4f1eac8bf41d, type: 3}
   m_PrefabInstance: {fileID: 1570718316}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1583137635 stripped

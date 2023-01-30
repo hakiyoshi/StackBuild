@@ -13,6 +13,7 @@ namespace StackBuild.Game
     {
         [SerializeField] private RelayManager relay;
         [SerializeField] private LobbyManager lobby;
+        [SerializeField] private CanvasGroup loadingScreenCanvas;
 
         private bool startNetwork = false;
         private bool sceneChangeNow = false;
@@ -45,7 +46,8 @@ namespace StackBuild.Game
         {
             await NetworkSystemManager.NetworkExit(lobby, relay);
             await UniTask.WaitWhile(() => NetworkManager.Singleton.ShutdownInProgress);
-            await LoadingScreen.Instance.ShowAsync();
+            if (loadingScreenCanvas.alpha == 0)
+                await LoadingScreen.Instance.ShowAsync();
             await SceneManager.LoadSceneAsync(sceneName);
         }
     }

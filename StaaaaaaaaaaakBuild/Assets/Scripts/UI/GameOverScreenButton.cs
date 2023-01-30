@@ -19,6 +19,7 @@ namespace StackBuild.UI
         [SerializeField] private RelayManager relay;
 
         private bool waitingForSceneChange = false;
+        private bool isSelect = false;
         private bool sceneChangeNow = false;
 
         private void Start()
@@ -33,6 +34,8 @@ namespace StackBuild.UI
 
         private void ClickButton()
         {
+            isSelect = true;
+
             if (isRematch)
             {
                 LoadGameScene();
@@ -62,16 +65,17 @@ namespace StackBuild.UI
             {
                 TitleScene.MarkMainMenuSkip();
             }
-            ChangeScene("MainMenu").Forget();
+
+            //ネットにつながってたらネットから切断されるようにする
+            if (IsSpawned)
+                RematchCancelServerRpc();
+            else
+                ChangeScene("MainMenu").Forget();
+
         }
 
         private async UniTask ChangeScene(string sceneName)
         {
-            sceneChangeNow = true;
-
-            if (IsSpawned)
-                RematchCancelServerRpc();
-
             await NetworkSystemManager.NetworkExit(lobby, relay);
             await UniTask.WaitWhile(() => NetworkManager.Singleton.ShutdownInProgress);
             await LoadingScreen.Instance.ShowAsync();
@@ -121,10 +125,8 @@ namespace StackBuild.UI
         [ClientRpc()]
         void RematchCancelClientRpc()
         {
-            if (sceneChangeNow)
-                return;
-
-            LoadMainMenu(false);
+            //選択していてかつ再戦の場合
+            NetworkSystemManager.NetworkExit(lobby, relay).Forget();
         }
     }
 }
