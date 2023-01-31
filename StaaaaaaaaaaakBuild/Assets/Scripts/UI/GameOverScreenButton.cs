@@ -5,6 +5,7 @@ using StackBuild.Game;
 using StackBuild.Scene.Title;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -17,6 +18,7 @@ namespace StackBuild.UI
         [SerializeField] private bool isCharacterSelect;
         [SerializeField] private LobbyManager lobby;
         [SerializeField] private RelayManager relay;
+        [SerializeField] private EventSystem eventSystem;
 
         private bool waitingForSceneChange = false;
         private bool isSelect = false;
@@ -36,6 +38,7 @@ namespace StackBuild.UI
         {
             isSelect = true;
 
+            eventSystem.enabled = false;
             if (isRematch)
             {
                 LoadGameScene();
@@ -76,12 +79,12 @@ namespace StackBuild.UI
 
         private async UniTask ChangeScene(string sceneName)
         {
+            await LoadingScreen.Instance.ShowAsync();
             await NetworkSystemManager.NetworkExit(lobby, relay);
             if (NetworkManager.Singleton != null)
             {
                 await UniTask.WaitWhile(() => NetworkManager.Singleton.ShutdownInProgress);
             }
-            await LoadingScreen.Instance.ShowAsync();
             await SceneManager.LoadSceneAsync(sceneName);
         }
 
@@ -128,8 +131,16 @@ namespace StackBuild.UI
         [ClientRpc()]
         void RematchCancelClientRpc()
         {
+            eventSystem.enabled = false;
+            RematchCancel().Forget();
+        }
+
+        async UniTask RematchCancel()
+        {
+            await LoadingScreen.Instance.ShowAsync();
+
             //選択していてかつ再戦の場合
-            NetworkSystemManager.NetworkExit(lobby, relay).Forget();
+            await NetworkSystemManager.NetworkExit(lobby, relay);
         }
     }
 }
