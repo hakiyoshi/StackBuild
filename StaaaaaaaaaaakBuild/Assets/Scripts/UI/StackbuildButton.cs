@@ -25,6 +25,10 @@ namespace StackBuild.UI
         private bool isHovered;
         private bool isPressed;
 
+        public string Text
+        {
+            set => label.text = text = value;
+        }
         public bool Disabled
         {
             get => disabled;
