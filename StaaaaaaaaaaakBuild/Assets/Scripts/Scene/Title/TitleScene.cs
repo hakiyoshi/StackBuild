@@ -210,9 +210,10 @@ namespace StackBuild.Scene.Title
             {
                 await randomMatchmaker.StartRandomMatchmaking();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 await ChangeScreen(mainMenuScreen);
+                Debug.LogException(ex);
                 return;
             }
 
