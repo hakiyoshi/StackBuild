@@ -1,9 +1,11 @@
 using UniRx;
 using UniRx.Triggers;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace StackBuild
 {
+    [RequireComponent(typeof(PartsNetworkSync))]
     public class PartsCore : MonoBehaviour
     {
         [SerializeField] private PartsSettings settings;
@@ -15,8 +17,11 @@ namespace StackBuild
 
         public ReactiveProperty<PartsId> partsId = new();
 
+        private PartsNetworkSync partsNetworkSync;
+
         private void Awake()
         {
+            TryGetComponent(out partsNetworkSync);
             isActive.AddTo(this);
             partsId.AddTo(this);
         }
@@ -32,7 +37,11 @@ namespace StackBuild
                 .DistinctUntilChanged()
                 .Skip(1)
                 .Where(pos => pos.y < -30 && isActive.Value)
-                .Subscribe(_ => Parent.Return(this));
+                .Subscribe(_ =>
+                {
+                    partsNetworkSync.LostOwnershipServerRpc(NetworkManager.ServerClientId);
+                    Parent.Return(this);
+                });
         }
 
         public PartsData GetPartsData()
