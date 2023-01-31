@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.5784543, g: 0.6157293, b: 0.60872656, a: 1}
+  m_IndirectSpecularColor: {r: 0.5784543, g: 0.6157293, b: 0.6087265, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2224,10 +2224,18 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 133750756338695588, guid: 9e82430e1b4de8a46883be2bd34e2689, type: 3}
+      propertyPath: eventSystem
+      value: 
+      objectReference: {fileID: 697333370}
     - target: {fileID: 711996882411849335, guid: 9e82430e1b4de8a46883be2bd34e2689, type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 711996882411849335, guid: 9e82430e1b4de8a46883be2bd34e2689, type: 3}
+      propertyPath: eventSystem
+      value: 
+      objectReference: {fileID: 697333370}
     - target: {fileID: 789002588465717927, guid: 9e82430e1b4de8a46883be2bd34e2689, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 1457011444
@@ -2588,6 +2596,10 @@ PrefabInstance:
       propertyPath: sceneAsset
       value: 
       objectReference: {fileID: 102900000, guid: 81d8e93ff07610b4cbccba08863fd008, type: 3}
+    - target: {fileID: 5231597910180659952, guid: 9e82430e1b4de8a46883be2bd34e2689, type: 3}
+      propertyPath: eventSystem
+      value: 
+      objectReference: {fileID: 697333370}
     - target: {fileID: 7370466460314860388, guid: 9e82430e1b4de8a46883be2bd34e2689, type: 3}
       propertyPath: sceneName
       value: Game
