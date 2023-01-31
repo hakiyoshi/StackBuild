@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks;
 using NetworkSystem;
 using StackBuild.Scene.Title;
 using StackBuild.UI;
+using UniRx;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -16,33 +17,35 @@ namespace StackBuild.Game
         [SerializeField] private CanvasGroup loadingScreenCanvas;
 
         private bool startNetwork = false;
-        private bool sceneChangeNow = false;
+        private bool hasDisconnected = false;
 
         private void Start()
         {
             if (NetworkManager.Singleton != null)
             {
-                startNetwork = NetworkManager.Singleton.IsClient;
-                NetworkManager.Singleton.OnClientDisconnectCallback += DisconnectClient;
+                var networkManager = NetworkManager.Singleton;
+                startNetwork = networkManager.IsClient;
+                Observable.FromEvent<ulong>(
+                    handler => networkManager.OnClientDisconnectCallback += handler,
+                    handler => networkManager.OnClientDisconnectCallback -= handler
+                ).Subscribe(_ => OnDisconnect().Forget()).AddTo(this);
             }
         }
 
-        private void Update()
+        private async UniTaskVoid OnDisconnect()
         {
-            if (!sceneChangeNow && startNetwork && lobby.Status == LobbyManager.LobbyStatus.NonPerticipation)
-            {
-                LoadMainMenu(false);
-            }
-        }
-
-        private void DisconnectClient(ulong obj)
-        {
+            if(hasDisconnected) return;
+            hasDisconnected = true;
+            await ModalSpawner.Instance.ShowMessageModal(
+                "Connection Lost",
+                "対戦相手が退出したか、接続が切れました。\n対戦を終了し、メインメニューに戻ります。"
+            );
             LoadMainMenu(false);
         }
 
         private void LoadMainMenu(bool characterSelect)
         {
-            sceneChangeNow = true;
+            hasDisconnected = true;
             TitleScene.MarkTitleSkip();
             if (characterSelect)
             {

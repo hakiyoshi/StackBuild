@@ -238,6 +238,10 @@ namespace StackBuild.Scene.Title
             }
             catch (Exception ex)
             {
+                await ModalSpawner.Instance.ShowMessageModal(
+                    "Matchmaking Failed",
+                    "対戦相手が見つかりませんでした。時間をおいてもう一度お試しください。メインメニューに戻ります。"
+                );
                 await ChangeScreen(mainMenuScreen);
                 Debug.LogException(ex);
                 return;

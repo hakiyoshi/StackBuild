@@ -13,7 +13,7 @@ namespace StackBuild.UI
         [SerializeField] private bool hideOnAwake;
         [SerializeField] private CanvasGroup group;
         [SerializeField] private Image[] characterImages;
-        [SerializeField] private GameObject selectButtonOnShow;
+        [SerializeField] private Button[] buttons;
 
         private void Reset()
         {
@@ -26,6 +26,15 @@ namespace StackBuild.UI
             group.alpha = 0;
             group.interactable = false;
             group.blocksRaycasts = false;
+
+            foreach (var button in buttons)
+            {
+                button.onClick.AddListener(() =>
+                {
+                    group.interactable = false;
+                    group.blocksRaycasts = false;
+                });
+            }
         }
 
         public async UniTaskVoid ShowAsync(CharacterProperty[] characters)
@@ -40,7 +49,7 @@ namespace StackBuild.UI
                 .Join(((RectTransform)transform).DOSizeDelta(Vector2.zero, 0.5f).From().SetEase(Ease.OutQuart));
             group.interactable = true;
             group.blocksRaycasts = true;
-            EventSystem.current.SetSelectedGameObject(selectButtonOnShow);
+            EventSystem.current.SetSelectedGameObject(buttons[0].gameObject);
         }
 
     }
