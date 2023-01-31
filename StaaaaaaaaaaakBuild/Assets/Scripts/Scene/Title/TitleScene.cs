@@ -245,6 +245,7 @@ namespace StackBuild.Scene.Title
 
             audioChannel.Request(cueMatchFound);
             await matchFoundDisplay.DisplayAsync();
+            menuBGM.DOFade(0, 1).SetEase(Ease.Linear);
             await randomMatchmaker.SceneChangeReady();
             await LoadingScreen.Instance.ShowAsync();
             sceneChanger.SceneChange();
