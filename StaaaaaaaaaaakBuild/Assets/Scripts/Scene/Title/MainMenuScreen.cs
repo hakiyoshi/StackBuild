@@ -19,12 +19,14 @@ namespace StackBuild.Scene.Title
         [SerializeField] private Button buttonOnlineMatch;
         [SerializeField] private Button buttonSettings;
         [SerializeField] private Button buttonBack;
+        [SerializeField] private Button buttonExit;
 
         private readonly Subject<GameMode> onGameModeSelect = new();
 
         public IObservable<GameMode> OnGameModeSelect => onGameModeSelect;
         public Button.ButtonClickedEvent OnSettingsClick => buttonSettings.onClick;
         public Button.ButtonClickedEvent OnBackClick => buttonBack.onClick;
+        public Button.ButtonClickedEvent OnExitClick => buttonExit.onClick;
 
         private void Awake()
         {

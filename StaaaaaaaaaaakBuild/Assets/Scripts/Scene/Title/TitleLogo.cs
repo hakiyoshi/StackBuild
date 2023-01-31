@@ -28,6 +28,11 @@ namespace StackBuild.Scene.Title
             await sequence.AsyncWaitForCompletion();
         }
 
+        public void DisplayImmediately()
+        {
+            sequence.Goto(sequence.Duration());
+        }
+
         private Sequence ShowLogo()
         {
             var seq = DOTween.Sequence();

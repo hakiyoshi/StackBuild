@@ -57,6 +57,7 @@ namespace StackBuild.Game
 
         [Header("Audio")]
         [SerializeField] private AudioSourcePool audioSourcePool;
+        [SerializeField] private AudioSourcePool audioSourcePoolBGM;
 
         [SerializeField] private AudioCue introStartCue;
         [SerializeField] private AudioCue introStackBuildCue;
@@ -154,7 +155,7 @@ namespace StackBuild.Game
 
             //ゲームBGM再生
             {
-                gameAudio = audioSourcePool.Rent(gameCue);
+                gameAudio = audioSourcePoolBGM.Rent(gameCue);
                 gameAudio.audioSource.volume = 0.0f;
                 gameAudio.audioSource.DOFade(0.1f, 2.5f).SetLink(gameObject);
                 gameAudio.audioSource.Play();
@@ -218,7 +219,7 @@ namespace StackBuild.Game
                 gameAudio = null;
             }).SetLink(gameObject);
 
-            resultAudio = audioSourcePool.Rent(resultCue);
+            resultAudio = audioSourcePoolBGM.Rent(resultCue);
             resultAudio.audioSource.volume = 0.0f;
             resultAudio.audioSource.DOFade(0.4f, 7.0f).SetLink(gameObject);
             resultAudio.audioSource.Play();

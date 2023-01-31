@@ -10,6 +10,7 @@ using StackBuild.UI;
 using UniRx;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using InputDevice = UnityEngine.InputSystem.InputDevice;
@@ -44,6 +45,8 @@ namespace StackBuild.Scene.Title
         [SerializeField] private PlayerPropertyOperator playerPropertyOperator;
         [SerializeField] private PlayerInputProperty playerInputProperty;
         [SerializeField] private AudioChannel audioChannel;
+        [SerializeField] private AudioSource titleBGM; // ちょっといろいろ諦めて直でSource使う(
+        [SerializeField] private AudioSource menuBGM;
         [SerializeField] private AudioCue cueStart;
         [SerializeField] private AudioCue cueReady;
         [SerializeField] private AudioCue cueMatchFound;
@@ -61,6 +64,7 @@ namespace StackBuild.Scene.Title
             mainMenuScreen.OnGameModeSelect.Subscribe(mode => OnGameModeSelectAsync(mode).Forget());
             mainMenuScreen.OnSettingsClick.AddListener(() => ChangeScreen(settingsScreen).Forget());
             mainMenuScreen.OnBackClick.AddListener(() => ChangeScreen(titleScreen).Forget());
+            mainMenuScreen.OnExitClick.AddListener(() => ExitGame().Forget());
 
             settingsScreen.OnBackClick.AddListener(() => ChangeScreen(mainMenuScreen).Forget());
 
@@ -105,6 +109,8 @@ namespace StackBuild.Scene.Title
         {
             currentScreen = titleScreen;
 
+            UpdateBGM();
+
             var logoTransform = (RectTransform)logo.transform;
             var seq = DOTween.Sequence()
                 .Append(logoTransform.DOAnchorMin(new Vector2(0.5f, 0.5f), SlideAccelerationDuration).From().SetEase(SlideAccelerationEasing))
@@ -118,6 +124,24 @@ namespace StackBuild.Scene.Title
             await seq.Play().AsyncWaitForCompletion();
             ShowBackground();
             titleScreen.ShowAsync().Forget();
+        }
+
+        private void UpdateBGM()
+        {
+            if (currentScreen == titleScreen)
+            {
+                titleBGM.Play();
+                _ = titleBGM.DOFade(1, 1).SetEase(Ease.Linear);
+                _ = menuBGM.DOFade(0, 1).SetEase(Ease.Linear).OnComplete(() => menuBGM.Pause());
+            }
+            else
+            {
+                if(!menuBGM.isPlaying)
+                    menuBGM.Play();
+                _ = titleBGM.DOFade(0, 0.5f).SetEase(Ease.Linear);
+                _ = menuBGM.DOKill();
+                _ = menuBGM.volume = 1;
+            }
         }
 
         private void ShowBackground()
@@ -137,6 +161,7 @@ namespace StackBuild.Scene.Title
             if (currentScreen != null && currentScreen.ShouldShowLogo != screen.ShouldShowLogo)
             {
                 logo.gameObject.SetActive(screen.ShouldShowLogo);
+                logo.DisplayImmediately();
                 if (screen.ShouldShowLogo)
                 {
                     ShowBackground();
@@ -150,6 +175,7 @@ namespace StackBuild.Scene.Title
             }
             if (currentScreen != null) await currentScreen.HideAsync();
             currentScreen = screen;
+            UpdateBGM();
             await currentScreen.ShowAsync();
         }
 
@@ -228,6 +254,16 @@ namespace StackBuild.Scene.Title
         {
             randomMatchmaker.StopRandomMatchmaking().Forget();
             matchmakingScreen.SetCanceling();
+        }
+
+        private async UniTaskVoid ExitGame()
+        {
+            EventSystem.current.enabled = false;
+            await UniTask.WhenAll(
+                LoadingScreen.Instance.ShowAsync(LoadingScreenType.Fade, Color.black),
+                menuBGM.DOFade(0, 1).AsyncWaitForCompletion().AsUniTask()
+            );
+            Application.Quit();
         }
 
     }
