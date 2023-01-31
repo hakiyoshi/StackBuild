@@ -1955,7 +1955,7 @@ MonoBehaviour:
   resultsDisplay: {fileID: 439746646}
   resultsDelay: 1.35
   gameOverScreen: {fileID: 71828187}
-  gameTime: 1
+  gameTime: 60
   flashTimeBelow: 10
   hideHeightMeterNumbersIn: 10
   playerInputProperty: {fileID: 11400000, guid: 0dd4cc4c4954c3942815643f00138d40, type: 2}
