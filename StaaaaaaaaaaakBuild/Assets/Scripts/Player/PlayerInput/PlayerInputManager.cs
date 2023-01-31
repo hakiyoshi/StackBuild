@@ -52,8 +52,15 @@ namespace StackBuild
                 if (!x.user.valid)
                     return;
 
+                //プレイヤーインデックス ローカルの場合一個ずらす
+                var playerIndex = x.playerIndex;
+                if (NetworkManager.Singleton != null && !NetworkManager.Singleton.IsClient)
+                {
+                    playerIndex = (playerIndex + 1) % PlayerInputProperty.MAX_DEVICEID;
+                }
+
                 //取得＆デバイス連結解除
-                var deviceid = CurrentPlayerDevice[x.playerIndex];
+                var deviceid = CurrentPlayerDevice[playerIndex];
                 x.user.UnpairDevices();
 
                 // デバイスを設定品場合何もしない
@@ -67,7 +74,7 @@ namespace StackBuild
                 InputDevice inputDevice = null;
                 if (deviceid == PlayerInputProperty.AUTOSETID)
                 {
-                    inputDevice = AutoSearchInputDevice(x.playerIndex, devices);
+                    inputDevice = AutoSearchInputDevice(playerIndex, devices);
                 }
                 else if (deviceid != PlayerInputProperty.UNSETID)
                 {
@@ -78,7 +85,7 @@ namespace StackBuild
                 SettingDevice(x, inputDevice);
 
                 //デバイスIDを変更
-                SettingPlayerDevice(x.playerIndex, inputDevice);
+                //SettingPlayerDevice(playerIndex, inputDevice);
             }).AddTo(this);
 
             //
