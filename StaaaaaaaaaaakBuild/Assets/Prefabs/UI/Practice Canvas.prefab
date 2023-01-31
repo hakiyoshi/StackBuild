@@ -915,7 +915,7 @@ RectTransform:
   m_Children:
   - {fileID: 5062119282061740955}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -991,7 +991,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d064979a9fff46b2b3ee5f3afe674ee9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputExit: {fileID: 6754112142588315646, guid: 026dce421c575f4459a26ac3cee3b179, type: 3}
+  inputExit: {fileID: 351504761608508607, guid: 49b721be9a1043845bb1acf01335e4b9, type: 3}
   exitHoldTime: 1
   container: {fileID: 8499981673951198583}
   exitBar: {fileID: 5062119282881691304}

@@ -30,7 +30,7 @@ namespace StackBuild.UI
 
         private void Awake()
         {
-            InputFromEvent.ActionMapFromEventStarted(inputExit).Subscribe(_ =>
+            InputFromEvent.ActionMapFromEventPerformed(inputExit).Subscribe(_ =>
             {
                 if (!isVisible || exitConfirmed || isExitButtonDown) return;
                 isExitButtonDown = true;

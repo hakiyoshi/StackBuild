@@ -25,6 +25,7 @@ namespace StackBuild.UI
             if(!hideOnAwake) return;
             group.alpha = 0;
             group.interactable = false;
+            group.blocksRaycasts = false;
         }
 
         public async UniTaskVoid ShowAsync(CharacterProperty[] characters)
@@ -38,6 +39,7 @@ namespace StackBuild.UI
                 .Join(group.DOFade(1, 0.3f).From(0))
                 .Join(((RectTransform)transform).DOSizeDelta(Vector2.zero, 0.5f).From().SetEase(Ease.OutQuart));
             group.interactable = true;
+            group.blocksRaycasts = true;
             EventSystem.current.SetSelectedGameObject(selectButtonOnShow);
         }
 
