@@ -34,8 +34,8 @@ public class Input : MonoBehaviour
 
     private void OnDisable()
     {
-        inputSender.Catch.isPause = true;
-        inputSender.Dash.isPause = true;
-        inputSender.Move.isPause = true;
+        // inputSender.Catch.isPause = true;
+        // inputSender.Dash.isPause = true;
+        // inputSender.Move.isPause = true;
     }
 }
