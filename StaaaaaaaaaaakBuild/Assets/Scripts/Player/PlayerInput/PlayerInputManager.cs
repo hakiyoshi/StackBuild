@@ -85,7 +85,7 @@ namespace StackBuild
                 SettingDevice(x, inputDevice);
 
                 //デバイスIDを変更
-                //SettingPlayerDevice(playerIndex, inputDevice);
+                SettingPlayerDevice(playerIndex, inputDevice);
             }).AddTo(this);
 
             //
