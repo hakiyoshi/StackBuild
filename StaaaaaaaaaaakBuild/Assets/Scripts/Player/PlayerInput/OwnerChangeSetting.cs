@@ -70,6 +70,8 @@ namespace StackBuild
                     }
 
                     var playerInput = input.GetComponent<PlayerInput>();
+                    if(!playerInput.user.valid)
+                        return;
                     playerInput.SwitchCurrentActionMap("UI");
                     playerInput.SwitchCurrentControlScheme(InputSystem.devices.ToArray());
                     playerInput.actions.bindingMask = InputBinding.MaskByGroups("keyboard&Mouse", "Gamepad");
@@ -94,7 +96,7 @@ namespace StackBuild
             if(playerInput == null)
                 return;
 
-            GainedInput(playerInput);
+            SwitchDevice();
         }
 
         public override void OnLostOwnership()

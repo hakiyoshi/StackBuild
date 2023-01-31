@@ -10,6 +10,7 @@ namespace StackBuild.MenuNetwork
 
         private const int INVALID = -1;
         private int clientIndex = INVALID;
+        private int localCharacterType = INVALID;
         private int useIndex = 0;
 
         public override void OnNetworkSpawn()
@@ -34,6 +35,7 @@ namespace StackBuild.MenuNetwork
                 NetworkManager.OnClientDisconnectCallback -= ClientDisconnect;
                 useIndex = 0;
                 clientIndex = INVALID;
+                localCharacterType = INVALID;
             }
         }
 
@@ -55,12 +57,20 @@ namespace StackBuild.MenuNetwork
 
             //インデックスを割り当てて送信
             SendClientIndexClientRpc(useIndex, clientRpcParams);
+            if (clientIndex != INVALID && localCharacterType != INVALID)
+            {
+                SendSelectedCharacterClientRpc(clientIndex, localCharacterType);
+            }
             useIndex++;
         }
 
         [ClientRpc]
         private void SendClientIndexClientRpc(int index, ClientRpcParams clientRpcParams = default)
         {
+            if (localCharacterType != INVALID)
+            {
+                SendSelectedCharacterServerRpc(index, localCharacterType);
+            }
             clientIndex = index;
         }
 
@@ -90,6 +100,8 @@ namespace StackBuild.MenuNetwork
         //characterTypeはcharacterPropertiesのインデックス
         public void ChangeSelectedCharacter(int playerIndex, int characterType)
         {
+            localCharacterType = characterType;
+
             if (IsSpawned)
             {
                 SendSelectedCharacterServerRpc(clientIndex, characterType);

@@ -3,6 +3,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using NetworkSystem;
 using UniRx;
+using Unity.Services.Lobbies;
 using UnityEngine;
 
 namespace StackBuild.MatchMaking
@@ -25,16 +26,28 @@ namespace StackBuild.MatchMaking
         {
             InitializeCancellationTokenSource();
 
-            await NetworkSystemManager.NetworkInitAsync();
-
             try
             {
+                await NetworkSystemManager.NetworkInitAsync();
                 await NetworkSystemManager.ClientQuickAsync(lobby, relay, cts.Token);
+            }
+            catch (LobbyServiceException)
+            {
+                try
+                {
+                    await NetworkSystemManager.CreateRoomAsync(false, lobby, relay, lobbyOption, playerOption,
+                        cts.Token);
+                }
+                catch (Exception)
+                {
+                    await StopRandomMatchmaking();
+                    throw;
+                }
             }
             catch (Exception)
             {
-                await NetworkSystemManager.CreateRoomAsync(false, lobby, relay, lobbyOption, playerOption,
-                    cts.Token);
+                await StopRandomMatchmaking();
+                throw;
             }
 
             await UniTask.WaitUntil(() => IsSpawned, cancellationToken: cts.Token);
@@ -46,6 +59,7 @@ namespace StackBuild.MatchMaking
             FinalizeCancellationTokenSource();
 
             await NetworkSystemManager.NetworkExit(lobby, relay);
+            await UniTask.WaitWhile(() => NetworkManager.ShutdownInProgress);
             ResetParameters();
         }
 

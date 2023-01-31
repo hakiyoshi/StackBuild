@@ -15,10 +15,12 @@ namespace NetworkSystem
     public class LobbyManager : ScriptableObject
     {
         public const string DefaultLobbyName = "PlayerLobby";
-        public const int DefaultMaxPlayer = 4;
+        public const int DefaultMaxPlayer = 2;
         public const bool DefaultIsPrivate = false;
 
-        private const double CoolTimeForUpdatingLobby = 1.1;
+        private const double CoolTimeInitialValue = 1;
+        private const double CoolTimeMultiplyValue = 2.5;
+        private const double CoolTimeMaxValue = 30;
         private const double HeartbeatTransmissionTime = 15.1; // 待ち時間(秒) ※30秒間に5回の制限あり
 
         private Lobby lobby;
@@ -214,7 +216,7 @@ namespace NetworkSystem
             }
             catch (LobbyServiceException e)
             {
-                Debug.LogException(e);
+                //Debug.LogException(e);
                 throw;
             }
         }
@@ -286,11 +288,15 @@ namespace NetworkSystem
         private async UniTask LatestLobbyAcquisitionLoopAsync(CancellationToken token)
         {
             Debug.Log("手持ちのロビー情報更新開始");
+
+            double cooltime = CoolTimeInitialValue;
             while (lobby != null)
             {
                 try
                 {
-                    await UniTask.Delay(TimeSpan.FromSeconds(CoolTimeForUpdatingLobby), cancellationToken: token);
+                    await UniTask.Delay(TimeSpan.FromSeconds(cooltime), cancellationToken: token);
+                    cooltime = Math.Min(cooltime * CoolTimeMultiplyValue, CoolTimeMaxValue);
+
                     lobby = await LobbyService.Instance.GetLobbyAsync(lobby.Id);
                 }
                 catch (ArgumentException e)

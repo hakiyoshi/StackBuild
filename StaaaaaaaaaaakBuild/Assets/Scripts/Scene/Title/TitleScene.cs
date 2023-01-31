@@ -1,15 +1,19 @@
 ﻿using System;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using StackBuild.Audio;
 using StackBuild.Game;
 using StackBuild.MatchMaking;
+using StackBuild.MenuNetwork;
 using StackBuild.UI;
 using UniRx;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using InputDevice = UnityEngine.InputSystem.InputDevice;
 
 namespace StackBuild.Scene.Title
 {
@@ -38,6 +42,8 @@ namespace StackBuild.Scene.Title
         [SerializeField] private MatchFoundDisplay matchFoundDisplay;
         [SerializeField] private RandomMatchmaker randomMatchmaker;
         [SerializeField] private NetworkSceneChanger sceneChanger;
+        [SerializeField] private PlayerPropertyOperator playerPropertyOperator;
+        [SerializeField] private PlayerInputProperty playerInputProperty;
         [SerializeField] private AudioChannel audioChannel;
         [SerializeField] private AudioSource titleBGM; // ちょっといろいろ諦めて直でSource使う(
         [SerializeField] private AudioSource menuBGM;
@@ -190,7 +196,23 @@ namespace StackBuild.Scene.Title
                     await ChangeScreen(mainMenuScreen);
                     return;
                 }
-                player.Initialize(selectedCharacter);
+                //player.Initialize(selectedCharacter);
+
+                var propertyList = playerPropertyOperator.characterProperties.ToList();
+                int characterIndex = propertyList.FindIndex(x => x == selectedCharacter);
+                playerPropertyOperator.ChangeSelectedCharacter(i, characterIndex);
+
+                InputDevice lastUpdateDevice = null;
+                var max = double.MinValue;
+                foreach (var device in InputSystem.devices)
+                {
+                    if (device.lastUpdateTime > max)
+                    {
+                        lastUpdateDevice = device;
+                        max = device.lastUpdateTime;
+                    }
+                }
+                playerInputProperty.SettingPlayerDevice(i, lastUpdateDevice, mode.IsOnline);
             }
 
             if (mode.IsOnline)
@@ -214,9 +236,10 @@ namespace StackBuild.Scene.Title
             {
                 await randomMatchmaker.StartRandomMatchmaking();
             }
-            catch (OperationCanceledException)
+            catch (Exception ex)
             {
                 await ChangeScreen(mainMenuScreen);
+                Debug.LogException(ex);
                 return;
             }
 

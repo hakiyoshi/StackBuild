@@ -30,15 +30,6 @@ namespace StackBuild.UI.Network
         private bool isHovered;
 
         private bool isPress = false;
-        private bool IsIsPress
-        {
-            get { return isPress; }
-            set
-            {
-                isPress = value;
-                eventSystem.enabled = !value;
-            }
-        }
 
         private void Start()
         {
@@ -47,7 +38,7 @@ namespace StackBuild.UI.Network
                 if(!isSelected)
                     return;
 
-                IsIsPress = true;
+                isPress = true;
                 UpdateColor();
 
             }).AddTo(this);
@@ -57,7 +48,7 @@ namespace StackBuild.UI.Network
                 if(!isSelected)
                     return;
 
-                IsIsPress = false;
+                isPress = false;
                 UpdateColor();
             }).AddTo(this);
         }
@@ -94,7 +85,7 @@ namespace StackBuild.UI.Network
 
             bool isSelectedOrHovered = isSelected || isHovered;
 
-            background.color = IsIsPress ? style.PressedBackgroundColor :
+            background.color = isPress ? style.PressedBackgroundColor :
                 isSelectedOrHovered ? style.HoveredBackgroundColor : style.NormalBackgroundColor;
             border.color     = style.NormalBorderColor;
             label.color      = style.NormalTextColor;
@@ -102,28 +93,28 @@ namespace StackBuild.UI.Network
 
         void ISelectHandler.OnSelect(BaseEventData eventData)
         {
-            if (disabled && IsIsPress) return;
+            if (disabled && isPress) return;
             isSelected = true;
             UpdateColor();
         }
 
         void IDeselectHandler.OnDeselect(BaseEventData eventData)
         {
-            if (disabled && IsIsPress) return;
+            if (disabled && isPress) return;
             isSelected = false;
             UpdateColor();
         }
 
         void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
         {
-            if (disabled && IsIsPress) return;
+            if (disabled && isPress) return;
             isHovered = true;
             UpdateColor();
         }
 
         void IPointerExitHandler.OnPointerExit(PointerEventData eventData)
         {
-            if (disabled && IsIsPress) return;
+            if (disabled && isPress) return;
             isHovered = false;
             UpdateColor();
         }
@@ -131,14 +122,14 @@ namespace StackBuild.UI.Network
         void IPointerDownHandler.OnPointerDown(PointerEventData eventData)
         {
             if (disabled) return;
-            IsIsPress = true;
+            isPress = true;
             UpdateColor();
         }
 
         void IPointerUpHandler.OnPointerUp(PointerEventData eventData)
         {
             if (disabled) return;
-            IsIsPress = false;
+            isPress = false;
             UpdateColor();
         }
 
