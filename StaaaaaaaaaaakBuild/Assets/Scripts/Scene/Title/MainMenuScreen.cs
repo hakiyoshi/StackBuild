@@ -16,7 +16,7 @@ namespace StackBuild.Scene.Title
         [SerializeField] private CanvasGroup container;
         [SerializeField] private TitleMenuStaggerDisplay staggerDisplay;
         [SerializeField] private GameModeButton[] gameModeButtons;
-        [SerializeField] private Button buttonLocalMatch;
+        [SerializeField] private Button buttonOnlineMatch;
         [SerializeField] private Button buttonSettings;
         [SerializeField] private Button buttonBack;
         [SerializeField] private Button buttonExit;
@@ -43,7 +43,7 @@ namespace StackBuild.Scene.Title
             container.alpha = 1;
 
             EventSystem.current.SetSelectedGameObject(null);
-            EventSystem.current.SetSelectedGameObject(buttonLocalMatch.gameObject);
+            EventSystem.current.SetSelectedGameObject(buttonOnlineMatch.gameObject);
 
             await staggerDisplay.Display();
         }
