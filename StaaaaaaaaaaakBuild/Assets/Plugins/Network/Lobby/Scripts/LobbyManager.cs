@@ -216,7 +216,7 @@ namespace NetworkSystem
             }
             catch (LobbyServiceException e)
             {
-                Debug.LogException(e);
+                //Debug.LogException(e);
                 throw;
             }
         }
