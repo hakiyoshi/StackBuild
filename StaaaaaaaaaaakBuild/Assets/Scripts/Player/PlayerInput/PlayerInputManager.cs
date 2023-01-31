@@ -27,7 +27,17 @@ namespace StackBuild
             //デバイスIDコピー
             for (var i = 0; i < playerInputProperty.DeviceIds.Length; i++)
             {
-                CurrentPlayerDevice[i] = playerInputProperty.DeviceIds[i];
+                if (CurrentPlayerDevice.Any(
+                        device => device != PlayerInputProperty.AUTOSETID &&
+                                  device != PlayerInputProperty.UNSETID &&
+                                  playerInputProperty.DeviceIds[i] == device))
+                {
+                    CurrentPlayerDevice[i] = PlayerInputProperty.AUTOSETID;
+                }
+                else
+                {
+                    CurrentPlayerDevice[i] = playerInputProperty.DeviceIds[i];
+                }
             }
 
             // InputManagerのイベント追加
