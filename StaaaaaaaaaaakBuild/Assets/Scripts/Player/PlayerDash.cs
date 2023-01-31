@@ -12,6 +12,7 @@ namespace StackBuild
     {
         [SerializeField] private InputSender inputSender;
         [SerializeField] private PlayerProperty playerProperty;
+        [SerializeField] private PlayerProperty enemyPlayerProperty;
 
         [SerializeField] private AudioCue attackHitAudioCue;
         [SerializeField] private AudioCue dashAudioCue;
@@ -67,7 +68,7 @@ namespace StackBuild
             if (!IsOwner)
                 return;
 
-            playerProperty.HitDashAttack.OnNext(new PlayerProperty.DashAttackInfo(playerProperty, hitPoint));
+            playerProperty.HitDashAttack.OnNext(new PlayerProperty.DashAttackInfo(enemyPlayerProperty, hitPoint));
         }
 
         private void Start()
