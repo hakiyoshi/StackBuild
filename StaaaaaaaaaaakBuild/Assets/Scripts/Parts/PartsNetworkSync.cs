@@ -55,16 +55,6 @@ namespace StackBuild
 
                     ChangeOwnershipServerRpc(player.OwnerClientId);
                 }).AddTo(this);
-
-            this.OnTriggerExitAsObservable()
-                .Where(col => col.CompareTag("Catch"))
-                .Select(col => col.transform.parent.parent.GetComponent<NetworkObject>())
-                .Subscribe(player =>
-                {
-                    LostOwnershipServerRpc(NetworkManager.ServerClientId, rb.position);
-                    // UpdatePositionServerRpc(rb.position);
-                    // UpdateVelocityServerRpc(rb.velocity);
-                }).AddTo(this);
         }
 
         public override void OnNetworkDespawn()
@@ -82,14 +72,11 @@ namespace StackBuild
         }
 
         [ServerRpc(RequireOwnership = false)]
-        public void LostOwnershipServerRpc(ulong clientId, Vector3 position)
+        public void LostOwnershipServerRpc(ulong clientId)
         {
             if (!IsServer) return;
 
-            networkObject.RemoveOwnership();
             networkObject.ChangeOwnership(clientId);
-            rb.position = position + rb.velocity * Time.fixedDeltaTime * (extrapolateFromSeconds / 50.0f);
-            rb.velocity = Vector3.zero;
         }
 
         [ServerRpc(RequireOwnership = false)]
