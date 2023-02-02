@@ -74,6 +74,7 @@ namespace StackBuild
 
                 if (networkSync.IsSpawned)
                 {
+                    networkSync.LostOwnershipServerRpc(NetworkManager.ServerClientId);
                     EnqueueServerRpc(i);
                 }
                 else
