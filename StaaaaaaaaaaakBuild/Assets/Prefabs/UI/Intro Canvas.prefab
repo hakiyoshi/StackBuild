@@ -460,6 +460,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   displayOnEnable: 0
+  vcam: {fileID: 0}
   group: {fileID: 5962449684245437394}
   iconContainer: {fileID: 5962449684567278186}
   iconParts:
@@ -1040,7 +1041,7 @@ RectTransform:
   - {fileID: 5962449684245437395}
   - {fileID: 5962449685265630274}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2155,6 +2156,7 @@ GameObject:
   - component: {fileID: 5962449685157980642}
   - component: {fileID: 5962449685157980643}
   - component: {fileID: 5962449685157980640}
+  - component: {fileID: 2239498567797867390}
   m_Layer: 5
   m_Name: Mode Name
   m_TagString: Untagged
@@ -2210,7 +2212,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: ONLINE MATCH
+  m_text: '{}'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6e960e95f71d8cc4d891eafd52f86f66, type: 2}
   m_sharedMaterial: {fileID: -688978901423406445, guid: 6e960e95f71d8cc4d891eafd52f86f66, type: 2}
@@ -2243,7 +2245,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 16
   m_HorizontalAlignment: 4
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -2293,6 +2295,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 2
+--- !u!114 &2239498567797867390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5962449685157980670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8442284d29cdb7a4588e882a8f00108f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 5962449685157980643}
+  pattern: '{}'
 --- !u!1 &5962449685265630302
 GameObject:
   m_ObjectHideFlags: 0

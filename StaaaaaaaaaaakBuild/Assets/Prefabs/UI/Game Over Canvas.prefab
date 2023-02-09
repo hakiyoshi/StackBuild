@@ -207,7 +207,7 @@ RectTransform:
   m_Children:
   - {fileID: 1955920967044800206}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -465,7 +465,10 @@ MonoBehaviour:
   characterImages:
   - {fileID: 4372481891171769328}
   - {fileID: 824467713031172100}
-  selectButtonOnShow: {fileID: 1986494725027733401}
+  buttons:
+  - {fileID: 1986494725027733404}
+  - {fileID: 4680031917211939193}
+  - {fileID: 4334470801316489793}
 --- !u!1 &1955920967510819432
 GameObject:
   m_ObjectHideFlags: 0
